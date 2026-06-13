@@ -137,6 +137,13 @@ p{line-height:1.6}
 .lr-stops-dot{opacity:.35;margin:0 3px}
 .lr-tags{display:flex;gap:7px;flex-wrap:wrap;padding-top:11px;border-top:1px solid #F3F4F6}
 .lr-tag{background:#F3F4F6;color:var(--navy-light);padding:4px 10px;border-radius:50px;font-size:11px;font-weight:600}
+.lr-chip.c-dest{background:rgba(109,40,217,.82);color:#fff}
+.lr-photo-dots{position:absolute;bottom:9px;left:50%;transform:translateX(-50%);display:flex;gap:5px;align-items:center}
+.lr-pd{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.35);flex-shrink:0;transition:all .2s}
+.lr-pd.on{background:#fff;width:14px;border-radius:2.5px}
+.lr-sec-divider{display:flex;align-items:center;gap:10px;padding:20px 0 12px}
+.lr-sec-line{flex:1;height:1px;background:#E5E7EB}
+.lr-sec-label{font-size:12.5px;font-weight:700;color:var(--gray);white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
 
 /* CODE */
 .code-wrap{padding:40px 24px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center}
@@ -540,41 +547,91 @@ p{line-height:1.6}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <script>
 // ============================================================
-// SAMPLE ACTIVITY CARDS (Let's Roam style — Scavenger Hunt filter)
+// SAMPLE ACTIVITY CARDS (Let's Roam style)
 // ============================================================
 const SAMPLE_HUNTS = [
-  {
-    title:"St. Augustine: The Ancient City Adventure Walk",
-    image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
-    dist:"4 miles away",distChip:"4 mi away",nearby:"Near you",
-    rating:"4.9",teams:"197",route:"0.5 mi route",
-    stops:["St. Augustine Pirate & Treasure Museum","Potter's Wax Museum","Old City Gates"],
-    tags:["Saint Augustine","Scavenger Hunt"],action:"TASTE1"
-  },
-  {
-    title:"Spring Fling Thing! The Scenic Green Cove Springs Hunt",
-    image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
-    dist:"24.5 miles away",distChip:"24 mi away",nearby:"In your area",
-    rating:"5",teams:"62",route:"0.8 mi route",
-    stops:["Green Cove Springs Public Pier","Green Cove Springs Marker","Patriotic Memorial Mural"],
-    tags:["Green Cove Springs","Scavenger Hunt"],action:null
-  },
-  {
-    title:"Palatka's Peculiar Treasure Pursuit",
-    image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
-    dist:"23.4 miles away",distChip:"23 mi away",nearby:"In your area",
-    rating:"5",teams:"87",route:"1.5 mi route",
-    stops:["Putnam Historic Museum","Veterans Memorial Fountains","Larimer Memorial Library"],
-    tags:["Palatka","Scavenger Hunt"],action:null
-  },
-  {
-    title:"St. Augustine Old Town Legends!",
-    image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
-    dist:"3.7 miles away",distChip:"3.7 mi away",nearby:"Near you",
-    rating:"5",teams:"1,262",route:"1.6 mi route",
-    stops:["Plaza de la Constitución","St. Augustine Shipwreck Museum","Lightner Museum"],
-    tags:["Saint Augustine","Scavenger Hunt"],action:"TASTE1"
-  }
+  // --- Near you ---
+  {title:"Anastasia State Park: Dunes, Stones & Sea Zones",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+   dist:"2.9 miles away",distChip:"2.9 mi away",nearby:"Near you",
+   rating:"5",teams:"70",route:"2.5 mi route",
+   stops:["Anastasia Campground and Playground","Ancient Dunes Nature Trail","Anastasia Beach"],
+   tags:["Saint Augustine","Scavenger Hunt"],action:null,outside:false},
+  {title:"St. Augustine Old Town Legends!",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
+   dist:"3.7 miles away",distChip:"3.7 mi away",nearby:"Near you",
+   rating:"5",teams:"1,262",route:"1.6 mi route",
+   stops:["Plaza de la Constitución","St. Augustine Shipwreck Museum","Lightner Museum"],
+   tags:["Saint Augustine","Scavenger Hunt"],action:"TASTE1",outside:false},
+  {title:"St. Augustine: The Ancient City Adventure Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"4 miles away",distChip:"4 mi away",nearby:"Near you",
+   rating:"4.9",teams:"197",route:"0.5 mi route",
+   stops:["St. Augustine Pirate & Treasure Museum","Potter's Wax Museum","Old City Gates"],
+   tags:["Saint Augustine","Scavenger Hunt"],action:"TASTE1",outside:false},
+  // --- Outside Your Range ---
+  {title:"Spring Fling Thing! The Scenic Green Cove Springs Hunt",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+   dist:"24.5 miles away",distChip:"24 mi away",nearby:"In your area",
+   rating:"5",teams:"62",route:"0.8 mi route",
+   stops:["Green Cove Springs Public Pier","Green Cove Springs Marker","Patriotic Memorial Mural"],
+   tags:["Green Cove Springs","Scavenger Hunt"],action:null,outside:true},
+  {title:"Palatka's Peculiar Treasure Pursuit",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+   dist:"23.4 miles away",distChip:"23 mi away",nearby:"In your area",
+   rating:"5",teams:"87",route:"1.5 mi route",
+   stops:["Putnam Historic Museum","Veterans Memorial Fountains","Larimer Memorial Library"],
+   tags:["Palatka","Scavenger Hunt"],action:null,outside:true}
+];
+
+const SAMPLE_BARS = [
+  // --- Near you ---
+  {title:"Corks & Forks: St. Augustine Bar Crawl",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"0.8 miles away",distChip:"0.8 mi away",nearby:"Near you",
+   rating:"5",teams:"312",route:"0.9 mi route",subroute:"Friends night",
+   stops:["The Floridian","Columbia Restaurant","Preserved Restaurant & Bar"],
+   tags:["Saint Augustine","Bar Crawl"],action:"CORKS1",outside:false},
+  {title:"Brunch Pairing Bar Crawl: Historic District",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
+   dist:"1.2 miles away",distChip:"1.2 mi away",nearby:"Near you",
+   rating:"4.9",teams:"188",route:"0.7 mi route",subroute:"Friends night",
+   stops:["The Ice Plant Bar","Casa Maya","Catch 27"],
+   tags:["Saint Augustine","Bar Crawl"],action:"CORKS1",outside:false},
+  // --- Outside Your Range ---
+  {title:"Bar Hunt: Fernandina Beach Florida Bar Hunt",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+   dist:"58.3 miles away",distChip:"58 mi away",nearby:"Destination",
+   rating:"5",teams:"68",route:"0.5 mi route",subroute:"Friends night",
+   stops:["Palace Saloon","Marlin & Barrel Distillery","PJDS Beer & Wine Garden"],
+   tags:["Fernandina Beach","Bar Crawl"],action:null,outside:true},
+  {title:"Bar Hunt: Gainesville Florida Bar Hunt",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+   dist:"62.4 miles away",distChip:"62 mi away",nearby:"Destination",
+   rating:"5",teams:"66",route:"0.5 mi route",subroute:"Friends night",
+   stops:["Arcade Bar","Silver Q Billiards & Sports Bar","Mai Kai Kava Bar"],
+   tags:["Gainesville","Bar Crawl"],action:null,outside:true}
+];
+
+const SAMPLE_ARTS = [
+  {title:"St. Augustine Art Walk: Historic District Gallery Stroll",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"0.6 miles away",distChip:"0.6 mi away",nearby:"Near you",
+   rating:"5",teams:"143",route:"1.1 mi route",subroute:"Creative outing",
+   stops:["Gallerie Ninon","Morning Star Gallery","St. Augustine Art Association"],
+   tags:["Saint Augustine","Art Walk"],action:null,outside:false},
+  {title:"Lincolnville Murals & Street Art Tour",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+   dist:"1.4 miles away",distChip:"1.4 mi away",nearby:"Near you",
+   rating:"4.9",teams:"89",route:"0.8 mi route",subroute:"Creative outing",
+   stops:["Lincolnville Museum","MLK Avenue Murals","Excelsior School Historic Site"],
+   tags:["Saint Augustine","Art Walk"],action:null,outside:false},
+  {title:"Flagler College & Ponce de León Art Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+   dist:"0.9 miles away",distChip:"0.9 mi away",nearby:"Near you",
+   rating:"5",teams:"211",route:"0.6 mi route",subroute:"Creative outing",
+   stops:["Flagler College Rotunda","Villa Zorayda Museum","Casa Monica Hotel Architecture"],
+   tags:["Saint Augustine","Art Walk"],action:null,outside:false}
 ];
 
 function renderLRCard(h){
@@ -582,13 +639,22 @@ function renderLRCard(h){
   const stopsHtml=h.stops.map((s,i)=>i<h.stops.length-1
     ?`${s}<span class="lr-stops-dot">·</span>`
     :s).join('');
+  const nearCls=h.nearby==='Destination'?'c-dest':'c-near';
+  const routeLine=h.subroute
+    ?`📍 ${h.route} <span class="lr-dot">·</span> ${h.subroute}`
+    :`📍 ${h.route}`;
   return `<div class="lr-card" onclick="${action}">
     <div class="lr-img">
       <img src="${h.image}" alt="${h.title}" loading="lazy">
       <div class="lr-chips">
         <span class="lr-chip c-top">Top Rated</span>
-        <span class="lr-chip c-near">${h.nearby}</span>
+        <span class="lr-chip ${nearCls}">${h.nearby}</span>
         <span class="lr-chip c-dist">${h.distChip}</span>
+      </div>
+      <div class="lr-photo-dots">
+        <div class="lr-pd on"></div>
+        <div class="lr-pd"></div>
+        <div class="lr-pd"></div>
       </div>
     </div>
     <div class="lr-body">
@@ -600,11 +666,25 @@ function renderLRCard(h){
         <span class="lr-dot">●</span>
         <span>Rated by ${h.teams} teams</span>
       </div>
-      <div class="lr-route">📍 ${h.route}</div>
+      <div class="lr-route">${routeLine}</div>
       <div class="lr-stops">${stopsHtml}</div>
       <div class="lr-tags">${h.tags.map(t=>`<span class="lr-tag">${t}</span>`).join('')}</div>
     </div>
   </div>`;
+}
+
+function renderSectionedCards(data){
+  const near=data.filter(h=>!h.outside);
+  const out=data.filter(h=>h.outside);
+  let html=near.map(renderLRCard).join('');
+  if(out.length){
+    html+=`<div class="lr-sec-divider">
+      <div class="lr-sec-line"></div>
+      <div class="lr-sec-label">Outside Your Range</div>
+      <div class="lr-sec-line"></div>
+    </div>`+out.map(renderLRCard).join('');
+  }
+  return html;
 }
 
 // ============================================================
@@ -911,10 +991,9 @@ function filterTours(type,btn){
 
 function renderCards(f){
   const g=document.getElementById('tours-grid');
-  if(f==='Scavenger Hunt'){
-    g.innerHTML=SAMPLE_HUNTS.map(renderLRCard).join('');
-    return;
-  }
+  if(f==='Scavenger Hunt'){g.innerHTML=renderSectionedCards(SAMPLE_HUNTS);return;}
+  if(f==='Bar Crawl'){g.innerHTML=renderSectionedCards(SAMPLE_BARS);return;}
+  if(f==='Art Walk'){g.innerHTML=SAMPLE_ARTS.map(renderLRCard).join('');return;}
   const list=f==='all'?TOURS:TOURS.filter(t=>t.type===f);
   if(!list.length){g.innerHTML='<div style="text-align:center;padding:40px;color:var(--gray)">No tours in this category yet — check back soon!</div>';return}
   g.innerHTML=list.map(t=>`
