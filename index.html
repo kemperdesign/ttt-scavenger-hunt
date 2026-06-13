@@ -81,16 +81,19 @@ p{line-height:1.6}
 .home-header{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between}
 .logo-name{font-size:18px;font-weight:800;color:var(--navy)}
 .logo-tagline{font-size:11px;color:var(--orange);font-weight:600;text-transform:uppercase;letter-spacing:1px}
-.hero-carousel{margin:16px 0 0;position:relative;height:260px;overflow:hidden}
-.hero-slides{display:flex;height:100%;transition:transform .4s ease}
-.hero-slide{min-width:100%;height:100%;position:relative}
-.hero-slide img{width:100%;height:100%;object-fit:cover}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(26,39,68,.7));display:flex;align-items:flex-end;padding:20px;color:#fff}
-.hero-overlay h2{font-size:22px;text-shadow:0 1px 4px rgba(0,0,0,.3)}
-.hero-overlay p{font-size:13px;opacity:.9;margin-top:4px}
-.carousel-dots{position:absolute;bottom:12px;right:16px;display:flex;gap:6px}
-.c-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);transition:all .2s}
-.c-dot.active{background:#fff;width:18px;border-radius:3px}
+.hero-carousel{margin:16px 0 0;position:relative;height:340px;overflow:hidden;user-select:none}
+.hero-slides{display:flex;height:100%;transition:transform .42s cubic-bezier(.25,.46,.45,.94);will-change:transform}
+.hero-slides.no-transition{transition:none}
+.hero-slide{min-width:100%;height:100%;position:relative;flex-shrink:0}
+.hero-slide img{width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.08) 0%,transparent 32%,transparent 40%,rgba(15,25,50,.72) 75%,rgba(15,25,50,.88) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:20px 20px 52px;color:#fff}
+.hero-headline{font-size:22px;font-weight:800;line-height:1.25;text-shadow:0 1px 6px rgba(0,0,0,.35);margin-bottom:4px}
+.hero-sub{font-size:13px;line-height:1.45;opacity:.92;text-shadow:0 1px 4px rgba(0,0,0,.3);margin-bottom:14px}
+.hero-btn{display:inline-block;padding:9px 20px;border-radius:50px;font-size:13px;font-weight:700;border:none;cursor:pointer;background:#fff;color:var(--navy);letter-spacing:.2px;transition:transform .15s,opacity .15s;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.hero-btn:active{transform:scale(.96);opacity:.9}
+.carousel-dots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:7px;align-items:center}
+.c-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.38);transition:all .25s ease;flex-shrink:0}
+.c-dot.active{background:var(--orange);width:22px;border-radius:4px}
 .section-header{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between}
 .section-title{font-size:18px;font-weight:700}
 .see-all{font-size:13px;color:var(--orange);font-weight:600;text-decoration:none}
@@ -286,12 +289,45 @@ p{line-height:1.6}
 
   <div class="hero-carousel">
     <div class="hero-slides" id="hero-slides">
-      <div class="hero-slide"><img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg" alt=""><div class="hero-overlay"><div><h2>Discover St. Augustine</h2><p>Guided food &amp; drink adventures through history</p></div></div></div>
-      <div class="hero-slide"><img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg" alt=""><div class="hero-overlay"><div><h2>Taste the History</h2><p>From colonial flavors to craft cocktails</p></div></div></div>
-      <div class="hero-slide"><img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg" alt=""><div class="hero-overlay"><div><h2>Sip &amp; Explore</h2><p>Wine pairings through cobblestone streets</p></div></div></div>
-      <div class="hero-slide"><img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg" alt=""><div class="hero-overlay"><div><h2>Memories Await</h2><p>The perfect group adventure for any occasion</p></div></div></div>
+      <div class="hero-slide">
+        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg" alt="Join a Tour">
+        <div class="hero-overlay">
+          <div class="hero-headline">Redeem a Code or Join a Tour</div>
+          <div class="hero-sub">Enter your code to begin your culinary adventure!</div>
+          <button class="hero-btn" onclick="go('s-code')">Join / Redeem</button>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg" alt="St. Augustine's #1 Food Tour">
+        <div class="hero-overlay">
+          <div class="hero-headline">St. Augustine's #1 Food Tour</div>
+          <div class="hero-sub">Award-winning tasting adventures since 2011</div>
+          <button class="hero-btn" onclick="filterTours('all',document.querySelector('.pill'))">Explore Tours</button>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg" alt="Historic District">
+        <div class="hero-overlay">
+          <div class="hero-headline">Historic District • St. Augustine, FL</div>
+          <div class="hero-sub">3,250+ five-star reviews on TripAdvisor &amp; Google</div>
+          <button class="hero-btn" onclick="window.open('https://maps.google.com/?q=St+Augustine+Historic+District+FL','_blank')">View Map</button>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg" alt="Gift Cards Available">
+        <div class="hero-overlay">
+          <div class="hero-headline">Gift Cards Available!</div>
+          <div class="hero-sub">Give the gift of an unforgettable food experience</div>
+          <button class="hero-btn" onclick="window.open('https://www.thetastingtours.com','_blank')">Buy Tickets</button>
+        </div>
+      </div>
     </div>
-    <div class="carousel-dots" id="cdots"><div class="c-dot active"></div><div class="c-dot"></div><div class="c-dot"></div><div class="c-dot"></div></div>
+    <div class="carousel-dots" id="cdots">
+      <div class="c-dot active"></div>
+      <div class="c-dot"></div>
+      <div class="c-dot"></div>
+      <div class="c-dot"></div>
+    </div>
   </div>
 
   <div class="section-header"><span class="section-title">Experiences</span><a href="#" class="see-all">View all</a></div>
@@ -710,12 +746,72 @@ function initHome(){renderCards('all');startCarousel()}
 function startCarousel(){
   const sl=document.getElementById('hero-slides');
   const dots=document.querySelectorAll('.c-dot');
-  let cur=0,tot=dots.length;
-  function goTo(n){cur=(n+tot)%tot;sl.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,i)=>d.classList.toggle('active',i===cur))}
-  if(window._cInt) clearInterval(window._cInt);
-  window._cInt=setInterval(()=>goTo(cur+1),4200);
-  sl.addEventListener('touchstart',e=>{window._tx=e.touches[0].clientX},{passive:true});
-  sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-window._tx;if(Math.abs(dx)>50)goTo(cur+(dx<0?1:-1))},{passive:true});
+  let cur=0, tot=dots.length, dragX=0, dragging=false, didDrag=false;
+
+  function goTo(n){
+    cur=(n+tot)%tot;
+    sl.classList.remove('no-transition');
+    sl.style.transform=`translateX(-${cur*100}%)`;
+    dots.forEach((d,i)=>d.classList.toggle('active',i===cur));
+  }
+
+  function resetTimer(){
+    clearInterval(window._cInt);
+    window._cInt=setInterval(()=>goTo(cur+1),4000);
+  }
+
+  // Touch
+  sl.addEventListener('touchstart',e=>{
+    dragX=e.touches[0].clientX;
+    dragging=true; didDrag=false;
+    sl.classList.add('no-transition');
+    resetTimer();
+  },{passive:true});
+
+  sl.addEventListener('touchmove',e=>{
+    if(!dragging) return;
+    const delta=e.touches[0].clientX-dragX;
+    sl.style.transform=`translateX(calc(-${cur*100}% + ${delta}px))`;
+    if(Math.abs(delta)>8) didDrag=true;
+  },{passive:true});
+
+  sl.addEventListener('touchend',e=>{
+    if(!dragging) return;
+    dragging=false;
+    const dx=e.changedTouches[0].clientX-dragX;
+    if(Math.abs(dx)>50) goTo(cur+(dx<0?1:-1));
+    else goTo(cur);
+  },{passive:true});
+
+  // Mouse drag (desktop)
+  sl.addEventListener('mousedown',e=>{
+    dragX=e.clientX; dragging=true; didDrag=false;
+    sl.classList.add('no-transition');
+    resetTimer();
+    e.preventDefault();
+  });
+
+  window.addEventListener('mousemove',e=>{
+    if(!dragging) return;
+    const delta=e.clientX-dragX;
+    sl.style.transform=`translateX(calc(-${cur*100}% + ${delta}px))`;
+    if(Math.abs(delta)>8) didDrag=true;
+  });
+
+  window.addEventListener('mouseup',e=>{
+    if(!dragging) return;
+    dragging=false;
+    const dx=e.clientX-dragX;
+    if(Math.abs(dx)>50) goTo(cur+(dx<0?1:-1));
+    else goTo(cur);
+  });
+
+  // Block click-through on buttons when a drag just happened
+  sl.addEventListener('click',e=>{
+    if(didDrag){ e.stopPropagation(); e.preventDefault(); didDrag=false; }
+  },true);
+
+  resetTimer();
 }
 
 function filterTours(type,btn){
