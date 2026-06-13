@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TTT Admin — The Tasting Tours</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FDF0EB;--orange:#F5814A;--orange-dk:#E06830;--navy:#1A2744;
+  --navy2:#2D3F6B;--gray:#6B7280;--gl:#F3F4F6;--white:#fff;
+  --green:#10B981;--red:#EF4444;--yellow:#F59E0B;
+  --shadow:0 4px 20px rgba(26,39,68,.12)
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F0F2F5;color:var(--navy);min-height:100vh}
+h1{font-size:24px;font-weight:800}
+h2{font-size:20px;font-weight:700}
+h3{font-size:16px;font-weight:600}
+p{line-height:1.6}
+input,select,textarea,button{font-family:inherit}
+/* login */
+#login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--navy)}
+.login-card{background:#fff;border-radius:24px;padding:48px 40px;width:360px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-logo{font-size:40px;margin-bottom:16px}
+.login-card h1{margin-bottom:6px}
+.login-sub{color:var(--gray);font-size:14px;margin-bottom:32px}
+.l-input{width:100%;padding:14px 16px;border:2px solid #E5E7EB;border-radius:12px;font-size:16px;outline:none;margin-bottom:12px;transition:border-color .2s}
+.l-input:focus{border-color:var(--orange)}
+.l-btn{width:100%;padding:14px;background:var(--orange);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s}
+.l-btn:hover{background:var(--orange-dk)}
+.l-err{color:var(--red);font-size:14px;margin-top:8px;min-height:20px}
+/* app layout */
+#app{display:none;min-height:100vh}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--navy);display:flex;flex-direction:column;padding:24px 0;z-index:100}
+.sb-brand{padding:0 20px 24px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sb-name{font-size:16px;font-weight:800;color:#fff}
+.sb-sub{font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.sb-nav{padding:16px 0;flex:1}
+.sb-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,.65);cursor:pointer;transition:all .2s;font-size:14px;font-weight:500;border:none;background:none;width:100%;text-align:left}
+.sb-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.sb-item.active{background:var(--orange);color:#fff}
+.sb-item .ic{font-size:18px;width:22px}
+.sb-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1)}
+.sb-logout{color:rgba(255,255,255,.5);font-size:13px;cursor:pointer;background:none;border:none;display:flex;align-items:center;gap:8px}
+.sb-logout:hover{color:#fff}
+.main{margin-left:220px;padding:32px;min-height:100vh}
+.page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+/* cards */
+.card{background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.card-body{padding:24px}
+.card-hdr{padding:20px 24px;border-bottom:1px solid var(--gl);display:flex;align-items:center;justify-content:space-between}
+.card-hdr h3{font-size:16px}
+/* buttons */
+.btn{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-primary:hover{background:var(--orange-dk)}
+.btn-danger{background:var(--red);color:#fff}
+.btn-success{background:var(--green);color:#fff}
+.btn-outline{background:transparent;border:2px solid var(--orange);color:var(--orange)}
+.btn-ghost{background:transparent;border:2px solid #E5E7EB;color:var(--gray)}
+.btn-sm{padding:6px 14px;font-size:13px}
+.btn-xs{padding:4px 10px;font-size:12px}
+/* badges */
+.badge{padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.badge-active{background:#ECFDF5;color:#065F46}
+.badge-draft{background:#F3F4F6;color:var(--gray)}
+.badge-completed{background:#EFF6FF;color:#1D4ED8}
+/* stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:#fff;border-radius:14px;padding:20px 24px;box-shadow:var(--shadow)}
+.stat-card .num{font-size:32px;font-weight:900;color:var(--orange)}
+.stat-card .lbl{font-size:13px;color:var(--gray);margin-top:4px}
+/* tour list */
+.tour-row{display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid var(--gl);transition:background .15s}
+.tour-row:last-child{border-bottom:none}
+.tour-row:hover{background:#FAFAFA}
+.tr-img{width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.tr-info{flex:1}
+.tr-name{font-size:15px;font-weight:600}
+.tr-meta{font-size:12px;color:var(--gray);margin-top:2px}
+.tr-actions{display:flex;gap:8px;flex-shrink:0}
+/* forms */
+.form-group{margin-bottom:18px}
+.form-label{font-size:13px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
+.form-control{width:100%;padding:12px 14px;border:2px solid #E5E7EB;border-radius:10px;font-size:15px;color:var(--navy);outline:none;transition:border-color .2s;background:#fff}
+.form-control:focus{border-color:var(--orange)}
+textarea.form-control{resize:vertical;min-height:80px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+/* stop editor */
+.stop-editor{border:2px solid #E5E7EB;border-radius:12px;margin-bottom:16px;overflow:hidden;transition:border-color .2s}
+.stop-editor:hover{border-color:#D1D5DB}
+.stop-header{background:var(--gl);padding:12px 16px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.stop-num-badge{width:32px;height:32px;background:var(--orange);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0}
+.stop-hdr-name{font-size:14px;font-weight:600;flex:1}
+.stop-toggle{font-size:18px;color:var(--gray);transition:transform .2s}
+.stop-body{padding:16px;display:none}
+.stop-body.open{display:block}
+.ans-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:8px;align-items:center}
+.correct-radio{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--gray)}
+/* player table */
+.player-table{width:100%;border-collapse:collapse}
+.player-table th{text-align:left;padding:12px 16px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gray);background:var(--gl)}
+.player-table td{padding:14px 16px;border-bottom:1px solid var(--gl);font-size:14px}
+.player-table tr:last-child td{border-bottom:none}
+.prog-mini{height:6px;background:var(--gl);border-radius:3px;overflow:hidden;margin-top:4px}
+.prog-mini-fill{height:100%;background:var(--orange);border-radius:3px}
+/* modal */
+.modal-ov{position:fixed;inset:0;background:rgba(26,39,68,.5);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-ov.open{display:flex}
+.modal{background:#fff;border-radius:20px;width:90%;max-width:700px;max-height:90vh;overflow-y:auto}
+.modal-hdr{padding:20px 24px;border-bottom:1px solid var(--gl);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
+.modal-body{padding:24px}
+.modal-foot{padding:16px 24px;border-top:1px solid var(--gl);display:flex;justify-content:flex-end;gap:12px;position:sticky;bottom:0;background:#fff}
+.close-btn{background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray);line-height:1}
+/* code badge */
+.code-display{display:inline-flex;align-items:center;gap:10px;background:var(--navy);color:#fff;padding:10px 18px;border-radius:10px;font-size:20px;font-weight:900;letter-spacing:4px;font-family:monospace}
+/* toast */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+/* responsive */
+@media(max-width:900px){
+  .sidebar{width:60px}
+  .sb-item span,.sb-name,.sb-sub,.sb-logout span{display:none}
+  .main{margin-left:60px;padding:20px}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .form-row,.form-row3{grid-template-columns:1fr}
+}
+/* empty state */
+.empty{text-align:center;padding:48px;color:var(--gray)}
+.empty .e-icon{font-size:48px;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">🍷</div>
+    <h1>Admin Dashboard</h1>
+    <p class="login-sub">The Tasting Tours</p>
+    <input class="l-input" type="password" id="pw" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()">
+    <button class="l-btn" onclick="login()">Sign In</button>
+    <div class="l-err" id="pw-err"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sb-brand"><div class="sb-name">TTT Admin</div><div class="sb-sub">Dashboard</div></div>
+    <div class="sb-nav">
+      <button class="sb-item active" onclick="showPage('tours')" id="sbi-tours"><span class="ic">🗺</span><span>Tours</span></button>
+      <button class="sb-item" onclick="showPage('players')" id="sbi-players"><span class="ic">👥</span><span>Players</span></button>
+      <button class="sb-item" onclick="showPage('settings')" id="sbi-settings"><span class="ic">⚙️</span><span>Settings</span></button>
+    </div>
+    <div class="sb-footer">
+      <button class="sb-logout" onclick="logout()"><span>🚪</span><span>Logout</span></button>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- TOURS PAGE -->
+    <div id="page-tours">
+      <div class="page-hdr">
+        <h1>Tours</h1>
+        <button class="btn btn-primary" onclick="openTourModal(null)">+ New Tour</button>
+      </div>
+      <div class="stats-row" id="stats-row"><!-- js --></div>
+      <div class="card"><div id="tour-list"><!-- js --></div></div>
+    </div>
+
+    <!-- PLAYERS PAGE -->
+    <div id="page-players" style="display:none">
+      <div class="page-hdr">
+        <h1>Live Players</h1>
+        <select class="form-control" style="width:220px" id="player-tour-filter" onchange="renderPlayers()">
+          <option value="">All Tours</option>
+        </select>
+      </div>
+      <div class="card"><table class="player-table"><thead><tr><th>Player</th><th>Tour</th><th>Progress</th><th>Score</th><th>Started</th></tr></thead><tbody id="player-tbody"></tbody></table></div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div id="page-settings" style="display:none">
+      <div class="page-hdr"><h1>Settings</h1></div>
+      <div style="display:grid;gap:20px;max-width:600px">
+        <div class="card card-body">
+          <h3 style="margin-bottom:16px">Admin Account</h3>
+          <div class="form-group"><label class="form-label">Password</label><input class="form-control" type="password" id="new-pw" placeholder="New password"><p style="font-size:12px;color:var(--gray);margin-top:4px">Changes are stored locally only</p></div>
+          <button class="btn btn-primary" onclick="savePw()">Save Password</button>
+        </div>
+        <div class="card card-body">
+          <h3 style="margin-bottom:16px">Data Management</h3>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <button class="btn btn-ghost" onclick="exportData()">📤 Export Data</button>
+            <button class="btn btn-danger" onclick="resetPlayers()">🗑 Reset All Players</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOUR MODAL -->
+<div class="modal-ov" id="tour-modal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2 id="modal-title">New Tour</h2>
+      <button class="close-btn" onclick="closeModal('tour-modal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- tour fields -->
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Tour Name</label><input class="form-control" id="f-name" placeholder="e.g. Taste of St. Augustine"></div>
+        <div class="form-group"><label class="form-label">Tour Code</label>
+          <div style="display:flex;gap:8px">
+            <input class="form-control" id="f-code" placeholder="e.g. TASTE1" maxlength="6" style="text-transform:uppercase;letter-spacing:2px;font-weight:700">
+            <button class="btn btn-ghost btn-sm" onclick="genCode()" style="flex-shrink:0">Generate</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Type</label>
+          <select class="form-control" id="f-type">
+            <option>Scavenger Hunt</option><option>Bar Crawl</option><option>Art Walk</option>
+            <option>Ghost Tour</option><option>Audio Tour</option><option>In-Home</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Age Range</label><input class="form-control" id="f-age" placeholder="e.g. 21+ or Family-friendly"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" id="f-desc" rows="3" placeholder="Describe the tour experience..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Photo URL</label><input class="form-control" id="f-img" placeholder="https://..."></div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-control" id="f-status"><option value="draft">Draft</option><option value="active">Active</option><option value="completed">Completed</option></select>
+        </div>
+      </div>
+
+      <!-- stops -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:24px 0 16px">
+        <h3>Stops</h3>
+        <button class="btn btn-outline btn-sm" onclick="addStop()">+ Add Stop</button>
+      </div>
+      <div id="stops-editor"><!-- js --></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('tour-modal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTour()">Save Tour</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-ov" id="confirm-modal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-hdr"><h2 id="confirm-title">Confirm</h2><button class="close-btn" onclick="closeModal('confirm-modal')">✕</button></div>
+    <div class="modal-body"><p id="confirm-msg"></p></div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('confirm-modal')">Cancel</button>
+      <button class="btn btn-danger" id="confirm-ok-btn" onclick="">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// DEFAULT TOUR DATA (mirrors index.html)
+// ============================================================
+const DEFAULT_TOURS = [
+  {id:'tour1',code:'TASTE1',name:'Taste of St. Augustine',type:'Scavenger Hunt',ageRange:'Family-friendly (ages 3+)',status:'active',
+   description:"A casual taste-as-you-go walking tour through St. Augustine's historic district. Perfect for all ages.",
+   image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg',
+   stops:[
+    {id:1,name:'Collage Restaurant',neighborhood:'Historic District',teaser:'Where culinary art meets historic architecture',
+     clue:"Head to Hypolita Street, where a restaurant named for artistic layering awaits.",
+     trivia:{q:'What year was St. Augustine founded?',a:['1513','1565','1620','1776'],c:1},
+     funFact:"St. Augustine (1565) is the oldest continuously occupied European settlement in the US.",
+     photo:'Photo with historic cobblestone street',pts:100,qr:'TTT-STOP-1-TASTE1',visible:true},
+    {id:2,name:'The Floridian Restaurant',neighborhood:'Historic District',teaser:'Farm-to-table in a Spanish colonial neighborhood',
+     clue:"Make your way to Spanish Street's beloved farm-to-table institution.",
+     trivia:{q:'What famous landmark built by Henry Flagler now serves as a college?',a:['The Alcazar Hotel','Flagler College (Ponce de León Hotel)','The Lightner Museum','Casa Monica Hotel'],c:1},
+     funFact:"Flagler College was originally the Ponce de León Hotel (1888) — one of the first US hotels with electric lights!",
+     photo:'Snap the Spanish colonial architecture',pts:100,qr:'TTT-STOP-2-TASTE1',visible:true},
+    {id:3,name:'Columbia Restaurant',neighborhood:'St. George Street',teaser:'A century of Cuban-Spanish flavors',
+     clue:"Seek the famous Cuban-Spanish establishment on St. George Street.",
+     trivia:{q:'Name the 17th-century Spanish fort in St. Augustine.',a:['Fort Jefferson','Castillo de San Marcos','Fort Matanzas','Fort Caroline'],c:1},
+     funFact:"The Castillo de San Marcos (1672–1695) was built from coquina — walls that absorb cannonballs!",
+     photo:"Group photo at the restaurant's iconic entrance",pts:100,qr:'TTT-STOP-3-TASTE1',visible:true},
+    {id:4,name:'A1A Ale Works',neighborhood:'Bayfront',teaser:'Craft brews with a Matanzas Bay view',
+     clue:"Head to Matanzas Bay's corner of King Street for craft brews.",
+     trivia:{q:"What is St. Augustine's famous Fountain of Youth site called?",a:['Silver Springs','Fountain of Youth Archaeological Park','Rainbow Springs','Blue Spring'],c:1},
+     funFact:"The Fountain of Youth Archaeological Park sits on the actual 1565 Spanish settlement site.",
+     photo:'Capture the Matanzas Bay waterfront',pts:100,qr:'TTT-STOP-4-TASTE1',visible:true},
+    {id:5,name:'Prohibition Kitchen',neighborhood:'St. George Street',teaser:'Speakeasy vibes in the pedestrian zone',
+     clue:"Find the Roaring Twenties speakeasy-inspired spot on St. George Street.",
+     trivia:{q:'Who founded St. Augustine in 1565?',a:['Hernán Cortés','Francisco Pizarro','Pedro Menéndez de Avilés','Juan Ponce de León'],c:2},
+     funFact:"Pedro Menéndez de Avilés founded St. Augustine on September 8, 1565 — a religious feast day.",
+     photo:'Celebratory group photo!',pts:100,qr:'TTT-STOP-5-TASTE1',visible:true}
+   ]},
+  {id:'tour2',code:'CORKS1',name:'Corks & Forks Strolling Tour',type:'Bar Crawl',ageRange:'21+',status:'active',
+   description:"A progressive dining adventure featuring small plates paired with wine and cocktails through historic St. Augustine.",
+   image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg',
+   stops:[
+    {id:1,name:'Preserved Restaurant & Bar',neighborhood:'Lincolnville',teaser:'Southern charcuterie and natural wines',clue:"Journey to Lincolnville — find the preservation-focused restaurant on Bridge Street.",trivia:{q:"Where is Albariño wine produced?",a:['Tuscany','Galicia, Spain (Rías Baixas)','Burgundy','Napa Valley'],c:1},funFact:"Albariño's saline mineral quality literally tastes like ocean air — perfect for seafood!",photo:'Photo of Lincolnville Victorian architecture',pts:120,qr:'TTT-STOP-1-CORKS1',visible:true},
+    {id:2,name:'Odd Birds Bar & Kitchen',neighborhood:'St. George Street',teaser:'Unexpected craft cocktails',clue:"Find the establishment celebrating the unconventional on St. George Street.",trivia:{q:'Base spirit of a Negroni?',a:['Vodka','Rum','Gin','Tequila'],c:2},funFact:"Count Negroni invented his namesake drink in 1919 by swapping soda water for gin!",photo:'Creative cocktail shot',pts:120,qr:'TTT-STOP-2-CORKS1',visible:true},
+    {id:3,name:'Casa Maya Authentic Mexican',neighborhood:'Aviles Street',teaser:"Moles and agave spirits on America's oldest street",clue:"Find the Yucatán flavors on Aviles Street — reportedly the oldest street in the US.",trivia:{q:'How does mezcal differ from tequila?',a:['Uses corn','Can use many agave species vs. blue agave only','Made in different country','Always served frozen'],c:1},funFact:"Mezcal's smoky flavor comes from roasting agave hearts in underground pit ovens!",photo:'Photo of the Aviles Street sign',pts:120,qr:'TTT-STOP-3-CORKS1',visible:true},
+    {id:4,name:'Cellar 6 Wine Bar',neighborhood:'Charlotte Street',teaser:'Curated global wine selection',clue:"Descend to Charlotte Street's intimate wine sanctuary.",trivia:{q:"Burgundy's highest quality tier?",a:["AOC",'Premier Cru','Grand Cru','Cru Classé'],c:2},funFact:"Only 33 Burgundy vineyards hold Grand Cru status — less than 3% of production!",photo:'Artsy wine glass photo',pts:120,qr:'TTT-STOP-4-CORKS1',visible:true},
+    {id:5,name:'The Rabbit & The Fox',neighborhood:'Historic District',teaser:'Natural wine in a candlelit setting',clue:"Find the two animals near the old city gates.",trivia:{q:"What does 'terroir' mean?",a:['Wine color','Environmental factors giving wine character','Vintage year','Grape variety'],c:1},funFact:"Two vineyards feet apart in Burgundy can taste completely different due to soil composition!",photo:'Toast photo — cheers!',pts:120,qr:'TTT-STOP-5-CORKS1',visible:true}
+   ]},
+  {id:'tour3',code:'WINED1',name:'Wine & Dine Rolling Tour',type:'Scavenger Hunt',ageRange:'21+',status:'active',
+   description:"An elevated chauffeured experience in an open-air electric vehicle exploring unique neighborhoods and hidden gems.",
+   image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg',
+   stops:[
+    {id:1,name:'Aviles Street Tapas',neighborhood:'Aviles Street, Historic District',teaser:'Spanish small plates on the oldest street',clue:"Step off at Aviles Street — oldest street in the US — for tapas.",trivia:{q:'Which king ordered St. Augustine founded?',a:['Carlos V','King Felipe II','Fernando II','Alfonso XII'],c:1},funFact:"King Felipe II ordered St. Augustine's founding to challenge French settlements in Florida.",photo:'Overhead tapas spread photo',pts:150,qr:'TTT-STOP-1-WINED1',visible:true},
+    {id:2,name:'Llopis Wine Room',neighborhood:'Uptown / North City',teaser:'Boutique Iberian wine room',clue:"Head north to the wine room with the Catalan name.",trivia:{q:"Primary Rioja grape?",a:['Garnacha','Albariño','Tempranillo','Verdejo'],c:2},funFact:"Tempranillo means 'early' in Spanish — it ripens weeks ahead of other grapes!",photo:'Most interesting wine label photo',pts:150,qr:'TTT-STOP-2-WINED1',visible:true},
+    {id:3,name:'The Reef Restaurant',neighborhood:'Vilano Beach',teaser:'Fresh catch across the Bridge of Lions',clue:"Cross the Bridge of Lions east to Vilano Beach — catch of the day awaits.",trivia:{q:'What gives the Bridge of Lions its name?',a:['Lion-shaped lights','Two marble Medici lion statues','Lion Construction Co.','The bridge roars when opened'],c:1},funFact:"The Bridge of Lions (1927) still opens for tall boats on the Intracoastal Waterway today!",photo:'Bridge of Lions or Atlantic Ocean photo',pts:150,qr:'TTT-STOP-3-WINED1',visible:true},
+    {id:4,name:"Rosario's Ristorante",neighborhood:'Charlotte Street',teaser:'Northern Italian with outstanding Barolo',clue:"Find the Italian haven named for a matriarch on Charlotte Street.",trivia:{q:"Barolo's grape and region?",a:['Sangiovese, Tuscany','Nebbiolo, Piedmont','Barbera, Lombardy','Primitivo, Puglia'],c:1},funFact:"Barolo is called 'King of Wines' — must age 3 years minimum before release!",photo:'Pasta dish or wine bottle photo',pts:150,qr:'TTT-STOP-4-WINED1',visible:true},
+    {id:5,name:'Sunset Grille Anastasia',neighborhood:'Anastasia Island',teaser:'Cocktails as the sun sets',clue:"Cross to Anastasia Island for golden hour cocktails at the Sunset Grille.",trivia:{q:'Height of St. Augustine Lighthouse?',a:['121 feet','165 feet','214 feet','87 feet'],c:1},funFact:"The 165-foot St. Augustine Lighthouse (1874) is still an active aid to navigation today!",photo:'Golden hour sunset photo',pts:150,qr:'TTT-STOP-5-WINED1',visible:true}
+   ]},
+  {id:'tour4',code:'ISLND1',name:'Island Blvd Tour',type:'Scavenger Hunt',ageRange:'Seasonal 21+',status:'active',
+   description:"Island-inspired fare and refreshing drink pairings with a tropical, laid-back vibe.",
+   image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg',
+   stops:[
+    {id:1,name:'Tropical Garden Café',neighborhood:'South Historic District',teaser:'Caribbean colors meet Spanish heritage',clue:"Find the palm-shaded café in the southern historic district.",trivia:{q:'Cuba\'s national cocktail?',a:['Daiquiri','Cuba Libre','Mojito','Piña Colada'],c:2},funFact:"Hemingway was a Mojito regular at La Bodeguita del Medio in Havana!",photo:'Most tropical plant on the patio',pts:110,qr:'TTT-STOP-1-ISLND1',visible:true},
+    {id:2,name:'Coconut Cove Bistro',neighborhood:'Castillo Drive',teaser:'Island-fusion near the ancient fort',clue:"Find Coconut Cove on Castillo Drive, steps from the ancient fortress.",trivia:{q:'Classic Piña Colada ingredients?',a:['Mango and coconut cream','Pineapple juice and coconut cream','Papaya and lime','Guava and cream'],c:1},funFact:"The Piña Colada became Puerto Rico's official national drink in 1978!",photo:'Castillo de San Marcos background shot',pts:110,qr:'TTT-STOP-2-ISLND1',visible:true},
+    {id:3,name:'The Rum Bar',neighborhood:'Marina District',teaser:'100+ rums in a nautical setting',clue:"Find The Rum Bar where sailboats bob in the marina.",trivia:{q:'Birthplace of rum?',a:['Cuba','Jamaica','Barbados','Trinidad'],c:2},funFact:"Barbados has the world's oldest rum brand (Mount Gay, records from 1703)!",photo:'Rum flight with marina boats',pts:110,qr:'TTT-STOP-3-ISLND1',visible:true},
+    {id:4,name:'Island Provisions Kitchen',neighborhood:'Riberia Street',teaser:'Subtropical farm-to-table on the river',clue:"Find Island Provisions on Riberia Street along the San Sebastian River.",trivia:{q:'Why is authentic Key lime pie yellow?',a:['Yellow coloring is traditional','Key lime juice is yellow and egg yolks add color','Made with lemons','Condensed milk caramelizes'],c:1},funFact:"Green Key lime pie is almost always artificially colored — real ones are yellow!",photo:'Key lime pie — check if it\'s yellow!',pts:110,qr:'TTT-STOP-4-ISLND1',visible:true},
+    {id:5,name:'Blue Agave Margarita Lounge',neighborhood:'North St. George Street',teaser:'Legendary frozen margaritas to close out',clue:"Find the agave shrine on North St. George Street — you made it!",trivia:{q:'Tequila is primarily produced in which Mexican state?',a:['Oaxaca','Jalisco','Michoacán','Guanajuato'],c:1},funFact:"The town of Tequila, Jalisco and its blue agave fields are a UNESCO World Heritage Site!",photo:'Island pose with final margarita',pts:110,qr:'TTT-STOP-5-ISLND1',visible:true}
+   ]}
+];
+
+// ============================================================
+// STATE / STORAGE
+// ============================================================
+const ADMIN_PW_KEY='ttt_admin_pw';
+const TOURS_KEY='ttt_admin_tours';
+const STATE_KEY='ttt_state';
+
+function getStoredPw(){return localStorage.getItem(ADMIN_PW_KEY)||'admin123'}
+function getTours(){
+  const raw=localStorage.getItem(TOURS_KEY);
+  if(raw) try{return JSON.parse(raw)}catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_TOURS));
+}
+function saveTours(tours){localStorage.setItem(TOURS_KEY,JSON.stringify(tours))}
+function getPlayerState(){
+  const raw=localStorage.getItem(STATE_KEY);
+  if(raw) try{return JSON.parse(raw)}catch(e){}
+  return {players:[]};
+}
+function savePlayerState(st){localStorage.setItem(STATE_KEY,JSON.stringify(st))}
+
+// ============================================================
+// AUTH
+// ============================================================
+function login(){
+  const pw=document.getElementById('pw').value;
+  if(pw===getStoredPw()){
+    document.getElementById('login-wrap').style.display='none';
+    document.getElementById('app').style.display='block';
+    initApp();
+  } else {
+    document.getElementById('pw-err').textContent='Incorrect password. Please try again.';
+  }
+}
+
+function logout(){
+  document.getElementById('login-wrap').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('pw').value='';
+  document.getElementById('pw-err').textContent='';
+}
+
+document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+
+// ============================================================
+// PAGES
+// ============================================================
+function showPage(p){
+  ['tours','players','settings'].forEach(pg=>{
+    document.getElementById('page-'+pg).style.display=pg===p?'block':'none';
+    document.getElementById('sbi-'+pg).classList.toggle('active',pg===p);
+  });
+  if(p==='players') renderPlayers();
+}
+
+function initApp(){
+  renderStats();
+  renderTourList();
+  populatePlayerFilter();
+  showPage('tours');
+}
+
+// ============================================================
+// STATS
+// ============================================================
+function renderStats(){
+  const tours=getTours();
+  const st=getPlayerState();
+  const players=st.players||[];
+  const active=tours.filter(t=>t.status==='active').length;
+  const completed=players.filter(p=>p.completedStops&&p.completedStops.length>=(tours.find(t=>t.id===p.tourId)||{stops:[]}).stops.length).length;
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat-card"><div class="num">${tours.length}</div><div class="lbl">Total Tours</div></div>
+    <div class="stat-card"><div class="num">${active}</div><div class="lbl">Active Tours</div></div>
+    <div class="stat-card"><div class="num">${players.length}</div><div class="lbl">Total Players</div></div>
+    <div class="stat-card"><div class="num">${completed}</div><div class="lbl">Completed Hunts</div></div>`;
+}
+
+// ============================================================
+// TOUR LIST
+// ============================================================
+function renderTourList(){
+  const tours=getTours();
+  renderStats();
+  if(!tours.length){
+    document.getElementById('tour-list').innerHTML='<div class="empty"><div class="e-icon">🗺</div><p>No tours yet. Create your first tour!</p></div>';
+    return;
+  }
+  document.getElementById('tour-list').innerHTML=tours.map(t=>`
+    <div class="tour-row">
+      <img class="tr-img" src="${t.image||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'56\' height=\'56\'><rect fill=\'%23F3F4F6\' width=\'56\' height=\'56\'/></svg>'}" alt="${t.name}" onerror="this.style.display='none'">
+      <div class="tr-info">
+        <div class="tr-name">${t.name} <span style="font-family:monospace;font-size:13px;background:#F3F4F6;padding:2px 8px;border-radius:4px;letter-spacing:2px;margin-left:8px">${t.code}</span></div>
+        <div class="tr-meta">${t.type} · ${t.ageRange} · ${t.stops.length} stops</div>
+      </div>
+      <span class="badge ${t.status==='active'?'badge-active':t.status==='completed'?'badge-completed':'badge-draft'}">${t.status}</span>
+      <div class="tr-actions">
+        <button class="btn btn-ghost btn-xs" onclick="startHuntAdmin('${t.id}')">${t.status==='active'?'🔴 Reset':'▶ Start'}</button>
+        <button class="btn btn-outline btn-xs" onclick="openTourModal('${t.id}')">Edit</button>
+        <button class="btn btn-danger btn-xs" onclick="confirmDelete('${t.id}')">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+function startHuntAdmin(id){
+  const tours=getTours();
+  const t=tours.find(x=>x.id===id);
+  if(!t) return;
+  if(t.status==='active'){
+    showConfirm('Reset Hunt','This will clear all player progress for this tour. Continue?',()=>{
+      const st=getPlayerState();
+      st.players=(st.players||[]).filter(p=>p.tourId!==id);
+      savePlayerState(st);
+      t.status='draft';
+    },true);
+  } else {
+    t.status='active';
+  }
+  saveTours(tours);renderTourList();
+}
+
+function confirmDelete(id){
+  showConfirm('Delete Tour','Are you sure you want to delete this tour? This cannot be undone.',()=>{
+    const tours=getTours().filter(t=>t.id!==id);
+    saveTours(tours);renderTourList();
+  },true);
+}
+
+// ============================================================
+// TOUR MODAL
+// ============================================================
+let editingId=null,modalStops=[];
+
+function openTourModal(id){
+  editingId=id;
+  const tours=getTours();
+  const t=id?tours.find(x=>x.id===id):null;
+  document.getElementById('modal-title').textContent=t?'Edit Tour':'New Tour';
+  document.getElementById('f-name').value=t?t.name:'';
+  document.getElementById('f-code').value=t?t.code:'';
+  document.getElementById('f-type').value=t?t.type:'Scavenger Hunt';
+  document.getElementById('f-age').value=t?t.ageRange:'';
+  document.getElementById('f-desc').value=t?t.description:'';
+  document.getElementById('f-img').value=t?t.image:'';
+  document.getElementById('f-status').value=t?t.status:'draft';
+  modalStops=t?JSON.parse(JSON.stringify(t.stops)):[];
+  renderStopEditors();
+  document.getElementById('tour-modal').classList.add('open');
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+
+function genCode(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const code=Array.from({length:6},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+  document.getElementById('f-code').value=code;
+}
+
+function addStop(){
+  const n=modalStops.length+1;
+  modalStops.push({id:n,name:`Stop ${n}`,neighborhood:'',teaser:'',clue:'',
+    trivia:{q:'',a:['','','',''],c:0},funFact:'',photo:'',pts:100,qr:`TTT-STOP-${n}`,visible:true});
+  renderStopEditors();
+  setTimeout(()=>{const editors=document.querySelectorAll('.stop-editor');editors[editors.length-1]&&toggleStop(editors.length-1)},50);
+}
+
+function rmStop(i){
+  modalStops.splice(i,1);
+  renderStopEditors();
+}
+
+function mvStop(i,dir){
+  const j=i+dir;
+  if(j<0||j>=modalStops.length) return;
+  [modalStops[i],modalStops[j]]=[modalStops[j],modalStops[i]];
+  renderStopEditors();
+}
+
+function toggleStop(i){
+  const body=document.querySelector(`#stop-ed-${i} .stop-body`);
+  const arrow=document.querySelector(`#stop-ed-${i} .stop-toggle`);
+  const open=body.classList.toggle('open');
+  if(arrow) arrow.style.transform=open?'rotate(180deg)':'';
+}
+
+function renderStopEditors(){
+  document.getElementById('stops-editor').innerHTML=modalStops.length?
+    modalStops.map((s,i)=>`
+      <div class="stop-editor" id="stop-ed-${i}">
+        <div class="stop-header" onclick="toggleStop(${i})">
+          <div class="stop-num-badge">${i+1}</div>
+          <div class="stop-hdr-name">${s.name||'Unnamed Stop'}</div>
+          <div style="display:flex;gap:6px;margin-right:8px">
+            ${i>0?`<button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();mvStop(${i},-1)">↑</button>`:''}
+            ${i<modalStops.length-1?`<button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();mvStop(${i},1)">↓</button>`:''}
+            <button class="btn btn-danger btn-xs" onclick="event.stopPropagation();rmStop(${i})">✕</button>
+          </div>
+          <span class="stop-toggle">▼</span>
+        </div>
+        <div class="stop-body">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Location Name</label><input class="form-control" value="${esc(s.name)}" oninput="modalStops[${i}].name=this.value;this.closest('.stop-editor').querySelector('.stop-hdr-name').textContent=this.value||'Unnamed Stop'"></div>
+            <div class="form-group"><label class="form-label">Neighborhood</label><input class="form-control" value="${esc(s.neighborhood)}" oninput="modalStops[${i}].neighborhood=this.value"></div>
+          </div>
+          <div class="form-group"><label class="form-label">Teaser (itinerary preview)</label><input class="form-control" value="${esc(s.teaser)}" oninput="modalStops[${i}].teaser=this.value"></div>
+          <div class="form-group"><label class="form-label">Clue / Description</label><textarea class="form-control" rows="2" oninput="modalStops[${i}].clue=this.value">${esc(s.clue)}</textarea></div>
+          <div class="form-group">
+            <label class="form-label">Trivia Question</label>
+            <input class="form-control" value="${esc(s.trivia.q)}" oninput="modalStops[${i}].trivia.q=this.value" placeholder="Question text" style="margin-bottom:10px">
+            ${s.trivia.a.map((a,j)=>`
+              <div class="ans-row">
+                <input class="form-control" value="${esc(a)}" oninput="modalStops[${i}].trivia.a[${j}]=this.value" placeholder="Answer ${j+1}">
+                <label class="correct-radio"><input type="radio" name="correct-${i}" ${s.trivia.c===j?'checked':''} onchange="modalStops[${i}].trivia.c=${j}"> Correct</label>
+              </div>`).join('')}
+          </div>
+          <div class="form-group"><label class="form-label">Fun Fact</label><textarea class="form-control" rows="2" oninput="modalStops[${i}].funFact=this.value">${esc(s.funFact)}</textarea></div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Photo Challenge Prompt</label><input class="form-control" value="${esc(s.photo)}" oninput="modalStops[${i}].photo=this.value"></div>
+            <div class="form-group"><label class="form-label">Points</label><input class="form-control" type="number" value="${s.pts}" oninput="modalStops[${i}].pts=parseInt(this.value)||0" min="0"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">QR Code Value</label><input class="form-control" value="${esc(s.qr)}" oninput="modalStops[${i}].qr=this.value" style="font-family:monospace"></div>
+            <div class="form-group" style="display:flex;align-items:flex-end;padding-bottom:2px"><label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer"><input type="checkbox" ${s.visible!==false?'checked':''} onchange="modalStops[${i}].visible=this.checked"> Visible to players</label></div>
+          </div>
+        </div>
+      </div>`).join(''):
+    '<div class="empty"><div class="e-icon">📍</div><p>No stops yet. Add your first stop above.</p></div>';
+}
+
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function saveTour(){
+  const name=document.getElementById('f-name').value.trim();
+  const code=document.getElementById('f-code').value.trim().toUpperCase();
+  if(!name){toast('Tour name is required');return}
+  if(!code||code.length<4){toast('Tour code must be at least 4 characters');return}
+
+  const tours=getTours();
+  const tour={
+    id:editingId||('tour_'+Date.now()),
+    code,name,
+    type:document.getElementById('f-type').value,
+    ageRange:document.getElementById('f-age').value,
+    description:document.getElementById('f-desc').value,
+    image:document.getElementById('f-img').value,
+    status:document.getElementById('f-status').value,
+    stops:modalStops
+  };
+
+  if(editingId){const idx=tours.findIndex(t=>t.id===editingId);if(idx>=0) tours[idx]=tour;else tours.push(tour)}
+  else tours.push(tour);
+
+  saveTours(tours);
+  closeModal('tour-modal');
+  renderTourList();
+  toast(editingId?'Tour updated!':'Tour created!');
+}
+
+// ============================================================
+// PLAYERS
+// ============================================================
+function populatePlayerFilter(){
+  const tours=getTours();
+  const sel=document.getElementById('player-tour-filter');
+  const cur=sel.value;
+  sel.innerHTML='<option value="">All Tours</option>'+tours.map(t=>`<option value="${t.id}" ${cur===t.id?'selected':''}>${t.name}</option>`).join('');
+}
+
+function renderPlayers(){
+  const tours=getTours();
+  const st=getPlayerState();
+  const players=(st.players||[]);
+  const filt=document.getElementById('player-tour-filter').value;
+  const list=filt?players.filter(p=>p.tourId===filt):players;
+
+  const tbody=document.getElementById('player-tbody');
+  if(!list.length){
+    tbody.innerHTML='<tr><td colspan="5"><div class="empty"><div class="e-icon">👥</div><p>No players yet.</p></div></td></tr>';
+    return;
+  }
+  tbody.innerHTML=list.sort((a,b)=>b.score-a.score).map(p=>{
+    const t=tours.find(x=>x.id===p.tourId);
+    const total=t?t.stops.length:1;
+    const prog=Math.min(p.currentStop||0,total);
+    const pct=Math.round((prog/total)*100);
+    const elapsed=p.startTime?Math.round((Date.now()-p.startTime)/60000):0;
+    const timeStr=elapsed<60?`${elapsed}m ago`:`${Math.round(elapsed/60)}h ago`;
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:10px"><span style="font-size:24px">${p.avatar||'🧑'}</span><div><div style="font-weight:600">${p.name}</div><div style="font-size:12px;color:var(--gray)">${p.mode||'individual'}</div></div></div></td>
+      <td>${t?t.name:'—'}</td>
+      <td>
+        <div style="font-size:13px;margin-bottom:4px">Stop ${prog}/${total} (${pct}%)</div>
+        <div class="prog-mini"><div class="prog-mini-fill" style="width:${pct}%"></div></div>
+      </td>
+      <td><strong style="color:var(--orange)">${p.score||0}</strong></td>
+      <td style="color:var(--gray);font-size:13px">${timeStr}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function savePw(){
+  const pw=document.getElementById('new-pw').value.trim();
+  if(!pw){toast('Enter a new password first');return}
+  localStorage.setItem(ADMIN_PW_KEY,pw);
+  document.getElementById('new-pw').value='';
+  toast('Password updated!');
+}
+
+function exportData(){
+  const data={tours:getTours(),playerState:getPlayerState(),exported:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`ttt-data-${Date.now()}.json`;
+  a.click();
+}
+
+function resetPlayers(){
+  showConfirm('Reset All Players','This will delete ALL player progress data. This cannot be undone.',()=>{
+    savePlayerState({players:[]});
+    renderStats();
+    toast('All player data reset.');
+  },true);
+}
+
+// ============================================================
+// CONFIRM DIALOG
+// ============================================================
+let confirmCb=null;
+function showConfirm(title,msg,cb,danger=false){
+  document.getElementById('confirm-title').textContent=title;
+  document.getElementById('confirm-msg').textContent=msg;
+  const btn=document.getElementById('confirm-ok-btn');
+  btn.className='btn '+(danger?'btn-danger':'btn-primary');
+  btn.textContent='Confirm';
+  confirmCb=cb;
+  btn.onclick=()=>{if(confirmCb)confirmCb();closeModal('confirm-modal')};
+  document.getElementById('confirm-modal').classList.add('open');
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2500);
+}
+
+// close modals on overlay click
+document.querySelectorAll('.modal-ov').forEach(ov=>{
+  ov.addEventListener('click',e=>{if(e.target===ov) ov.classList.remove('open')});
+});
+</script>
+</body>
+</html>

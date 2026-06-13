@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#F5814A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>The Tasting Tours</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FDF0EB;--blush:#F9DDD4;--orange:#F5814A;--orange-dark:#E06830;
+  --navy:#1A2744;--navy-light:#2D3F6B;--gray:#6B7280;--gray-light:#F3F4F6;
+  --white:#FFF;--shadow:0 4px 20px rgba(26,39,68,.12);--r:16px;--r-sm:8px
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--cream);color:var(--navy);min-height:100vh;max-width:480px;margin:0 auto;overflow-x:hidden}
+h1{font-size:28px;font-weight:800;line-height:1.2}
+h2{font-size:22px;font-weight:700}
+h3{font-size:18px;font-weight:600}
+p{line-height:1.6}
+.screen{display:none;min-height:100vh;position:relative}
+.screen.active{display:flex;flex-direction:column}
+.btn{display:block;width:100%;padding:16px 24px;border-radius:50px;font-size:17px;font-weight:700;border:none;cursor:pointer;transition:all .2s;text-align:center;letter-spacing:.3px;font-family:inherit}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-primary:hover{background:var(--orange-dark);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{background:#D1D5DB;cursor:not-allowed;transform:none}
+.btn-secondary{background:transparent;color:var(--navy);border:2px solid var(--navy)}
+.btn-outline{background:transparent;color:var(--orange);border:2px solid var(--orange)}
+.btn-sm{padding:10px 20px;font-size:15px;width:auto;display:inline-block}
+
+/* HOME */
+.home-header{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between}
+.logo-name{font-size:18px;font-weight:800;color:var(--navy)}
+.logo-tagline{font-size:11px;color:var(--orange);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.hero-carousel{margin:16px 0 0;position:relative;height:260px;overflow:hidden}
+.hero-slides{display:flex;height:100%;transition:transform .4s ease}
+.hero-slide{min-width:100%;height:100%;position:relative}
+.hero-slide img{width:100%;height:100%;object-fit:cover}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(26,39,68,.7));display:flex;align-items:flex-end;padding:20px;color:#fff}
+.hero-overlay h2{font-size:22px;text-shadow:0 1px 4px rgba(0,0,0,.3)}
+.hero-overlay p{font-size:13px;opacity:.9;margin-top:4px}
+.carousel-dots{position:absolute;bottom:12px;right:16px;display:flex;gap:6px}
+.c-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);transition:all .2s}
+.c-dot.active{background:#fff;width:18px;border-radius:3px}
+.section-header{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between}
+.section-title{font-size:18px;font-weight:700}
+.see-all{font-size:13px;color:var(--orange);font-weight:600;text-decoration:none}
+.cat-scroll{display:flex;gap:10px;padding:12px 20px;overflow-x:auto;scrollbar-width:none}
+.cat-scroll::-webkit-scrollbar{display:none}
+.pill{white-space:nowrap;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;background:#fff;color:var(--navy);box-shadow:0 2px 8px rgba(26,39,68,.08);font-family:inherit}
+.pill.active{background:var(--orange);color:#fff}
+.tours-grid{padding:12px 20px;display:grid;gap:16px}
+.tour-card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:transform .2s}
+.tour-card:active{transform:scale(.98)}
+.tc-img{height:180px;overflow:hidden;position:relative}
+.tc-img img{width:100%;height:100%;object-fit:cover}
+.tc-badge{position:absolute;top:12px;left:12px;background:var(--orange);color:#fff;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.tc-body{padding:14px 16px 16px}
+.tc-title{font-size:16px;font-weight:700}
+.tc-meta{display:flex;gap:12px;margin-top:6px}
+.tc-meta span{font-size:12px;color:var(--gray)}
+.tc-desc{font-size:13px;color:var(--gray);margin-top:8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tc-cta{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid #F3F4F6}
+.tc-cta span{font-size:13px;color:var(--gray)}
+.tc-btn{background:var(--orange);color:#fff;border:none;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.home-cta{padding:20px;background:#fff;border-top:1px solid #F3F4F6;position:sticky;bottom:0;z-index:10}
+
+/* CODE */
+.code-wrap{padding:40px 24px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center}
+.code-icon{font-size:64px;margin-bottom:24px}
+.code-sub{color:var(--gray);margin-bottom:40px;font-size:16px}
+.code-inputs{display:flex;gap:10px;justify-content:center;margin-bottom:12px}
+.code-char{width:48px;height:60px;border:2px solid #E5E7EB;border-radius:12px;font-size:24px;font-weight:800;text-align:center;color:var(--navy);background:#fff;outline:none;transition:border-color .2s;text-transform:uppercase;font-family:inherit}
+.code-char:focus{border-color:var(--orange)}
+.code-char.filled{border-color:var(--orange);background:#FFF5F0}
+.code-err{color:#EF4444;font-size:14px;margin-top:8px;min-height:20px}
+.code-hint{color:var(--gray);font-size:13px;margin-top:16px}
+
+/* PREVIEW */
+.prev-hero{height:300px;position:relative}
+.prev-hero img{width:100%;height:100%;object-fit:cover}
+.prev-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(26,39,68,.85));display:flex;flex-direction:column;justify-content:flex-end;padding:24px;color:#fff}
+.prev-badge{background:var(--orange);color:#fff;padding:4px 12px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;width:fit-content;margin-bottom:10px}
+.prev-body{padding:24px 20px;flex:1}
+.prev-desc{font-size:16px;line-height:1.7;color:var(--gray);margin-bottom:24px}
+.prev-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:28px}
+.stat{background:#fff;border-radius:12px;padding:16px 12px;text-align:center;box-shadow:0 2px 8px rgba(26,39,68,.06)}
+.stat-n{font-size:22px;font-weight:800;color:var(--orange)}
+.stat-l{font-size:11px;color:var(--gray);margin-top:2px;font-weight:500}
+.back-btn{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.9);border:none;width:40px;height:40px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10}
+.prev-foot{padding:0 20px 32px}
+
+/* MODE */
+.mode-content{flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;padding:24px 20px}
+.mode-hdr{text-align:center}
+.mode-hdr h1{margin-bottom:8px}
+.mode-hdr p{color:var(--gray);font-size:15px}
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.mode-card{background:#fff;border-radius:20px;padding:28px 20px;text-align:center;cursor:pointer;border:3px solid transparent;transition:all .2s;box-shadow:var(--shadow)}
+.mode-card.selected{border-color:var(--orange);background:#FFF5F0}
+.mode-emoji{font-size:48px;margin-bottom:12px}
+.mode-label{font-size:16px;font-weight:700}
+.mode-sub{font-size:12px;color:var(--gray);margin-top:4px}
+
+/* PROFILE */
+.prof-wrap{flex:1;padding:32px 20px}
+.prof-hdr{text-align:center;margin-bottom:32px}
+.prof-hdr h1{margin-bottom:8px}
+.av-label{font-size:13px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+.av-grid{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+.av-opt{width:56px;height:56px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;cursor:pointer;border:3px solid transparent;box-shadow:0 2px 8px rgba(26,39,68,.08);transition:all .2s}
+.av-opt.selected{border-color:var(--orange);background:#FFF5F0}
+.inp-label{font-size:13px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.text-inp{width:100%;padding:16px 18px;border:2px solid #E5E7EB;border-radius:12px;font-size:17px;color:var(--navy);background:#fff;outline:none;transition:border-color .2s;font-family:inherit}
+.text-inp:focus{border-color:var(--orange)}
+
+/* ITINERARY */
+.itin-hdr{background:var(--navy);padding:48px 24px 28px;color:#fff}
+.itin-hdr h2{font-size:24px}
+.itin-hdr p{font-size:14px;opacity:.75;margin-top:4px}
+.stops-list{padding:20px;display:grid;gap:12px}
+.stop-item{background:#fff;border-radius:16px;padding:16px;display:flex;gap:14px;align-items:flex-start;box-shadow:0 2px 8px rgba(26,39,68,.06)}
+.snum{width:36px;height:36px;background:var(--orange);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0}
+.snum.done{background:#10B981}
+.snum.cur{background:var(--orange);box-shadow:0 0 0 4px rgba(245,129,74,.2)}
+.snum.locked{background:#E5E7EB;color:var(--gray)}
+.s-info{flex:1}
+.s-name{font-size:15px;font-weight:700}
+.s-hood{font-size:12px;color:var(--gray);margin-top:2px}
+.s-tease{font-size:12px;color:var(--gray);margin-top:6px;font-style:italic}
+.itin-foot{padding:0 20px 20px}
+
+/* STOP */
+.stop-hdr{background:#fff;padding:48px 20px 20px;border-bottom:1px solid #F3F4F6}
+.stop-hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.stop-badge-tag{background:var(--orange);color:#fff;padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700}
+.stop-pts{font-size:13px;color:var(--gray);margin-left:auto}
+.prog-bar{height:4px;background:#F3F4F6;border-radius:2px;margin:8px 0 12px;overflow:hidden}
+.prog-fill{height:100%;background:var(--orange);border-radius:2px;transition:width .4s ease}
+.stop-hood-lbl{font-size:13px;color:var(--gray);margin-top:4px}
+.stop-body{padding:20px}
+.card-block{background:#fff;border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(26,39,68,.06)}
+.blk-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--orange);margin-bottom:8px}
+.blk-text{font-size:15px;line-height:1.7;color:var(--navy)}
+.ans-btn{padding:14px 16px;border:2px solid #E5E7EB;border-radius:12px;margin-bottom:10px;cursor:pointer;font-size:15px;color:var(--navy);transition:all .2s;background:#fff;text-align:left;width:100%;font-family:inherit}
+.ans-btn:hover:not(:disabled){border-color:var(--orange);background:#FFF5F0}
+.ans-btn.correct{border-color:#10B981;background:#ECFDF5;color:#065F46}
+.ans-btn.wrong{border-color:#EF4444;background:#FEF2F2;color:#991B1B}
+.t-result{text-align:center;padding:12px;border-radius:12px;font-weight:600;font-size:15px;margin-top:8px;display:none}
+.t-result.correct{background:#ECFDF5;color:#065F46}
+.t-result.wrong{background:#FEF2F2;color:#991B1B}
+.qr-center{text-align:center}
+.qr-desc-t{font-size:14px;color:var(--gray);margin-bottom:16px}
+#qr-vc{position:relative;overflow:hidden;border-radius:12px;margin-bottom:12px;display:none}
+#qr-vid{width:100%;display:block}
+.qr-vf{position:absolute;inset:20px;border:3px solid var(--orange);border-radius:8px;pointer-events:none}
+.qr-ok{font-size:13px;color:#10B981;font-weight:600;margin-top:8px;display:none}
+.photo-prev{width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-top:12px;display:none}
+.ff-card{background:linear-gradient(135deg,var(--orange),var(--orange-dark));border-radius:16px;padding:20px;color:#fff;display:none}
+.ff-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.85;margin-bottom:8px}
+.ff-text{font-size:16px;line-height:1.6}
+
+/* COMPLETION */
+#confetti-cv{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100}
+.complete-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center}
+.trophy{font-size:80px;margin-bottom:20px;animation:bounce .6s ease}
+@keyframes bounce{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.comp-title{font-size:36px;font-weight:900;margin-bottom:8px}
+.comp-sub{font-size:18px;color:var(--gray);margin-bottom:36px}
+.score-card{background:#fff;border-radius:24px;padding:28px 32px;box-shadow:var(--shadow);margin-bottom:32px;width:100%}
+.sc-num{font-size:56px;font-weight:900;color:var(--orange);line-height:1}
+.sc-lbl{font-size:15px;color:var(--gray);margin-top:4px}
+.sc-break{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;padding-top:20px;border-top:1px solid #F3F4F6}
+.sc-break .i .n{font-size:24px;font-weight:800}
+.sc-break .i .l{font-size:12px;color:var(--gray);margin-top:2px}
+.share-btn{background:var(--navy);color:#fff;border:none;padding:16px 32px;border-radius:50px;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;margin:0 auto 16px;font-family:inherit}
+
+/* BOTTOM NAV */
+#bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #F3F4F6;display:none;grid-template-columns:1fr 1fr 1fr 1fr;box-shadow:0 -4px 20px rgba(26,39,68,.08);z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+#bnav.vis{display:grid}
+.ni{display:flex;flex-direction:column;align-items:center;padding:10px 0;cursor:pointer;border:none;background:none;color:var(--gray);transition:color .2s;font-family:inherit}
+.ni.active{color:var(--orange)}
+.ni-ic{font-size:22px}
+.ni-lbl{font-size:10px;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:.3px}
+
+/* PANELS */
+.panel-ov{position:fixed;inset:0;background:rgba(26,39,68,.5);z-index:200;display:none}
+.panel-ov.active{display:flex;align-items:flex-end}
+.panel{background:var(--cream);border-radius:28px 28px 0 0;width:100%;max-width:480px;margin:0 auto;padding:24px 20px 48px;max-height:80vh;overflow-y:auto}
+.ph{width:40px;height:4px;background:#D1D5DB;border-radius:2px;margin:0 auto 20px}
+.lb-item{background:#fff;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.lb-rank{font-size:16px;font-weight:800;color:var(--gray);width:24px}
+.lb-score{font-size:16px;font-weight:800;color:var(--orange)}
+.lb-prog{font-size:12px;color:var(--gray)}
+
+/* UTIL */
+.step-hdr{padding:48px 20px 0;display:flex;align-items:center;gap:12px}
+.step-lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray)}
+.ghost-btn{background:none;border:none;font-size:24px;cursor:pointer;color:var(--navy)}
+</style>
+</head>
+<body>
+
+<!-- ===== HOME ===== -->
+<div id="s-home" class="screen active">
+  <div class="home-header">
+    <div>
+      <div class="logo-name">The Tasting Tours</div>
+      <div class="logo-tagline">Eat. Drink. Experience!</div>
+    </div>
+    <button onclick="go('s-code')" style="background:var(--orange);border:none;color:#fff;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Enter Code</button>
+  </div>
+
+  <div class="hero-carousel">
+    <div class="hero-slides" id="hero-slides">
+      <div class="hero-slide"><img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg" alt=""><div class="hero-overlay"><div><h2>Discover St. Augustine</h2><p>Guided food &amp; drink adventures through history</p></div></div></div>
+      <div class="hero-slide"><img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg" alt=""><div class="hero-overlay"><div><h2>Taste the History</h2><p>From colonial flavors to craft cocktails</p></div></div></div>
+      <div class="hero-slide"><img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg" alt=""><div class="hero-overlay"><div><h2>Sip &amp; Explore</h2><p>Wine pairings through cobblestone streets</p></div></div></div>
+      <div class="hero-slide"><img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg" alt=""><div class="hero-overlay"><div><h2>Memories Await</h2><p>The perfect group adventure for any occasion</p></div></div></div>
+    </div>
+    <div class="carousel-dots" id="cdots"><div class="c-dot active"></div><div class="c-dot"></div><div class="c-dot"></div><div class="c-dot"></div></div>
+  </div>
+
+  <div class="section-header"><span class="section-title">Experiences</span><a href="#" class="see-all">View all</a></div>
+  <div class="cat-scroll" id="cats">
+    <button class="pill active" onclick="filterTours('all',this)">All</button>
+    <button class="pill" onclick="filterTours('Scavenger Hunt',this)">Scavenger Hunts</button>
+    <button class="pill" onclick="filterTours('Bar Crawl',this)">Bar Crawls</button>
+    <button class="pill" onclick="filterTours('Art Walk',this)">Art Walks</button>
+    <button class="pill" onclick="filterTours('Ghost Tour',this)">Ghost Tours</button>
+    <button class="pill" onclick="filterTours('Audio Tour',this)">Audio Tours</button>
+    <button class="pill" onclick="filterTours('In-Home',this)">In-Home</button>
+  </div>
+  <div class="tours-grid" id="tours-grid"></div>
+  <div class="home-cta"><button class="btn btn-primary" onclick="go('s-code')">+ Play — Enter Code</button></div>
+</div>
+
+<!-- ===== CODE ENTRY ===== -->
+<div id="s-code" class="screen">
+  <div class="code-wrap">
+    <div class="code-icon">🎟️</div>
+    <h1>Enter your tour code!</h1>
+    <p class="code-sub">Your guide will provide a 6-character code</p>
+    <div class="code-inputs" id="code-inputs">
+      <input class="code-char" maxlength="1" type="text" autocomplete="off" inputmode="text">
+      <input class="code-char" maxlength="1" type="text" autocomplete="off" inputmode="text">
+      <input class="code-char" maxlength="1" type="text" autocomplete="off" inputmode="text">
+      <input class="code-char" maxlength="1" type="text" autocomplete="off" inputmode="text">
+      <input class="code-char" maxlength="1" type="text" autocomplete="off" inputmode="text">
+      <input class="code-char" maxlength="1" type="text" autocomplete="off" inputmode="text">
+    </div>
+    <div class="code-err" id="code-err"></div>
+    <p class="code-hint">Demo codes: TASTE1 · CORKS1 · WINED1 · ISLND1</p>
+    <div style="margin-top:32px">
+      <button class="btn btn-primary" id="code-next" disabled onclick="validateCode()">Next →</button>
+      <button class="btn btn-secondary" style="margin-top:12px" onclick="go('s-home')">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOUR PREVIEW ===== -->
+<div id="s-preview" class="screen">
+  <div class="prev-hero">
+    <img id="prev-img" src="" alt="">
+    <button class="back-btn" onclick="go('s-code')">←</button>
+    <div class="prev-overlay">
+      <div class="prev-badge" id="prev-badge"></div>
+      <h1 id="prev-name"></h1>
+      <p id="prev-type" style="font-size:14px;opacity:.85;margin-top:4px"></p>
+    </div>
+  </div>
+  <div class="prev-body">
+    <p class="prev-desc" id="prev-desc"></p>
+    <div class="prev-stats">
+      <div class="stat"><div class="stat-n" id="prev-stops">5</div><div class="stat-l">Stops</div></div>
+      <div class="stat"><div class="stat-n" id="prev-pts">500</div><div class="stat-l">Points</div></div>
+      <div class="stat"><div class="stat-n">~2hr</div><div class="stat-l">Duration</div></div>
+    </div>
+  </div>
+  <div class="prev-foot"><button class="btn btn-primary" onclick="go('s-mode')">Let's Go! →</button></div>
+</div>
+
+<!-- ===== MODE ===== -->
+<div id="s-mode" class="screen">
+  <div class="step-hdr"><button class="ghost-btn" onclick="go('s-preview')">←</button><div style="flex:1;text-align:center"><span class="step-lbl">Step 1 of 3</span></div><div style="width:32px"></div></div>
+  <div class="mode-content">
+    <div class="mode-hdr"><h1>Who's playing?</h1><p>Choose how you'd like to experience the tour</p></div>
+    <div class="mode-cards">
+      <div class="mode-card" id="mc-ind" onclick="selMode('individual')"><div class="mode-emoji">🧍</div><div class="mode-label">Individual</div><div class="mode-sub">Just me!</div></div>
+      <div class="mode-card" id="mc-team" onclick="selMode('team')"><div class="mode-emoji">👥</div><div class="mode-label">Team</div><div class="mode-sub">Group adventure</div></div>
+    </div>
+    <button class="btn btn-primary" id="mode-next" disabled onclick="go('s-profile')">Next →</button>
+  </div>
+</div>
+
+<!-- ===== PROFILE ===== -->
+<div id="s-profile" class="screen">
+  <div class="step-hdr"><button class="ghost-btn" onclick="go('s-mode')">←</button><div style="flex:1;text-align:center"><span class="step-lbl">Step 2 of 3</span></div><div style="width:32px"></div></div>
+  <div class="prof-wrap">
+    <div class="prof-hdr"><h1>Create your profile</h1><p style="color:var(--gray)">Personalize your adventure</p></div>
+    <div class="av-label">Choose your avatar (optional)</div>
+    <div class="av-grid" id="av-grid">
+      <div class="av-opt" onclick="selAv(this,'🧑')">🧑</div>
+      <div class="av-opt" onclick="selAv(this,'👩')">👩</div>
+      <div class="av-opt" onclick="selAv(this,'👨')">👨</div>
+      <div class="av-opt" onclick="selAv(this,'🧔')">🧔</div>
+      <div class="av-opt" onclick="selAv(this,'👱')">👱</div>
+      <div class="av-opt selected" onclick="selAv(this,'🎩')">🎩</div>
+      <div class="av-opt" onclick="selAv(this,'🤠')">🤠</div>
+      <div class="av-opt" onclick="selAv(this,'🦸')">🦸</div>
+    </div>
+    <div class="inp-label">Your name or team name</div>
+    <input class="text-inp" type="text" id="pname" placeholder="Enter name..." oninput="chkProf()">
+    <button class="btn btn-primary" id="prof-next" disabled onclick="startHunt()" style="margin-top:24px">Start Adventure! 🚀</button>
+  </div>
+</div>
+
+<!-- ===== ITINERARY ===== -->
+<div id="s-itin" class="screen" style="padding-bottom:80px">
+  <div class="itin-hdr"><h2 id="itin-name">Tour Itinerary</h2><p id="itin-desc">Your adventure awaits</p></div>
+  <div class="stops-list" id="stops-list"></div>
+  <div class="itin-foot"><button class="btn btn-primary" onclick="beginHunt()">Begin Hunt →</button></div>
+</div>
+
+<!-- ===== STOP ===== -->
+<div id="s-stop" class="screen" style="padding-bottom:80px">
+  <div class="stop-hdr">
+    <div class="stop-hdr-top"><div class="stop-badge-tag" id="stop-tag">Stop 1 of 5</div><div class="stop-pts" id="stop-pts">💎 100 pts</div></div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+    <h2 id="stop-name-h">Location Name</h2>
+    <div class="stop-hood-lbl" id="stop-hood">Neighborhood</div>
+  </div>
+  <div class="stop-body">
+    <!-- Clue -->
+    <div class="card-block"><div class="blk-label">🗺 Your Clue</div><div class="blk-text" id="stop-clue"></div></div>
+    <!-- Trivia -->
+    <div class="card-block" id="trivia-card">
+      <div class="blk-label">🧠 Trivia Challenge</div>
+      <div class="blk-text" id="t-q" style="font-weight:600;margin-bottom:16px"></div>
+      <div id="t-opts"></div>
+      <div class="t-result" id="t-res"></div>
+    </div>
+    <!-- QR -->
+    <div class="card-block qr-center">
+      <div class="blk-label">📷 Scan QR Code</div>
+      <p class="qr-desc-t">Find the QR code at this location to verify your visit</p>
+      <div id="qr-vc"><video id="qr-vid" playsinline autoplay muted></video><div class="qr-vf"></div></div>
+      <button class="btn btn-outline" id="qr-btn" onclick="togQR()">📷 Scan QR Code</button>
+      <div class="qr-ok" id="qr-ok">✓ Location verified!</div>
+      <div style="margin-top:10px"><button class="btn" onclick="skipQR()" style="background:none;color:var(--gray);font-size:13px;text-decoration:underline;width:auto;padding:8px">Skip (can't scan)</button></div>
+    </div>
+    <!-- Photo -->
+    <div class="card-block">
+      <div class="blk-label">📸 Photo Challenge</div>
+      <div class="blk-text" id="photo-prompt"></div>
+      <input type="file" accept="image/*" capture="environment" id="photo-inp" style="display:none" onchange="handlePhoto(event)">
+      <button class="btn btn-outline" style="margin-top:12px" onclick="document.getElementById('photo-inp').click()">📷 Take Photo</button>
+      <img class="photo-prev" id="photo-prev" src="" alt="">
+    </div>
+    <!-- Fun Fact -->
+    <div>
+      <button class="btn btn-outline" id="ff-btn" onclick="revealFF()">✨ Reveal Fun Fact</button>
+      <div class="ff-card" id="ff-card"><div class="ff-label">✨ Fun Fact</div><div class="ff-text" id="ff-text"></div></div>
+    </div>
+    <div id="next-sec" style="display:none;margin-top:16px">
+      <button class="btn btn-primary" id="next-btn" onclick="nextStop()">Next Stop →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COMPLETION ===== -->
+<div id="s-complete" class="screen">
+  <canvas id="confetti-cv"></canvas>
+  <div class="complete-wrap">
+    <div class="trophy">🏆</div>
+    <div class="comp-title">You did it!</div>
+    <div class="comp-sub" id="comp-sub">Amazing adventure!</div>
+    <div class="score-card">
+      <div class="sc-num" id="fin-score">0</div>
+      <div class="sc-lbl">Total Points Earned</div>
+      <div class="sc-break">
+        <div class="i"><div class="n" id="fin-stops">0</div><div class="l">Stops Visited</div></div>
+        <div class="i"><div class="n" id="fin-trivia">0</div><div class="l">Trivia Correct</div></div>
+      </div>
+    </div>
+    <button class="share-btn" onclick="shareRes()">📤 Share Your Adventure</button>
+    <button class="btn btn-outline btn-sm" onclick="go('s-home')" style="margin-top:8px">Back to Home</button>
+  </div>
+</div>
+
+<!-- ===== PANELS ===== -->
+<div class="panel-ov" id="lb-panel" onclick="closePanels(event)">
+  <div class="panel"><div class="ph"></div><h2 style="margin-bottom:20px">🏅 Leaderboard</h2><div id="lb-list"></div></div>
+</div>
+<div class="panel-ov" id="route-panel" onclick="closePanels(event)">
+  <div class="panel"><div class="ph"></div><h2 style="margin-bottom:20px">🗺 Tour Route</h2><div id="route-list"></div></div>
+</div>
+<div class="panel-ov" id="det-panel" onclick="closePanels(event)">
+  <div class="panel"><div class="ph"></div><h2 style="margin-bottom:20px">ℹ Tour Details</h2><div id="det-content"></div></div>
+</div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav id="bnav">
+  <button class="ni active" id="ni-stops" onclick="navTo('stops')"><span class="ni-ic">📍</span><span class="ni-lbl">Stops</span></button>
+  <button class="ni" id="ni-leaderboard" onclick="navTo('leaderboard')"><span class="ni-ic">🏅</span><span class="ni-lbl">Ranking</span></button>
+  <button class="ni" id="ni-route" onclick="navTo('route')"><span class="ni-ic">🗺</span><span class="ni-lbl">Route</span></button>
+  <button class="ni" id="ni-details" onclick="navTo('details')"><span class="ni-ic">ℹ</span><span class="ni-lbl">Details</span></button>
+</nav>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script>
+// ============================================================
+// TOUR DATA
+// ============================================================
+const TOURS = [
+  {
+    id:'tour1',code:'TASTE1',name:'Taste of St. Augustine',type:'Scavenger Hunt',
+    ageRange:'Family-friendly (ages 3+)',status:'active',
+    description:"A casual taste-as-you-go walking tour through St. Augustine's historic district. Perfect for all ages — discover hidden gems, earn points, and taste your way through America's oldest city.",
+    image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg',
+    stops:[
+      {id:1,name:'Collage Restaurant',neighborhood:'Historic District',
+       teaser:'Where culinary art meets historic architecture on Hypolita Street',
+       clue:"Head to Hypolita Street, where a restaurant named for artistic layering awaits you. Look for the warm glow through the windows and the scent of something wonderful on the breeze.",
+       trivia:{q:'What year was St. Augustine, Florida officially founded by Spanish explorer Pedro Menéndez de Avilés?',a:['1513','1565','1620','1776'],c:1},
+       funFact:"St. Augustine, founded in 1565, is the oldest continuously occupied European settlement in the United States — over 50 years older than the Pilgrims landing at Plymouth Rock!",
+       photo:'Take a photo with the historic cobblestone street visible behind you',
+       pts:100,qr:'TTT-STOP-1-TASTE1'},
+      {id:2,name:'The Floridian Restaurant',neighborhood:'Historic District',
+       teaser:'Farm-to-table dining in a Spanish colonial neighborhood',
+       clue:"Make your way to Spanish Street, where a beloved local institution celebrates Florida's natural bounty with seasonal, locally-sourced ingredients. The building's character is as rich as its menu.",
+       trivia:{q:'What famous 19th-century landmark built by Henry Flagler now serves as a college in St. Augustine?',a:['The Alcazar Hotel','Flagler College (Ponce de León Hotel)','The Lightner Museum','Casa Monica Hotel'],c:1},
+       funFact:"Flagler College was originally the luxurious Ponce de León Hotel built in 1888 — one of the first hotels in the US with electric lights, designed by the same architects as the Statue of Liberty's pedestal!",
+       photo:'Snap a photo showing the Spanish colonial architecture of the neighborhood',
+       pts:100,qr:'TTT-STOP-2-TASTE1'},
+      {id:3,name:'Columbia Restaurant',neighborhood:'St. George Street',
+       teaser:'A century of Cuban-Spanish flavors in the heart of old St. Augustine',
+       clue:"Seek the famous Cuban-Spanish establishment on St. George Street — its flamenco dancers and 1905 recipes have been delighting guests for over a century.",
+       trivia:{q:"What is the name of the 17th-century Spanish fort still standing in St. Augustine?",a:['Fort Jefferson','Castillo de San Marcos','Fort Matanzas','Fort Caroline'],c:1},
+       funFact:"The Castillo de San Marcos, built from 1672–1695, was constructed from coquina — a shell-stone unique to the Florida coast. Its walls could absorb cannonball impacts without shattering!",
+       photo:"Take a group photo in front of the restaurant's iconic entrance",
+       pts:100,qr:'TTT-STOP-3-TASTE1'},
+      {id:4,name:'A1A Ale Works',neighborhood:'Bayfront',
+       teaser:'Craft brews with a million-dollar view of Matanzas Bay',
+       clue:"Head toward the sparkling waters of Matanzas Bay, where craft brewing meets stunning waterfront views at the corner of King Street.",
+       trivia:{q:"What is the name of the famous 'Fountain of Youth' archaeological site located in St. Augustine?",a:['Silver Springs','Fountain of Youth Archaeological Park','Rainbow Springs','Blue Spring'],c:1},
+       funFact:"St. Augustine's Fountain of Youth Archaeological Park sits on the actual site of the original 1565 Spanish settlement — making it a genuine piece of history, not just legend!",
+       photo:'Capture the beautiful Matanzas Bay waterfront in your photo',
+       pts:100,qr:'TTT-STOP-4-TASTE1'},
+      {id:5,name:'Prohibition Kitchen',neighborhood:'St. George Street',
+       teaser:'Speakeasy vibes and gastropub bites in the pedestrian zone',
+       clue:"Your final stop awaits in St. Augustine's lively pedestrian zone on St. George Street. Find the speakeasy-inspired establishment paying homage to the Roaring Twenties.",
+       trivia:{q:'Which Spanish explorer is credited with founding St. Augustine in 1565?',a:['Hernán Cortés','Francisco Pizarro','Pedro Menéndez de Avilés','Juan Ponce de León'],c:2},
+       funFact:"Pedro Menéndez de Avilés founded St. Augustine on September 8, 1565 — the feast day of the Nativity of the Virgin Mary — making it both a military outpost AND a religious mission.",
+       photo:"Take a celebratory group photo — you've completed the tour!",
+       pts:100,qr:'TTT-STOP-5-TASTE1'}
+    ]
+  },
+  {
+    id:'tour2',code:'CORKS1',name:'Corks & Forks Strolling Tour',type:'Bar Crawl',
+    ageRange:'21+',status:'active',
+    description:"A progressive dining adventure featuring small plates paired with wine and cocktails through historic St. Augustine. Each stop reveals a new neighborhood gem and a perfectly matched pour.",
+    image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg',
+    stops:[
+      {id:1,name:'Preserved Restaurant & Bar',neighborhood:'Lincolnville',
+       teaser:'Southern-inspired charcuterie and natural wines in a Victorian gem',
+       clue:"Journey south of the plaza to Lincolnville, St. Augustine's historic African-American neighborhood. Find the restaurant celebrating preservation — of food, tradition, and flavors — on Bridge Street.",
+       trivia:{q:"What wine region produces Albariño, the crisp white wine often described as 'the wine of the sea'?",a:['Tuscany, Italy','Galicia, Spain (Rías Baixas)','Burgundy, France','Napa Valley, USA'],c:1},
+       funFact:"Albariño grapes thrive in the cool, wet climate of Galicia, Spain — so close to the Atlantic that the wine's saline mineral quality literally tastes like ocean air. The perfect wine for seafood!",
+       photo:'Photograph the beautiful Victorian architecture of Lincolnville',
+       pts:120,qr:'TTT-STOP-1-CORKS1'},
+      {id:2,name:'Odd Birds Bar & Kitchen',neighborhood:'St. George Street',
+       teaser:'Craft cocktails and unexpected flavor combinations in a lively setting',
+       clue:"Return to the historic pedestrian zone and seek the establishment that celebrates the unconventional. Their cocktail menu reads like a love letter to unexpected ingredients.",
+       trivia:{q:'What is the base spirit in a classic Negroni cocktail?',a:['Vodka','Rum','Gin','Tequila'],c:2},
+       funFact:"The Negroni was invented in 1919 when Count Camillo Negroni asked his Florence bartender to strengthen his Americano by replacing soda water with gin — a happy accident of aristocratic impatience!",
+       photo:'Snap a creative shot of your craft cocktail against an interesting backdrop',
+       pts:120,qr:'TTT-STOP-2-CORKS1'},
+      {id:3,name:'Casa Maya Authentic Mexican',neighborhood:"Aviles Street",
+       teaser:"House-made moles and agave spirits on the oldest street in America",
+       clue:"Find your way to Aviles Street — reportedly the oldest street in the United States — where a taste of the Yucatán Peninsula awaits with house-made salsas and an impressive tequila selection.",
+       trivia:{q:'How does mezcal differ from tequila?',a:['It uses corn instead of agave','It can use many agave species vs. tequila\'s blue agave only','It\'s made in a different country','It\'s always served frozen'],c:1},
+       funFact:"While tequila can only be made from blue agave, mezcal can be produced from over 30 agave varieties. The smoky flavor comes from roasting agave hearts in underground pit ovens — a tradition unchanged for centuries!",
+       photo:"Photograph the historic Aviles Street sign — the oldest street in the US!",
+       pts:120,qr:'TTT-STOP-3-CORKS1'},
+      {id:4,name:'Cellar 6 Wine Bar',neighborhood:'Charlotte Street',
+       teaser:'Intimate wine bar with an expertly curated global selection',
+       clue:"Descend to Charlotte Street's intimate wine sanctuary, where a passionate sommelier has assembled bottles from every great wine region on earth. The number in the name is your clue.",
+       trivia:{q:"In Burgundy's wine classification, what term represents the absolute highest quality tier?",a:["Appellation d'Origine Contrôlée",'Premier Cru','Grand Cru','Cru Classé'],c:2},
+       funFact:"Only 33 Burgundy vineyards hold 'Grand Cru' status — less than 3% of total production. The most famous, Romanée-Conti, produces fewer than 500 cases per year and regularly sells for $10,000+ per bottle!",
+       photo:'Take an artsy photo of your wine glass with the cozy wine bar ambiance',
+       pts:120,qr:'TTT-STOP-4-CORKS1'},
+      {id:5,name:'The Rabbit & The Fox',neighborhood:'Historic District',
+       teaser:'Sophisticated small plates and natural wine in a candlelit historic building',
+       clue:"Your final sip awaits at a sophisticated haunt where the menu changes with the season and the wine list favors the natural. Find the two animals hidden in the sign near the old city gates.",
+       trivia:{q:"What does 'terroir' mean in the context of wine?",a:['The color of the wine',"The environmental factors (soil, climate, geography) that give wine its character",'The year the wine was bottled','The specific grape variety used'],c:1},
+       funFact:"The concept of 'terroir' is so powerful that two vineyards separated by just a few feet in Burgundy can produce entirely different wines — same grape, same winemaker, same vintage, different soil.",
+       photo:'Celebrate your final stop with a toast photo — cheers!',
+       pts:120,qr:'TTT-STOP-5-CORKS1'}
+    ]
+  },
+  {
+    id:'tour3',code:'WINED1',name:'Wine & Dine Rolling Tour',type:'Scavenger Hunt',
+    ageRange:'21+',status:'active',
+    description:"An elevated chauffeured experience in an open-air electric vehicle exploring unique neighborhoods and hidden gems. Sit back, enjoy the breeze, and let us take you to St. Augustine's finest culinary addresses.",
+    image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg',
+    stops:[
+      {id:1,name:'Aviles Street Tapas',neighborhood:'Aviles Street, Historic District',
+       teaser:'Spanish-inspired small plates on America\'s oldest street',
+       clue:"Your rolling tour begins on the oldest street in the United States. Step off at Aviles Street and find the tapas bar where Spanish tradition meets Florida sunshine. Order something with chorizo.",
+       trivia:{q:'Which Spanish king ordered Pedro Menéndez de Avilés to establish a settlement in Florida in 1565?',a:['King Carlos V','King Felipe II','King Fernando II','King Alfonso XII'],c:1},
+       funFact:"King Felipe II ordered St. Augustine's founding specifically to challenge French Huguenot settlements in Florida. Fort Caroline was captured just weeks after St. Augustine was founded — changing North American history forever.",
+       photo:'Photograph your tapas spread from above — make it look delicious!',
+       pts:150,qr:'TTT-STOP-1-WINED1'},
+      {id:2,name:'Llopis Wine Room',neighborhood:'Uptown / North City',
+       teaser:'Boutique wine room with an impressive Spanish and Portuguese selection',
+       clue:"Your electric vehicle whisks you north to the Uptown district, where a wine room bearing a distinctive Catalan name awaits. The owners are passionate about Iberian wines — ask about their Priorat.",
+       trivia:{q:"What is the primary grape variety used in Spain's famous Rioja wine region?",a:['Garnacha','Albariño','Tempranillo','Verdejo'],c:2},
+       funFact:"Tempranillo's name comes from the Spanish 'temprano' (early) because it ripens weeks ahead of other Spanish grapes. Top Rioja wines made from Tempranillo can age beautifully for 20–30 years!",
+       photo:'Take a photo of the most interesting label in the wine shop',
+       pts:150,qr:'TTT-STOP-2-WINED1'},
+      {id:3,name:'The Reef Restaurant',neighborhood:'Vilano Beach',
+       teaser:'Fresh catch and ocean views just across the Bridge of Lions',
+       clue:"Cross the famous Bridge of Lions heading east toward the Atlantic. At Vilano Beach, find The Reef — where the catch-of-the-day is pulled from nearby waters and the sunset views are unmatched.",
+       trivia:{q:'What distinctive feature gives the Bridge of Lions its name?',a:['It has lion-shaped lights','Two marble Medici lion statues flank its entrance','It was built by the Lion Construction Co.','The bridge roars when opened'],c:1},
+       funFact:"The Bridge of Lions, built in 1927, features two marble Medici lion statues donated to the city after being displayed at Flagler College. The bascule bridge still opens for tall boats on the Intracoastal Waterway!",
+       photo:'Capture the Bridge of Lions or the Atlantic Ocean in your photo',
+       pts:150,qr:'TTT-STOP-3-WINED1'},
+      {id:4,name:"Rosario's Ristorante",neighborhood:'Charlotte Street',
+       teaser:'Northern Italian cuisine with an outstanding Barolo collection',
+       clue:"Return to the historic city and find an Italian haven on Charlotte Street. Named for a beloved matriarch, Rosario's wine cellar is famous for its Piedmontese Barolo — the 'king of wines.'",
+       trivia:{q:"What grape variety and Italian region produce Barolo wine?",a:['Sangiovese, Tuscany','Nebbiolo, Piedmont','Barbera, Lombardy','Primitivo, Puglia'],c:1},
+       funFact:"Barolo, called the 'King of Wines and Wine of Kings,' was reportedly a favorite of Italian royalty. High-quality Barolo must age at least 3 years before release, with 'Riserva' versions aging 5+ years!",
+       photo:'Photograph your pasta dish or wine bottle with artistic flair',
+       pts:150,qr:'TTT-STOP-4-WINED1'},
+      {id:5,name:'Sunset Grille Anastasia',neighborhood:'Anastasia Island',
+       teaser:'Craft cocktails and bites as the sun sets over St. Augustine',
+       clue:"Your final destination takes you across to Anastasia Island, where the day's last light paints the sky over the Intracoastal. Find the Sunset Grille and toast to an extraordinary evening.",
+       trivia:{q:'How tall is the St. Augustine Lighthouse on Anastasia Island?',a:['121 feet','165 feet','214 feet','87 feet'],c:1},
+       funFact:"The St. Augustine Lighthouse (165 feet tall, built 1874) is still an active aid to navigation today. It's considered one of Florida's most haunted places and has been featured on numerous ghost-hunting TV shows!",
+       photo:'Capture the golden hour sunset over the water — the perfect ending!',
+       pts:150,qr:'TTT-STOP-5-WINED1'}
+    ]
+  },
+  {
+    id:'tour4',code:'ISLND1',name:'Island Blvd Tour',type:'Scavenger Hunt',
+    ageRange:'Seasonal 21+',status:'active',
+    description:"Island-inspired fare and refreshing drink pairings with a tropical, laid-back vibe. Embrace the slow pace, the tropical flavors, and the spirit of somewhere warmer as you explore St. Augustine's beach side.",
+    image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg',
+    stops:[
+      {id:1,name:'Tropical Garden Café',neighborhood:'South Historic District',
+       teaser:"Where Caribbean colors meet St. Augustine's Spanish heritage",
+       clue:"Begin your island adventure in the southern end of the historic district, where a café decorated with lush tropical plants and bold Caribbean colors transports you miles from the mainland. Look for the palm-shaded terrace.",
+       trivia:{q:'What is the national cocktail of Cuba, made with rum, lime, sugar, mint, and soda water?',a:['Daiquiri','Cuba Libre','Mojito','Piña Colada'],c:2},
+       funFact:"The Mojito traces its origins to 16th-century Cuba. Ernest Hemingway became a regular at La Bodeguita del Medio in Havana, cementing the drink's legendary status — his favorite was reportedly 'without sugar.'",
+       photo:'Find the most tropical-looking plant on the patio and pose with it',
+       pts:110,qr:'TTT-STOP-1-ISLND1'},
+      {id:2,name:'Coconut Cove Bistro',neighborhood:'Castillo Drive',
+       teaser:'Island-fusion bites steps from the ancient Spanish fort',
+       clue:"Walk toward the ancient fortress by the water's edge and find Coconut Cove Bistro nearby on Castillo Drive. Their island-fusion menu is as unexpected as a coconut cocktail in the shadow of a 350-year-old fort.",
+       trivia:{q:"What is the classic Piña Colada made from?",a:['Mango and coconut cream','Pineapple juice and coconut cream','Papaya and lime juice','Guava and heavy cream'],c:1},
+       funFact:"The Piña Colada became Puerto Rico's official national drink in 1978. Its creation in 1954 is disputed between two San Juan bartenders — both claiming to have invented the tropical classic first!",
+       photo:'Photograph the Castillo de San Marcos in the background of your drink',
+       pts:110,qr:'TTT-STOP-2-ISLND1'},
+      {id:3,name:'The Rum Bar',neighborhood:'Marina District',
+       teaser:'World-class rum selection in a nautical waterfront setting',
+       clue:"Head to the marina district where sailboats bob in the harbor. Find The Rum Bar — a nautical paradise featuring over 100 rums from Caribbean islands you may only dream of visiting.",
+       trivia:{q:'Which Caribbean island is considered the birthplace of rum?',a:['Cuba','Jamaica','Barbados','Trinidad'],c:2},
+       funFact:"Barbados is the birthplace of rum — the first written reference appears in a 1647 document. Mount Gay Rum, produced there, is the world's oldest rum brand with records dating to 1703!",
+       photo:'Photograph your rum flight with the marina boats in the background',
+       pts:110,qr:'TTT-STOP-3-ISLND1'},
+      {id:4,name:'Island Provisions Kitchen',neighborhood:'Riberia Street',
+       teaser:"Farm-to-table with a tropical twist in St. Augustine's riverside district",
+       clue:"Move west to the Riberia Street district along the San Sebastian River. Island Provisions celebrates Florida's subtropical bounty — and their key lime pie has achieved local legend status.",
+       trivia:{q:"Why is authentic Key lime pie yellow rather than green?",a:['Yellow food coloring is traditional','Key limes produce yellow juice and egg yolks add color','It\'s made with lemons','The condensed milk caramelizes'],c:1},
+       funFact:"Key limes produce yellow juice — not green — and combined with egg yolks and sweetened condensed milk, the filling is naturally yellow. Green Key lime pie is almost always artificially colored!",
+       photo:"Photograph the iconic Key lime pie slice — see if it's really yellow!",
+       pts:110,qr:'TTT-STOP-4-ISLND1'},
+      {id:5,name:'Blue Agave Margarita Lounge',neighborhood:'North St. George Street',
+       teaser:'The perfect frozen margarita to close out your island adventure',
+       clue:"For your grand finale, find the agave shrine on North St. George Street. Their frozen margaritas are the stuff of local legend — raise a glass, you made it!",
+       trivia:{q:"In what Mexican state is tequila primarily produced?",a:['Oaxaca','Jalisco','Michoacán','Guanajuato'],c:1},
+       funFact:"The town of Tequila, Jalisco (population ~40,000) has been producing tequila for 200+ years. Blue agave takes 7–12 years to mature before harvest, and the entire town and fields are a UNESCO World Heritage Site!",
+       photo:'Strike your best island pose with your final margarita — you\'ve earned it!',
+       pts:110,qr:'TTT-STOP-5-ISLND1'}
+    ]
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let ST = JSON.parse(localStorage.getItem('ttt_state')||'{}');
+if(!ST.players) ST.players=[];
+let tour=null, stopIdx=0, selMode_=null, selAv_='🎩';
+let trivDone=false, qrDone=false, ffDone=false;
+let qrStream=null, qrAF=null;
+
+function saveState(){localStorage.setItem('ttt_state',JSON.stringify(ST))}
+
+// ============================================================
+// SCREEN NAV
+// ============================================================
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const huntScs=['s-itin','s-stop','s-complete'];
+  document.getElementById('bnav').classList.toggle('vis',huntScs.includes(id));
+  window.scrollTo(0,0);
+  if(id==='s-home') initHome();
+  if(id==='s-code') initCode();
+}
+
+function navTo(tab){
+  document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));
+  document.getElementById('ni-'+tab).classList.add('active');
+  closePanels();
+  if(tab==='stops'){
+    go(stopIdx>=0&&tour?'s-stop':'s-itin');
+  } else if(tab==='leaderboard') openLB();
+  else if(tab==='route') openRoute();
+  else if(tab==='details') openDet();
+}
+
+function closePanels(e){
+  if(e&&e.target!==e.currentTarget) return;
+  document.querySelectorAll('.panel-ov').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(i=>i.classList.remove('active'));
+  document.getElementById('ni-stops').classList.add('active');
+}
+
+// ============================================================
+// HOME
+// ============================================================
+function initHome(){renderCards('all');startCarousel()}
+
+function startCarousel(){
+  const sl=document.getElementById('hero-slides');
+  const dots=document.querySelectorAll('.c-dot');
+  let cur=0,tot=dots.length;
+  function goTo(n){cur=(n+tot)%tot;sl.style.transform=`translateX(-${cur*100}%)`;dots.forEach((d,i)=>d.classList.toggle('active',i===cur))}
+  if(window._cInt) clearInterval(window._cInt);
+  window._cInt=setInterval(()=>goTo(cur+1),4200);
+  sl.addEventListener('touchstart',e=>{window._tx=e.touches[0].clientX},{passive:true});
+  sl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-window._tx;if(Math.abs(dx)>50)goTo(cur+(dx<0?1:-1))},{passive:true});
+}
+
+function filterTours(type,btn){
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards(type);
+}
+
+function renderCards(f){
+  const g=document.getElementById('tours-grid');
+  const list=f==='all'?TOURS:TOURS.filter(t=>t.type===f);
+  if(!list.length){g.innerHTML='<div style="text-align:center;padding:40px;color:var(--gray)">No tours in this category yet — check back soon!</div>';return}
+  g.innerHTML=list.map(t=>`
+    <div class="tour-card" onclick="pickTour('${t.code}')">
+      <div class="tc-img"><img src="${t.image}" alt="${t.name}" loading="lazy"><div class="tc-badge">${t.type}</div></div>
+      <div class="tc-body">
+        <div class="tc-title">${t.name}</div>
+        <div class="tc-meta"><span>📍 St. Augustine, FL</span><span>⭐ ${t.ageRange}</span></div>
+        <div class="tc-desc">${t.description}</div>
+        <div class="tc-cta"><span>${t.stops.length} stops</span><button class="tc-btn" onclick="event.stopPropagation();pickTour('${t.code}')">Play →</button></div>
+      </div>
+    </div>`).join('');
+}
+
+function pickTour(code){
+  tour=TOURS.find(t=>t.code===code);
+  loadPreview();
+  go('s-preview');
+}
+
+// ============================================================
+// CODE ENTRY
+// ============================================================
+function initCode(){
+  const ins=document.querySelectorAll('.code-char');
+  ins.forEach((inp,i)=>{
+    inp.value='';inp.classList.remove('filled');
+    inp.oninput=e=>{
+      e.target.value=e.target.value.replace(/[^a-zA-Z0-9]/,'').toUpperCase().slice(-1);
+      e.target.classList.toggle('filled',!!e.target.value);
+      if(e.target.value&&i<ins.length-1) ins[i+1].focus();
+      chkCode();
+    };
+    inp.onkeydown=e=>{
+      if(e.key==='Backspace'&&!e.target.value&&i>0){ins[i-1].focus();ins[i-1].value='';ins[i-1].classList.remove('filled');chkCode()}
+    };
+    inp.onpaste=e=>{
+      const txt=(e.clipboardData||window.clipboardData).getData('text').toUpperCase().replace(/[^A-Z0-9]/g,'');
+      ins.forEach((ip,j)=>{ip.value=txt[j]||'';ip.classList.toggle('filled',!!ip.value)});
+      e.preventDefault();chkCode();
+    };
+  });
+  document.getElementById('code-err').textContent='';
+  document.getElementById('code-next').disabled=true;
+  ins[0].focus();
+}
+
+function chkCode(){
+  const ins=document.querySelectorAll('.code-char');
+  document.getElementById('code-next').disabled=![...ins].every(i=>i.value.length===1);
+  document.getElementById('code-err').textContent='';
+}
+
+function validateCode(){
+  const ins=document.querySelectorAll('.code-char');
+  const code=[...ins].map(i=>i.value).join('');
+  const t=TOURS.find(t=>t.code===code);
+  if(!t){document.getElementById('code-err').textContent='Invalid code. Please check with your guide.';return}
+  tour=t;loadPreview();go('s-preview');
+}
+
+// ============================================================
+// PREVIEW
+// ============================================================
+function loadPreview(){
+  if(!tour) return;
+  document.getElementById('prev-img').src=tour.image;
+  document.getElementById('prev-name').textContent=tour.name;
+  document.getElementById('prev-type').textContent=tour.type+' · '+tour.ageRange;
+  document.getElementById('prev-badge').textContent=tour.type;
+  document.getElementById('prev-desc').textContent=tour.description;
+  document.getElementById('prev-stops').textContent=tour.stops.length;
+  document.getElementById('prev-pts').textContent=tour.stops.reduce((s,st)=>s+st.pts,0);
+}
+
+// ============================================================
+// MODE
+// ============================================================
+function selMode(m){
+  selMode_=m;
+  document.getElementById('mc-ind').classList.toggle('selected',m==='individual');
+  document.getElementById('mc-team').classList.toggle('selected',m==='team');
+  document.getElementById('mode-next').disabled=false;
+}
+
+// ============================================================
+// PROFILE
+// ============================================================
+function selAv(el,em){document.querySelectorAll('.av-opt').forEach(a=>a.classList.remove('selected'));el.classList.add('selected');selAv_=em}
+function chkProf(){document.getElementById('prof-next').disabled=!document.getElementById('pname').value.trim()}
+
+function startHunt(){
+  const name=document.getElementById('pname').value.trim();
+  if(!name) return;
+  const p={id:Date.now(),name,avatar:selAv_,mode:selMode_,tourId:tour.id,currentStop:0,score:0,triviaCorrect:0,completedStops:[],startTime:Date.now()};
+  ST.currentPlayer=p;
+  ST.players=ST.players.filter(pl=>pl.tourId!==tour.id||pl.id===p.id);
+  ST.players.push(p);
+  saveState();
+  stopIdx=0;
+  loadItin();
+  go('s-itin');
+}
+
+// ============================================================
+// ITINERARY
+// ============================================================
+function loadItin(){
+  document.getElementById('itin-name').textContent=tour.name;
+  document.getElementById('itin-desc').textContent=tour.description.split('.')[0]+'.';
+  const p=ST.currentPlayer;
+  document.getElementById('stops-list').innerHTML=tour.stops.map((s,i)=>{
+    const done=p&&p.completedStops.includes(i);
+    const cur=p&&p.currentStop===i&&!done;
+    return `<div class="stop-item">
+      <div class="snum ${done?'done':cur?'cur':'locked'}">${done?'✓':i+1}</div>
+      <div class="s-info">
+        <div class="s-name">${s.name}</div>
+        <div class="s-hood">📍 ${s.neighborhood}</div>
+        <div class="s-tease">${s.teaser}</div>
+      </div>
+      ${i>0&&!done&&!cur?'<div style="font-size:16px;color:var(--gray)">🔒</div>':''}
+    </div>`;
+  }).join('');
+}
+
+function beginHunt(){stopIdx=ST.currentPlayer?ST.currentPlayer.currentStop:0;loadStop(stopIdx);go('s-stop')}
+
+// ============================================================
+// STOP SCREEN
+// ============================================================
+function loadStop(i){
+  const s=tour.stops[i];
+  trivDone=false;qrDone=false;ffDone=false;
+  stopQR();
+  document.getElementById('stop-tag').textContent=`Stop ${i+1} of ${tour.stops.length}`;
+  document.getElementById('stop-pts').textContent=`💎 ${s.pts} pts`;
+  document.getElementById('stop-name-h').textContent=s.name;
+  document.getElementById('stop-hood').textContent=`📍 ${s.neighborhood}`;
+  document.getElementById('prog-fill').style.width=`${(i/tour.stops.length)*100}%`;
+  document.getElementById('stop-clue').textContent=s.clue;
+  // Trivia
+  document.getElementById('t-q').textContent=s.trivia.q;
+  document.getElementById('t-opts').innerHTML=s.trivia.a.map((a,j)=>`<button class="ans-btn" onclick="ansTrivia(${j})">${a}</button>`).join('');
+  const tr=document.getElementById('t-res');tr.style.display='none';tr.className='t-result';
+  // QR
+  document.getElementById('qr-vc').style.display='none';
+  document.getElementById('qr-ok').style.display='none';
+  document.getElementById('qr-btn').textContent='📷 Scan QR Code';
+  document.getElementById('qr-btn').disabled=false;
+  // Photo
+  document.getElementById('photo-prompt').textContent=s.photo;
+  document.getElementById('photo-prev').style.display='none';
+  document.getElementById('photo-inp').value='';
+  // Fun fact
+  document.getElementById('ff-card').style.display='none';
+  document.getElementById('ff-btn').style.display='block';
+  document.getElementById('ff-text').textContent=s.funFact;
+  document.getElementById('next-sec').style.display='none';
+  document.getElementById('next-btn').textContent=i===tour.stops.length-1?'🏆 Complete Hunt!':'Next Stop →';
+}
+
+function ansTrivia(j){
+  if(trivDone) return;
+  trivDone=true;
+  const s=tour.stops[stopIdx];
+  const ok=j===s.trivia.c;
+  document.querySelectorAll('.ans-btn').forEach((b,k)=>{
+    b.disabled=true;
+    if(k===s.trivia.c) b.classList.add('correct');
+    else if(k===j&&!ok) b.classList.add('wrong');
+  });
+  const tr=document.getElementById('t-res');
+  tr.style.display='block';
+  if(ok){
+    tr.classList.add('correct');tr.textContent='✓ Correct! Great job, explorer!';
+    if(ST.currentPlayer){ST.currentPlayer.score+=Math.floor(s.pts/2);ST.currentPlayer.triviaCorrect=(ST.currentPlayer.triviaCorrect||0)+1;saveState()}
+  } else {
+    tr.classList.add('wrong');tr.textContent=`✗ Not quite. The answer was: ${s.trivia.a[s.trivia.c]}`;
+  }
+  chkStopDone();
+}
+
+function togQR(){
+  if(qrStream){stopQR();return}
+  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}})
+    .then(stream=>{
+      qrStream=stream;
+      const v=document.getElementById('qr-vid');
+      v.srcObject=stream;
+      document.getElementById('qr-vc').style.display='block';
+      document.getElementById('qr-btn').textContent='⏹ Stop Scanning';
+      scanFrame(v);
+    }).catch(()=>skipQR());
+}
+
+function scanFrame(v){
+  const c=document.createElement('canvas'),ctx=c.getContext('2d');
+  const s=tour.stops[stopIdx];
+  function tick(){
+    if(!qrStream) return;
+    if(v.readyState===v.HAVE_ENOUGH_DATA){
+      c.width=v.videoWidth;c.height=v.videoHeight;ctx.drawImage(v,0,0);
+      const img=ctx.getImageData(0,0,c.width,c.height);
+      const code=jsQR(img.data,img.width,img.height,{inversionAttempts:'dontInvert'});
+      if(code&&code.data===s.qr){
+        qrDone=true;stopQR();
+        document.getElementById('qr-ok').style.display='block';
+        document.getElementById('qr-btn').textContent='✓ Verified!';
+        document.getElementById('qr-btn').disabled=true;
+        if(ST.currentPlayer){ST.currentPlayer.score+=Math.floor(s.pts/4);saveState()}
+        chkStopDone();return;
+      }
+    }
+    qrAF=requestAnimationFrame(tick);
+  }
+  qrAF=requestAnimationFrame(tick);
+}
+
+function stopQR(){
+  if(qrAF){cancelAnimationFrame(qrAF);qrAF=null}
+  if(qrStream){qrStream.getTracks().forEach(t=>t.stop());qrStream=null}
+  document.getElementById('qr-vc').style.display='none';
+  if(!qrDone) document.getElementById('qr-btn').textContent='📷 Scan QR Code';
+}
+
+function skipQR(){
+  qrDone=true;stopQR();
+  const ok=document.getElementById('qr-ok');
+  ok.textContent='✓ Location marked (skipped)';ok.style.display='block';
+  document.getElementById('qr-btn').textContent='✓ Verified';
+  document.getElementById('qr-btn').disabled=true;
+  chkStopDone();
+}
+
+function handlePhoto(e){
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    const img=document.getElementById('photo-prev');
+    img.src=ev.target.result;img.style.display='block';
+    if(ST.currentPlayer){ST.currentPlayer.score+=10;saveState()}
+  };
+  r.readAsDataURL(f);
+}
+
+function revealFF(){
+  ffDone=true;
+  document.getElementById('ff-card').style.display='block';
+  document.getElementById('ff-btn').style.display='none';
+  chkStopDone();
+}
+
+function chkStopDone(){
+  if(trivDone&&ffDone){
+    document.getElementById('next-sec').style.display='block';
+    if(ST.currentPlayer){
+      const s=tour.stops[stopIdx];
+      if(!ST.currentPlayer.completedStops.includes(stopIdx)){
+        ST.currentPlayer.completedStops.push(stopIdx);
+        ST.currentPlayer.score+=Math.floor(s.pts/4);
+      }
+      saveState();
+    }
+  }
+}
+
+function nextStop(){
+  if(ST.currentPlayer){ST.currentPlayer.currentStop=stopIdx+1;saveState()}
+  stopIdx++;
+  if(stopIdx>=tour.stops.length) completeHunt();
+  else{loadStop(stopIdx);window.scrollTo(0,0)}
+}
+
+// ============================================================
+// COMPLETION
+// ============================================================
+function completeHunt(){
+  const p=ST.currentPlayer;
+  document.getElementById('fin-score').textContent=p?p.score:0;
+  document.getElementById('fin-stops').textContent=tour.stops.length;
+  document.getElementById('fin-trivia').textContent=p?p.triviaCorrect||0:0;
+  document.getElementById('comp-sub').textContent=`${p?p.avatar+' '+p.name:'Explorer'} conquered ${tour.name}!`;
+  go('s-complete');
+  launchConfetti();
+}
+
+function shareRes(){
+  const p=ST.currentPlayer;
+  const txt=`I just completed "${tour.name}" with The Tasting Tours! 🏆 Score: ${p?p.score:0} points. Eat. Drink. Experience! thetastingtours.com`;
+  if(navigator.share) navigator.share({title:'The Tasting Tours',text:txt});
+  else navigator.clipboard.writeText(txt).then(()=>alert('Copied to clipboard!'));
+}
+
+function launchConfetti(){
+  const cv=document.getElementById('confetti-cv');
+  const ctx=cv.getContext('2d');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  const cols=['#F5814A','#1A2744','#FDF0EB','#10B981','#F59E0B','#EC4899'];
+  const ps=Array.from({length:130},()=>({
+    x:Math.random()*cv.width,y:Math.random()*cv.height-cv.height,
+    w:Math.random()*10+5,h:Math.random()*5+3,
+    color:cols[Math.floor(Math.random()*cols.length)],
+    vx:(Math.random()-.5)*3,vy:Math.random()*3+2,
+    angle:Math.random()*360,spin:(Math.random()-.5)*8
+  }));
+  let fr=0;
+  function draw(){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ps.forEach(p=>{
+      ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.angle*Math.PI/180);
+      ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+      p.x+=p.vx;p.y+=p.vy;p.angle+=p.spin;
+      if(p.y>cv.height){p.y=-10;p.x=Math.random()*cv.width}
+    });
+    fr++;if(fr<300) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,cv.width,cv.height);
+  }
+  draw();
+}
+
+// ============================================================
+// PANELS
+// ============================================================
+function openLB(){
+  const players=(ST.players||[]).filter(p=>tour&&p.tourId===tour.id).sort((a,b)=>b.score-a.score);
+  const lb=document.getElementById('lb-list');
+  if(!players.length){lb.innerHTML='<p style="color:var(--gray);text-align:center;padding:20px">No players yet — be the first!</p>'}
+  else lb.innerHTML=players.map((p,i)=>`
+    <div class="lb-item">
+      <div class="lb-rank">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+      <div style="font-size:28px">${p.avatar||'🧑'}</div>
+      <div style="flex:1"><div style="font-size:15px;font-weight:600">${p.name}</div><div class="lb-prog">Stop ${(p.currentStop||0)+1} of ${tour.stops.length}</div></div>
+      <div class="lb-score">${p.score}</div>
+    </div>`).join('');
+  document.getElementById('lb-panel').classList.add('active');
+}
+
+function openRoute(){
+  const rl=document.getElementById('route-list');
+  if(!tour){rl.innerHTML='<p style="color:var(--gray)">No active tour.</p>'}
+  else rl.innerHTML=tour.stops.map((s,i)=>`
+    <div class="stop-item" style="margin-bottom:10px">
+      <div class="snum" style="${i<stopIdx?'background:#10B981':i===stopIdx?'background:var(--orange)':'background:#E5E7EB;color:var(--gray)'}">${i+1}</div>
+      <div class="s-info"><div class="s-name">${s.name}</div><div class="s-hood">📍 ${s.neighborhood}</div></div>
+    </div>`).join('');
+  document.getElementById('route-panel').classList.add('active');
+}
+
+function openDet(){
+  if(!tour){document.getElementById('det-content').innerHTML='<p style="color:var(--gray)">No active tour.</p>'}
+  else document.getElementById('det-content').innerHTML=`
+    <div class="card-block"><div class="blk-label">Tour</div><div class="blk-text">${tour.name}</div></div>
+    <div class="card-block" style="margin-top:12px"><div class="blk-label">Type</div><div class="blk-text">${tour.type} · ${tour.ageRange}</div></div>
+    <div class="card-block" style="margin-top:12px"><div class="blk-label">About</div><div class="blk-text">${tour.description}</div></div>
+    <div class="card-block" style="margin-top:12px"><div class="blk-label">Your Score</div><div class="blk-text" style="font-size:28px;font-weight:800;color:var(--orange)">${ST.currentPlayer?ST.currentPlayer.score:0} pts</div></div>`;
+  document.getElementById('det-panel').classList.add('active');
+}
+
+// ============================================================
+// BOOT
+// ============================================================
+initHome();
+</script>
+</body>
+</html>
