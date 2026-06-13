@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TTT Admin — The Tasting Tours</title>
+<title>The Tasting Tours™ Admin</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --cream:#FDF0EB;--orange:#F5814A;--orange-dk:#E06830;--navy:#1A2744;
   --navy2:#2D3F6B;--gray:#6B7280;--gl:#F3F4F6;--white:#fff;
-  --green:#10B981;--red:#EF4444;--yellow:#F59E0B;
+  --green:#10B981;--red:#EF4444;--yellow:#F59E0B;--teal:#0D9488;
   --shadow:0 4px 20px rgba(26,39,68,.12)
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F0F2F5;color:var(--navy);min-height:100vh}
@@ -18,9 +19,12 @@ h2{font-size:20px;font-weight:700}
 h3{font-size:16px;font-weight:600}
 p{line-height:1.6}
 input,select,textarea,button{font-family:inherit}
-/* login */
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
 #login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--navy)}
-.login-card{background:#fff;border-radius:24px;padding:48px 40px;width:360px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-card{background:#fff;border-radius:24px;padding:48px 40px;width:380px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
 .login-logo{font-size:40px;margin-bottom:16px}
 .login-card h1{margin-bottom:6px}
 .login-sub{color:var(--gray);font-size:14px;margin-bottom:32px}
@@ -29,57 +33,92 @@ input,select,textarea,button{font-family:inherit}
 .l-btn{width:100%;padding:14px;background:var(--orange);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;transition:background .2s}
 .l-btn:hover{background:var(--orange-dk)}
 .l-err{color:var(--red);font-size:14px;margin-top:8px;min-height:20px}
-/* app layout */
+.l-hint{font-size:12px;color:var(--gray);margin-top:20px}
+
+/* ============================================================
+   APP LAYOUT
+   ============================================================ */
 #app{display:none;min-height:100vh}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:var(--navy);display:flex;flex-direction:column;padding:24px 0;z-index:100}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:230px;background:var(--navy);display:flex;flex-direction:column;padding:24px 0;z-index:100}
 .sb-brand{padding:0 20px 24px;border-bottom:1px solid rgba(255,255,255,.1)}
-.sb-name{font-size:16px;font-weight:800;color:#fff}
+.sb-name{font-size:15px;font-weight:800;color:#fff}
 .sb-sub{font-size:11px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
 .sb-nav{padding:16px 0;flex:1}
 .sb-item{display:flex;align-items:center;gap:12px;padding:12px 20px;color:rgba(255,255,255,.65);cursor:pointer;transition:all .2s;font-size:14px;font-weight:500;border:none;background:none;width:100%;text-align:left}
 .sb-item:hover{background:rgba(255,255,255,.08);color:#fff}
 .sb-item.active{background:var(--orange);color:#fff}
-.sb-item .ic{font-size:18px;width:22px}
+.sb-item .ic{font-size:17px;width:22px}
+.sb-sep{height:1px;background:rgba(255,255,255,.08);margin:8px 20px}
 .sb-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1)}
 .sb-logout{color:rgba(255,255,255,.5);font-size:13px;cursor:pointer;background:none;border:none;display:flex;align-items:center;gap:8px}
 .sb-logout:hover{color:#fff}
-.main{margin-left:220px;padding:32px;min-height:100vh}
+.main{margin-left:230px;padding:32px;min-height:100vh}
 .page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
-/* cards */
+
+/* ============================================================
+   CARDS
+   ============================================================ */
 .card{background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
 .card-body{padding:24px}
 .card-hdr{padding:20px 24px;border-bottom:1px solid var(--gl);display:flex;align-items:center;justify-content:space-between}
 .card-hdr h3{font-size:16px}
-/* buttons */
-.btn{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn{padding:10px 20px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
 .btn-primary{background:var(--orange);color:#fff}
 .btn-primary:hover{background:var(--orange-dk)}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed}
 .btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{background:#DC2626}
 .btn-success{background:var(--green);color:#fff}
+.btn-success:hover{background:#059669}
+.btn-teal{background:var(--teal);color:#fff}
+.btn-teal:hover{background:#0F766E}
 .btn-outline{background:transparent;border:2px solid var(--orange);color:var(--orange)}
+.btn-outline:hover{background:var(--orange);color:#fff}
 .btn-ghost{background:transparent;border:2px solid #E5E7EB;color:var(--gray)}
+.btn-ghost:hover{border-color:#D1D5DB;color:var(--navy)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-navy:hover{background:var(--navy2)}
 .btn-sm{padding:6px 14px;font-size:13px}
 .btn-xs{padding:4px 10px;font-size:12px}
-/* badges */
+
+/* ============================================================
+   BADGES
+   ============================================================ */
 .badge{padding:3px 10px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .badge-active{background:#ECFDF5;color:#065F46}
 .badge-draft{background:#F3F4F6;color:var(--gray)}
 .badge-completed{background:#EFF6FF;color:#1D4ED8}
-/* stats row */
+.badge-concept{background:#FEF3C7;color:#92400E}
+.badge-running{background:#ECFDF5;color:#065F46}
+.badge-finished{background:#F3F4F6;color:var(--gray)}
+
+/* ============================================================
+   STATS ROW
+   ============================================================ */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
 .stat-card{background:#fff;border-radius:14px;padding:20px 24px;box-shadow:var(--shadow)}
 .stat-card .num{font-size:32px;font-weight:900;color:var(--orange)}
 .stat-card .lbl{font-size:13px;color:var(--gray);margin-top:4px}
-/* tour list */
+
+/* ============================================================
+   TOUR LIST
+   ============================================================ */
 .tour-row{display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid var(--gl);transition:background .15s}
 .tour-row:last-child{border-bottom:none}
 .tour-row:hover{background:#FAFAFA}
-.tr-img{width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0}
+.tr-img{width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#F3F4F6}
 .tr-info{flex:1}
 .tr-name{font-size:15px;font-weight:600}
 .tr-meta{font-size:12px;color:var(--gray);margin-top:2px}
 .tr-actions{display:flex;gap:8px;flex-shrink:0}
-/* forms */
+
+/* ============================================================
+   FORMS
+   ============================================================ */
 .form-group{margin-bottom:18px}
 .form-label{font-size:13px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
 .form-control{width:100%;padding:12px 14px;border:2px solid #E5E7EB;border-radius:10px;font-size:15px;color:var(--navy);outline:none;transition:border-color .2s;background:#fff}
@@ -87,7 +126,12 @@ input,select,textarea,button{font-family:inherit}
 textarea.form-control{resize:vertical;min-height:80px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .form-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-/* stop editor */
+.form-hint{font-size:12px;color:var(--gray);margin-top:4px}
+.form-required{color:var(--red)}
+
+/* ============================================================
+   STOP EDITOR
+   ============================================================ */
 .stop-editor{border:2px solid #E5E7EB;border-radius:12px;margin-bottom:16px;overflow:hidden;transition:border-color .2s}
 .stop-editor:hover{border-color:#D1D5DB}
 .stop-header{background:var(--gl);padding:12px 16px;display:flex;align-items:center;gap:12px;cursor:pointer}
@@ -98,14 +142,20 @@ textarea.form-control{resize:vertical;min-height:80px}
 .stop-body.open{display:block}
 .ans-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:8px;align-items:center}
 .correct-radio{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--gray)}
-/* player table */
+
+/* ============================================================
+   PLAYER TABLE
+   ============================================================ */
 .player-table{width:100%;border-collapse:collapse}
 .player-table th{text-align:left;padding:12px 16px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gray);background:var(--gl)}
 .player-table td{padding:14px 16px;border-bottom:1px solid var(--gl);font-size:14px}
 .player-table tr:last-child td{border-bottom:none}
 .prog-mini{height:6px;background:var(--gl);border-radius:3px;overflow:hidden;margin-top:4px}
 .prog-mini-fill{height:100%;background:var(--orange);border-radius:3px}
-/* modal */
+
+/* ============================================================
+   MODAL
+   ============================================================ */
 .modal-ov{position:fixed;inset:0;background:rgba(26,39,68,.5);z-index:500;display:none;align-items:center;justify-content:center}
 .modal-ov.open{display:flex}
 .modal{background:#fff;border-radius:20px;width:90%;max-width:700px;max-height:90vh;overflow-y:auto}
@@ -113,46 +163,208 @@ textarea.form-control{resize:vertical;min-height:80px}
 .modal-body{padding:24px}
 .modal-foot{padding:16px 24px;border-top:1px solid var(--gl);display:flex;justify-content:flex-end;gap:12px;position:sticky;bottom:0;background:#fff}
 .close-btn{background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray);line-height:1}
-/* code badge */
+
+/* ============================================================
+   WIZARD
+   ============================================================ */
+.wizard-progress{display:flex;align-items:center;margin-bottom:32px}
+.wiz-step{display:flex;align-items:center;gap:8px;flex:1}
+.wiz-step:last-child{flex:0}
+.wiz-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;background:#E5E7EB;color:var(--gray);flex-shrink:0;transition:all .3s}
+.wiz-num.done{background:var(--green);color:#fff}
+.wiz-num.active{background:var(--orange);color:#fff}
+.wiz-label{font-size:13px;font-weight:600;color:var(--gray)}
+.wiz-label.active{color:var(--orange)}
+.wiz-label.done{color:var(--green)}
+.wiz-line{flex:1;height:2px;background:#E5E7EB;margin:0 8px}
+.wiz-line.done{background:var(--green)}
+.wiz-step-content{display:none}
+.wiz-step-content.active{display:block}
+
+/* preset cards */
+.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.preset-card{border:2px solid #E5E7EB;border-radius:12px;padding:16px;cursor:pointer;transition:all .2s}
+.preset-card:hover{border-color:var(--orange);background:#FFF7F4}
+.preset-card.selected{border-color:var(--orange);background:#FFF7F4;box-shadow:0 0 0 3px rgba(245,129,74,.15)}
+.preset-icon{font-size:28px;margin-bottom:8px}
+.preset-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.preset-desc{font-size:12px;color:var(--gray);line-height:1.5}
+
+/* tasks preview */
+.tasks-preview{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:12px;padding:16px;margin-bottom:24px}
+.tasks-preview h4{font-size:13px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.preview-task{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #D1FAE5;font-size:13px}
+.preview-task:last-child{border-bottom:none}
+.preview-task .pts{margin-left:auto;background:var(--green);color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700}
+
+/* task table */
+.task-table{width:100%;border-collapse:collapse;margin-bottom:16px}
+.task-table th{text-align:left;padding:10px 14px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gray);background:var(--gl);border-bottom:1px solid #E5E7EB}
+.task-table td{padding:12px 14px;border-bottom:1px solid var(--gl);font-size:14px;vertical-align:top}
+.task-table tr:last-child td{border-bottom:none}
+.task-title{font-weight:600}
+.task-desc{font-size:12px;color:var(--gray);margin-top:2px}
+
+/* inline task form */
+.task-form{background:#F0FDFA;border:2px solid #99F6E4;border-radius:12px;padding:18px;margin-bottom:16px}
+.task-form h4{font-size:14px;font-weight:700;color:var(--teal);margin-bottom:14px}
+
+/* toggle switch */
+.toggle-wrap{display:flex;align-items:center;gap:10px;cursor:pointer}
+.toggle{width:40px;height:22px;background:#D1D5DB;border-radius:11px;position:relative;transition:background .2s;flex-shrink:0}
+.toggle.on{background:var(--teal)}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle.on::after{transform:translateX(18px)}
+.toggle-label{font-size:14px;color:var(--navy)}
+
+/* info panel */
+.info-panel{background:#F0FDFA;border:1px solid #99F6E4;border-radius:12px;padding:16px;margin-bottom:20px}
+.info-panel h4{font-size:13px;font-weight:700;color:var(--teal);margin-bottom:8px}
+.info-panel p,.info-panel li{font-size:13px;color:#115E59;line-height:1.6}
+.info-panel ul{padding-left:16px}
+
+/* ============================================================
+   GAME MANAGEMENT
+   ============================================================ */
+.breadcrumb{font-size:13px;color:var(--gray);margin-bottom:20px}
+.breadcrumb a{color:var(--orange);text-decoration:none;cursor:pointer}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb span{margin:0 6px}
+
+.gm-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}
+.gm-title-wrap{display:flex;align-items:center;gap:8px;flex:1}
+.gm-name-display{font-size:24px;font-weight:800}
+.gm-edit-btn{background:none;border:none;color:var(--gray);cursor:pointer;font-size:16px;padding:4px}
+.gm-name-input{font-size:20px;font-weight:700;border:2px solid var(--orange);border-radius:8px;padding:6px 12px;outline:none}
+
+.gm-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px}
+@media(max-width:900px){.gm-grid{grid-template-columns:1fr}}
+
+.game-card{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:24px}
+.game-logo-wrap{display:flex;align-items:flex-start;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--gl)}
+.game-logo{width:80px;height:80px;border-radius:12px;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:32px;overflow:hidden;flex-shrink:0}
+.game-logo img{width:100%;height:100%;object-fit:cover}
+.game-logo-info{flex:1}
+.game-logo-info h3{margin-bottom:4px}
+.update-logo-link{font-size:12px;color:var(--orange);cursor:pointer;text-decoration:underline}
+
+.game-field-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gl)}
+.game-field-row:last-child{border-bottom:none}
+.gf-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gray)}
+.gf-value{font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px}
+.game-code-display{font-size:22px;font-weight:900;color:var(--orange);font-family:monospace;letter-spacing:4px}
+
+.progress-bar{height:8px;background:var(--gl);border-radius:4px;overflow:hidden;margin-top:4px}
+.progress-fill{height:100%;background:var(--orange);border-radius:4px;transition:width .3s}
+
+/* state banners */
+.state-banner{border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.banner-concept{background:#FFF3E0;border:1px solid #FFB74D}
+.banner-running{background:#E8F5E9;border:1px solid #81C784}
+.banner-text{font-size:14px;font-weight:500}
+
+/* settings panel */
+.settings-panel{background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px}
+.settings-panel h3{margin-bottom:16px}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--gl)}
+.setting-row:last-child{border-bottom:none}
+.setting-label{font-size:14px;font-weight:500}
+.setting-sub{font-size:12px;color:var(--gray)}
+
+/* success banner */
+.success-banner{background:linear-gradient(135deg,#10B981,#059669);color:#fff;border-radius:12px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.success-banner-icon{font-size:24px}
+.success-banner-text h4{font-size:16px;font-weight:700;margin-bottom:4px}
+.success-banner-text p{font-size:13px;opacity:.9}
+
+/* duration editor */
+.duration-picker{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+
+/* ============================================================
+   QR PAGE
+   ============================================================ */
+.qr-page{max-width:480px;margin:0 auto}
+.qr-card{background:#fff;border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+.qr-top{background:var(--navy);color:#fff;text-align:center;padding:28px 24px 20px}
+.qr-brand{font-size:22px;font-weight:900;letter-spacing:-0.5px}
+.qr-tagline{font-size:13px;opacity:.7;margin-top:4px}
+.qr-game-name{font-size:20px;font-weight:700;margin-top:16px}
+.qr-code-display{font-size:40px;font-weight:900;color:var(--orange);letter-spacing:8px;margin-top:8px;font-family:monospace}
+.qr-body{padding:24px;text-align:center}
+.qr-code-wrap{display:inline-block;background:#fff;border:3px solid var(--navy);border-radius:12px;padding:12px;margin-bottom:20px}
+#qr-canvas{display:block}
+.qr-instructions{text-align:left;margin-bottom:20px}
+.qr-instructions h4{font-size:14px;font-weight:700;margin-bottom:12px;color:var(--navy)}
+.qr-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:13px}
+.qr-step-num{width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;flex-shrink:0;margin-top:1px}
+.qr-footer{border-top:1px solid var(--gl);padding:14px 24px;text-align:center;font-size:12px;color:var(--gray)}
+
+/* print styles */
+@media print{
+  .sidebar,.main .page-hdr,.btn,.breadcrumb,.gm-edit-btn{display:none!important}
+  .main{margin-left:0;padding:0}
+  body{background:#fff}
+  #page-qr{display:block!important}
+  .qr-page{max-width:100%}
+  .qr-card{box-shadow:none;border:1px solid #ccc}
+}
+
+/* ============================================================
+   UTILS
+   ============================================================ */
 .code-display{display:inline-flex;align-items:center;gap:10px;background:var(--navy);color:#fff;padding:10px 18px;border-radius:10px;font-size:20px;font-weight:900;letter-spacing:4px;font-family:monospace}
-/* toast */
 .toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 24px;border-radius:50px;font-size:14px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast.show{opacity:1}
-/* responsive */
+.empty{text-align:center;padding:48px;color:var(--gray)}
+.empty .e-icon{font-size:48px;margin-bottom:12px}
+.divider{height:1px;background:var(--gl);margin:20px 0}
+
 @media(max-width:900px){
   .sidebar{width:60px}
-  .sb-item span,.sb-name,.sb-sub,.sb-logout span{display:none}
+  .sb-item span,.sb-name,.sb-sub,.sb-logout span,.sb-sep{display:none}
   .main{margin-left:60px;padding:20px}
   .stats-row{grid-template-columns:1fr 1fr}
   .form-row,.form-row3{grid-template-columns:1fr}
+  .preset-grid{grid-template-columns:1fr}
 }
-/* empty state */
-.empty{text-align:center;padding:48px;color:var(--gray)}
-.empty .e-icon{font-size:48px;margin-bottom:12px}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ============================================================
+     LOGIN
+     ============================================================ -->
 <div id="login-wrap">
   <div class="login-card">
     <div class="login-logo">🍷</div>
-    <h1>Admin Dashboard</h1>
-    <p class="login-sub">The Tasting Tours</p>
-    <input class="l-input" type="password" id="pw" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()">
+    <h1>The Tasting Tours™ Admin</h1>
+    <p class="login-sub">Tour Management Dashboard</p>
+    <input class="l-input" type="password" id="pw" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')login()">
     <button class="l-btn" onclick="login()">Sign In</button>
     <div class="l-err" id="pw-err"></div>
+    <p class="l-hint">Support: info@thetastingtours.com</p>
   </div>
 </div>
 
-<!-- APP -->
+<!-- ============================================================
+     APP
+     ============================================================ -->
 <div id="app">
   <!-- Sidebar -->
   <div class="sidebar">
-    <div class="sb-brand"><div class="sb-name">TTT Admin</div><div class="sb-sub">Dashboard</div></div>
+    <div class="sb-brand">
+      <div class="sb-name">The Tasting Tours</div>
+      <div class="sb-sub">Admin Dashboard</div>
+    </div>
     <div class="sb-nav">
-      <button class="sb-item active" onclick="showPage('tours')" id="sbi-tours"><span class="ic">🗺</span><span>Tours</span></button>
+      <button class="sb-item" onclick="showPage('dashboard')" id="sbi-dashboard"><span class="ic">📊</span><span>Dashboard</span></button>
+      <button class="sb-item" onclick="showPage('tours')" id="sbi-tours"><span class="ic">🎮</span><span>Tours</span></button>
       <button class="sb-item" onclick="showPage('players')" id="sbi-players"><span class="ic">👥</span><span>Players</span></button>
+      <div class="sb-sep"></div>
+      <button class="sb-item" onclick="showPage('create')" id="sbi-create"><span class="ic">➕</span><span>Create Game</span></button>
+      <button class="sb-item" onclick="showPage('game-manager')" id="sbi-game-manager"><span class="ic">🎯</span><span>Game Manager</span></button>
+      <button class="sb-item" onclick="showPage('qr')" id="sbi-qr"><span class="ic">🖨️</span><span>QR / Print Card</span></button>
+      <div class="sb-sep"></div>
       <button class="sb-item" onclick="showPage('settings')" id="sbi-settings"><span class="ic">⚙️</span><span>Settings</span></button>
     </div>
     <div class="sb-footer">
@@ -160,19 +372,47 @@ textarea.form-control{resize:vertical;min-height:80px}
     </div>
   </div>
 
-  <!-- Main -->
+  <!-- Main Content -->
   <div class="main">
-    <!-- TOURS PAGE -->
-    <div id="page-tours">
+
+    <!-- ======================================================
+         DASHBOARD PAGE
+         ====================================================== -->
+    <div id="page-dashboard" style="display:none">
+      <div class="page-hdr"><h1>Dashboard</h1></div>
+      <div class="stats-row" id="stats-row-dash"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="card">
+          <div class="card-hdr"><h3>Recent Tours</h3><button class="btn btn-outline btn-sm" onclick="showPage('tours')">View All</button></div>
+          <div id="dash-recent-tours"></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr"><h3>Quick Actions</h3></div>
+          <div class="card-body" style="display:grid;gap:10px">
+            <button class="btn btn-primary" onclick="showPage('create')" style="justify-content:center">➕ Create New Game</button>
+            <button class="btn btn-outline" onclick="openTourModal(null)" style="justify-content:center">🗺️ New Tour</button>
+            <button class="btn btn-ghost" onclick="showPage('game-manager')" style="justify-content:center">🎯 Manage Last Game</button>
+            <button class="btn btn-ghost" onclick="showPage('qr')" style="justify-content:center">🖨️ Print QR Card</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================
+         TOURS PAGE
+         ====================================================== -->
+    <div id="page-tours" style="display:none">
       <div class="page-hdr">
         <h1>Tours</h1>
         <button class="btn btn-primary" onclick="openTourModal(null)">+ New Tour</button>
       </div>
-      <div class="stats-row" id="stats-row"><!-- js --></div>
-      <div class="card"><div id="tour-list"><!-- js --></div></div>
+      <div class="stats-row" id="stats-row"></div>
+      <div class="card"><div id="tour-list"></div></div>
     </div>
 
-    <!-- PLAYERS PAGE -->
+    <!-- ======================================================
+         PLAYERS PAGE
+         ====================================================== -->
     <div id="page-players" style="display:none">
       <div class="page-hdr">
         <h1>Live Players</h1>
@@ -183,13 +423,417 @@ textarea.form-control{resize:vertical;min-height:80px}
       <div class="card"><table class="player-table"><thead><tr><th>Player</th><th>Tour</th><th>Progress</th><th>Score</th><th>Started</th></tr></thead><tbody id="player-tbody"></tbody></table></div>
     </div>
 
-    <!-- SETTINGS PAGE -->
+    <!-- ======================================================
+         CREATE GAME WIZARD
+         ====================================================== -->
+    <div id="page-create" style="display:none">
+      <div class="page-hdr"><h1>Create Game</h1></div>
+
+      <!-- Progress indicator -->
+      <div class="wizard-progress">
+        <div class="wiz-step">
+          <div class="wiz-num active" id="wn1">1</div>
+          <span class="wiz-label active" id="wl1">Introduction</span>
+        </div>
+        <div class="wiz-line" id="wline1"></div>
+        <div class="wiz-step">
+          <div class="wiz-num" id="wn2">2</div>
+          <span class="wiz-label" id="wl2">Presets</span>
+        </div>
+        <div class="wiz-line" id="wline2"></div>
+        <div class="wiz-step">
+          <div class="wiz-num" id="wn3">3</div>
+          <span class="wiz-label" id="wl3">Tasks</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+
+          <!-- Step 1: Introduction -->
+          <div class="wiz-step-content active" id="wiz-step-1">
+            <h2 style="margin-bottom:20px">Game Introduction</h2>
+            <div class="form-group">
+              <label class="form-label">Name of the game <span class="form-required">*</span></label>
+              <input class="form-control" id="wiz-name" maxlength="30" placeholder="e.g. Historic St. Augustine Hunt" oninput="wizValidateStep1()">
+              <div class="form-hint">Max 30 characters. <span id="wiz-name-count">0</span>/30</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Logo <span style="font-weight:400;text-transform:none;color:var(--gray)">(optional — JPG/PNG, max 4MB)</span></label>
+              <input type="file" class="form-control" id="wiz-logo" accept=".jpg,.jpeg,.png" onchange="wizHandleLogo(this)">
+              <div id="wiz-logo-preview" style="margin-top:8px"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Rules / Rewards / Info <span style="font-weight:400;text-transform:none;color:var(--gray)">(optional)</span></label>
+              <textarea class="form-control" id="wiz-rules" rows="4" placeholder="Describe the rules, rewards, and any additional information for players..."></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Time Zone <span class="form-required">*</span></label>
+                <select class="form-control" id="wiz-tz">
+                  <option value="America/New_York" selected>America/New_York (Eastern)</option>
+                  <option value="America/Chicago">America/Chicago (Central)</option>
+                  <option value="America/Denver">America/Denver (Mountain)</option>
+                  <option value="America/Los_Angeles">America/Los_Angeles (Pacific)</option>
+                  <option value="America/Anchorage">America/Anchorage (Alaska)</option>
+                  <option value="Pacific/Honolulu">Pacific/Honolulu (Hawaii)</option>
+                  <option value="UTC">UTC</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Support Email <span class="form-required">*</span></label>
+                <input class="form-control" type="email" id="wiz-email" value="info@thetastingtours.com" oninput="wizValidateStep1()">
+              </div>
+            </div>
+            <div class="form-group" style="display:flex;align-items:flex-start;gap:10px">
+              <input type="checkbox" id="wiz-terms" style="margin-top:3px;width:16px;height:16px;cursor:pointer;flex-shrink:0" onchange="wizValidateStep1()">
+              <label for="wiz-terms" style="font-size:14px;cursor:pointer;line-height:1.5">I agree to the <a href="https://thetastingtours.com" target="_blank" style="color:var(--orange)">Terms of Service</a> and understand that game data will be stored and managed through The Tasting Tours platform.</label>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:8px">
+              <button class="btn btn-primary" id="wiz-step1-btn" onclick="wizGoStep(2)" disabled>Continue →</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Presets -->
+          <div class="wiz-step-content" id="wiz-step-2">
+            <h2 style="margin-bottom:6px">Game Presets</h2>
+            <p style="color:var(--gray);font-size:14px;margin-bottom:20px">Choose from predefined tasks. You can customize tasks, edit points, conditions etc.</p>
+
+            <div class="preset-grid">
+              <div class="preset-card selected" id="preset-historic" onclick="selectPreset('historic')">
+                <div class="preset-icon">🗺️</div>
+                <div class="preset-title">Historic St. Augustine Hunt</div>
+                <div class="preset-desc">Classic stops along the historic district</div>
+              </div>
+              <div class="preset-card" id="preset-foodie" onclick="selectPreset('foodie')">
+                <div class="preset-icon">🍽️</div>
+                <div class="preset-title">Foodie Trail</div>
+                <div class="preset-desc">Restaurant and cuisine challenges</div>
+              </div>
+              <div class="preset-card" id="preset-ghost" onclick="selectPreset('ghost')">
+                <div class="preset-icon">👻</div>
+                <div class="preset-title">Ghost Tour Challenge</div>
+                <div class="preset-desc">Spooky stops and paranormal trivia</div>
+              </div>
+              <div class="preset-card" id="preset-custom" onclick="selectPreset('custom')">
+                <div class="preset-icon">⚙️</div>
+                <div class="preset-title">Build your own</div>
+                <div class="preset-desc">Create custom tasks from scratch</div>
+              </div>
+            </div>
+
+            <div class="tasks-preview">
+              <h4>Tasks Preview</h4>
+              <div id="preset-preview-list"></div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin-top:8px">
+              <button class="btn btn-ghost" onclick="wizGoStep(1)">← Back</button>
+              <button class="btn btn-primary" onclick="wizGoStep(3)">Continue →</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Tasks -->
+          <div class="wiz-step-content" id="wiz-step-3">
+            <div class="info-panel">
+              <h4>Let's prepare your tasks!</h4>
+              <p>Note — you can edit tasks at any time, even during the game.</p>
+              <ul style="margin-top:8px">
+                <li><strong>Title</strong> — keep it short and descriptive</li>
+                <li><strong>Repetitions</strong> — max completion count (blank = unlimited)</li>
+                <li><strong>Cooldown</strong> — minimum minutes between completions</li>
+                <li><strong>Photo required</strong> — player must submit a photo to complete</li>
+              </ul>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <h3>Tasks</h3>
+              <button class="btn btn-teal btn-sm" onclick="showTaskForm()">+ New task</button>
+            </div>
+
+            <!-- Inline task form -->
+            <div id="task-form-wrap" style="display:none">
+              <div class="task-form">
+                <h4>Add Task</h4>
+                <div class="form-group"><label class="form-label">Title <span class="form-required">*</span></label><input class="form-control" id="tf-title" placeholder="Short task title"></div>
+                <div class="form-group"><label class="form-label">Description</label><textarea class="form-control" id="tf-desc" rows="2" placeholder="Describe what the player must do..."></textarea></div>
+                <div class="form-row3">
+                  <div class="form-group">
+                    <label class="form-label">Points</label>
+                    <input class="form-control" type="number" id="tf-pts" value="10" min="0">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Repetitions</label>
+                    <input class="form-control" type="number" id="tf-reps" placeholder="∞" min="1">
+                    <div class="form-hint">Blank = unlimited</div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Cooldown (min)</label>
+                    <input class="form-control" type="number" id="tf-cool" placeholder="0" min="0">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="toggle-wrap" id="tf-photo-toggle" onclick="togglePhotoReq()">
+                    <div class="toggle" id="tf-photo-tog"></div>
+                    <span class="toggle-label">Photo required</span>
+                  </label>
+                </div>
+                <div style="display:flex;gap:10px">
+                  <button class="btn btn-teal" onclick="saveTask()">Save Task</button>
+                  <button class="btn btn-ghost" onclick="cancelTaskForm()">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Task table -->
+            <div id="wiz-task-table-wrap">
+              <table class="task-table" id="wiz-task-table">
+                <thead><tr><th>Title &amp; Description</th><th>Points</th><th>Repetitions</th><th></th></tr></thead>
+                <tbody id="wiz-task-tbody"></tbody>
+              </table>
+              <div id="wiz-task-empty" class="empty" style="display:none"><div class="e-icon">📝</div><p>No tasks yet. Click "+ New task" to add one.</p></div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin-top:24px">
+              <button class="btn btn-ghost" onclick="wizGoStep(2)">← Back</button>
+              <button class="btn btn-primary" onclick="wizComplete()" style="font-size:16px;padding:12px 28px">Complete Setup →</button>
+            </div>
+          </div>
+
+        </div><!-- card-body -->
+      </div><!-- card -->
+    </div><!-- page-create -->
+
+    <!-- ======================================================
+         GAME MANAGER PAGE
+         ====================================================== -->
+    <div id="page-game-manager" style="display:none">
+      <div class="breadcrumb">
+        <a onclick="showPage('dashboard')">Home</a><span>›</span>
+        <a onclick="showPage('dashboard')">Games</a><span>›</span>
+        <span id="gm-breadcrumb-name">—</span>
+      </div>
+
+      <!-- Header -->
+      <div class="gm-header">
+        <div class="gm-title-wrap">
+          <div id="gm-name-display" class="gm-name-display"></div>
+          <button class="gm-edit-btn" title="Edit name" onclick="gmToggleNameEdit()">✏️</button>
+          <input type="text" class="gm-name-input" id="gm-name-input" style="display:none" onblur="gmSaveName()" onkeydown="if(event.key==='Enter')gmSaveName()">
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-ghost btn-sm" onclick="gmDuplicate()">DUPLICATE</button>
+          <button class="btn btn-danger btn-sm" onclick="gmDelete()">DELETE</button>
+        </div>
+      </div>
+
+      <!-- Success banner (first visit) -->
+      <div class="success-banner" id="gm-success-banner" style="display:none">
+        <div class="success-banner-icon">🎉</div>
+        <div class="success-banner-text">
+          <h4>Congratulations! Basic setup is done.</h4>
+          <p>Now publish to start the game and let players join.</p>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="color:#fff;border-color:rgba(255,255,255,.4)" onclick="this.closest('.success-banner').style.display='none'">✕</button>
+      </div>
+
+      <!-- State banner -->
+      <div id="gm-state-banner" class="state-banner banner-concept">
+        <div class="banner-text" id="gm-banner-text"></div>
+        <button class="btn btn-primary btn-sm" id="gm-banner-btn" onclick="gmToggleState()"></button>
+      </div>
+
+      <div class="gm-grid">
+        <!-- Game Card -->
+        <div class="game-card">
+          <div class="game-logo-wrap">
+            <div class="game-logo" id="gm-logo">🎮</div>
+            <div class="game-logo-info">
+              <h3 id="gm-card-name"></h3>
+              <div class="update-logo-link" onclick="document.getElementById('gm-logo-upload').click()">UPDATE LOGO</div>
+              <input type="file" id="gm-logo-upload" accept=".jpg,.jpeg,.png" style="display:none" onchange="gmUpdateLogo(this)">
+            </div>
+          </div>
+
+          <!-- Rules -->
+          <div class="form-group">
+            <label class="form-label">Rules / Info</label>
+            <textarea class="form-control" id="gm-rules" rows="3" placeholder="Game rules and info..." onchange="gmSaveField('rules', this.value)"></textarea>
+          </div>
+
+          <!-- Duration -->
+          <div class="game-field-row">
+            <div>
+              <div class="gf-label">Duration</div>
+              <div class="gf-value" id="gm-duration-display">NOT PLANNED</div>
+            </div>
+            <button class="gm-edit-btn" onclick="gmToggleDuration()">✏️</button>
+          </div>
+          <div id="gm-duration-picker" style="display:none;padding:10px 0">
+            <div class="duration-picker">
+              <div class="form-group">
+                <label class="form-label">Start Date &amp; Time</label>
+                <input type="datetime-local" class="form-control" id="gm-start-dt" onchange="gmSaveDuration()">
+              </div>
+              <div class="form-group">
+                <label class="form-label">End Date &amp; Time</label>
+                <input type="datetime-local" class="form-control" id="gm-end-dt" onchange="gmSaveDuration()">
+              </div>
+            </div>
+          </div>
+
+          <!-- State -->
+          <div class="game-field-row">
+            <div class="gf-label">State</div>
+            <div class="gf-value"><span id="gm-state-badge" class="badge badge-concept">CONCEPT</span></div>
+          </div>
+
+          <!-- Game Code -->
+          <div class="game-field-row">
+            <div class="gf-label">Game Code</div>
+            <div class="gf-value">
+              <span id="gm-code-display" class="game-code-display"></span>
+              <button class="gm-edit-btn" onclick="gmEditCode()" title="Edit code">✏️</button>
+            </div>
+          </div>
+
+          <!-- Progress -->
+          <div class="game-field-row" style="display:block">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div class="gf-label">Game Progress</div>
+              <span id="gm-prog-pct" style="font-size:12px;font-weight:700;color:var(--orange)">0%</span>
+            </div>
+            <div class="progress-bar" style="margin-top:8px">
+              <div class="progress-fill" id="gm-prog-fill" style="width:0%"></div>
+            </div>
+          </div>
+
+          <!-- Players -->
+          <div class="game-field-row">
+            <div class="gf-label">Players</div>
+            <div class="gf-value" id="gm-players-count">0 / unlimited</div>
+          </div>
+
+          <!-- Price -->
+          <div class="game-field-row">
+            <div class="gf-label">Price</div>
+            <div class="gf-value"><span class="badge badge-active">FREE</span></div>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div style="display:grid;gap:16px;align-content:start">
+          <!-- Other Settings -->
+          <div class="settings-panel">
+            <h3>Other Settings</h3>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">Game plan</div>
+                <div class="setting-sub">Current plan: BASIC</div>
+              </div>
+              <button class="btn btn-outline btn-xs">UPGRADE</button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-label">Ranking per days</div>
+              <label class="toggle-wrap" onclick="event.preventDefault();this.querySelector('.toggle').classList.toggle('on')">
+                <div class="toggle"></div>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div class="setting-label">Collect e-mails</div>
+              <label class="toggle-wrap" onclick="event.preventDefault();this.querySelector('.toggle').classList.toggle('on')">
+                <div class="toggle"></div>
+              </label>
+            </div>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">End of game day</div>
+                <div class="setting-sub">Daily reset time</div>
+              </div>
+              <input type="time" class="form-control" style="width:110px" value="23:59">
+            </div>
+          </div>
+
+          <!-- QR Code button -->
+          <div class="settings-panel">
+            <h3>Printable Card</h3>
+            <p style="font-size:13px;color:var(--gray);margin-bottom:14px">Generate a QR code card players can scan to join the game.</p>
+            <button class="btn btn-navy" style="width:100%;justify-content:center" onclick="showPage('qr')">🖨️ QR Code / Print Card</button>
+          </div>
+
+          <!-- Tasks summary -->
+          <div class="settings-panel">
+            <h3>Tasks</h3>
+            <p style="font-size:13px;color:var(--gray);margin-bottom:12px" id="gm-task-count">0 tasks configured</p>
+            <button class="btn btn-outline btn-sm" onclick="showPage('create')">✏️ Edit Tasks</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- page-game-manager -->
+
+    <!-- ======================================================
+         QR / PRINT CARD PAGE
+         ====================================================== -->
+    <div id="page-qr" style="display:none">
+      <div class="page-hdr">
+        <div>
+          <div class="breadcrumb" style="margin-bottom:4px">
+            <a onclick="showPage('game-manager')">← Game Manager</a>
+          </div>
+          <h1>QR Code / Printable Card</h1>
+        </div>
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Save as PDF / Print</button>
+      </div>
+
+      <div class="qr-page">
+        <div class="qr-card">
+          <div class="qr-top">
+            <div class="qr-brand">The Tasting Tours™</div>
+            <div class="qr-tagline">Eat. Drink. Experience!</div>
+            <div class="qr-game-name" id="qr-game-name">—</div>
+            <div class="qr-code-display" id="qr-code-text">—</div>
+          </div>
+          <div class="qr-body">
+            <div class="qr-code-wrap">
+              <div id="qr-canvas"></div>
+            </div>
+
+            <div class="qr-instructions">
+              <h4>How to play:</h4>
+              <div class="qr-step">
+                <div class="qr-step-num">1</div>
+                <span>Visit <strong>ttt-scavenger-hunt.vercel.app</strong> on your phone</span>
+              </div>
+              <div class="qr-step">
+                <div class="qr-step-num">2</div>
+                <span>Tap "Enter Code" and enter your game code: <strong id="qr-code-inline">—</strong></span>
+              </div>
+              <div class="qr-step">
+                <div class="qr-step-num">3</div>
+                <span>Start your adventure and complete tasks to earn points!</span>
+              </div>
+            </div>
+          </div>
+          <div class="qr-footer">
+            The Tasting Tours™ &nbsp;|&nbsp; thetastingtours.com &nbsp;|&nbsp; © 2026
+          </div>
+        </div>
+      </div>
+    </div><!-- page-qr -->
+
+    <!-- ======================================================
+         SETTINGS PAGE
+         ====================================================== -->
     <div id="page-settings" style="display:none">
       <div class="page-hdr"><h1>Settings</h1></div>
       <div style="display:grid;gap:20px;max-width:600px">
         <div class="card card-body">
           <h3 style="margin-bottom:16px">Admin Account</h3>
-          <div class="form-group"><label class="form-label">Password</label><input class="form-control" type="password" id="new-pw" placeholder="New password"><p style="font-size:12px;color:var(--gray);margin-top:4px">Changes are stored locally only</p></div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input class="form-control" type="password" id="new-pw" placeholder="New password">
+            <p style="font-size:12px;color:var(--gray);margin-top:4px">Changes are stored locally only</p>
+          </div>
           <button class="btn btn-primary" onclick="savePw()">Save Password</button>
         </div>
         <div class="card card-body">
@@ -199,12 +843,20 @@ textarea.form-control{resize:vertical;min-height:80px}
             <button class="btn btn-danger" onclick="resetPlayers()">🗑 Reset All Players</button>
           </div>
         </div>
+        <div class="card card-body">
+          <h3 style="margin-bottom:8px">About</h3>
+          <p style="font-size:14px;color:var(--gray)">The Tasting Tours™ Admin Dashboard</p>
+          <p style="font-size:13px;color:var(--gray);margin-top:4px">Support: <a href="mailto:info@thetastingtours.com" style="color:var(--orange)">info@thetastingtours.com</a></p>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- TOUR MODAL -->
+  </div><!-- .main -->
+</div><!-- #app -->
+
+<!-- ============================================================
+     TOUR MODAL
+     ============================================================ -->
 <div class="modal-ov" id="tour-modal">
   <div class="modal">
     <div class="modal-hdr">
@@ -212,7 +864,6 @@ textarea.form-control{resize:vertical;min-height:80px}
       <button class="close-btn" onclick="closeModal('tour-modal')">✕</button>
     </div>
     <div class="modal-body">
-      <!-- tour fields -->
       <div class="form-row">
         <div class="form-group"><label class="form-label">Tour Name</label><input class="form-control" id="f-name" placeholder="e.g. Taste of St. Augustine"></div>
         <div class="form-group"><label class="form-label">Tour Code</label>
@@ -238,13 +889,11 @@ textarea.form-control{resize:vertical;min-height:80px}
           <select class="form-control" id="f-status"><option value="draft">Draft</option><option value="active">Active</option><option value="completed">Completed</option></select>
         </div>
       </div>
-
-      <!-- stops -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin:24px 0 16px">
         <h3>Stops</h3>
         <button class="btn btn-outline btn-sm" onclick="addStop()">+ Add Stop</button>
       </div>
-      <div id="stops-editor"><!-- js --></div>
+      <div id="stops-editor"></div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('tour-modal')">Cancel</button>
@@ -253,23 +902,28 @@ textarea.form-control{resize:vertical;min-height:80px}
   </div>
 </div>
 
-<!-- CONFIRM MODAL -->
+<!-- ============================================================
+     CONFIRM MODAL
+     ============================================================ -->
 <div class="modal-ov" id="confirm-modal">
   <div class="modal" style="max-width:420px">
     <div class="modal-hdr"><h2 id="confirm-title">Confirm</h2><button class="close-btn" onclick="closeModal('confirm-modal')">✕</button></div>
     <div class="modal-body"><p id="confirm-msg"></p></div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('confirm-modal')">Cancel</button>
-      <button class="btn btn-danger" id="confirm-ok-btn" onclick="">Confirm</button>
+      <button class="btn btn-danger" id="confirm-ok-btn">Confirm</button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
 <script>
 // ============================================================
-// DEFAULT TOUR DATA (mirrors index.html)
+// DEFAULT TOUR DATA
 // ============================================================
 const DEFAULT_TOURS = [
   {id:'tour1',code:'TASTE1',name:'Taste of St. Augustine',type:'Scavenger Hunt',ageRange:'Family-friendly (ages 3+)',status:'active',
@@ -335,11 +989,53 @@ const DEFAULT_TOURS = [
 ];
 
 // ============================================================
+// PRESET DATA
+// ============================================================
+const PRESET_TASKS = {
+  historic: [
+    {title:'Visit Castillo de San Marcos',desc:'Find and photograph the historic fort.',pts:50,reps:'',cool:'',photo:true},
+    {title:'Find the City Gate',desc:'Locate the original city gate entrance.',pts:75,reps:'',cool:'',photo:true},
+    {title:'St. George Street Photo',desc:'Take a group photo on the famous pedestrian street.',pts:60,reps:'',cool:'',photo:true}
+  ],
+  foodie: [
+    {title:'Snap your dish at first stop',desc:'Take a photo of your food at the first restaurant.',pts:80,reps:'1',cool:'',photo:true},
+    {title:'Rate a restaurant',desc:'Leave a review rating for any participating restaurant.',pts:50,reps:'3',cool:'30',photo:false},
+    {title:'Try a local specialty',desc:'Order and taste a locally recommended specialty dish.',pts:100,reps:'1',cool:'',photo:true}
+  ],
+  ghost: [
+    {title:'Find the Huguenot Cemetery',desc:'Locate the historic cemetery and find the oldest grave.',pts:75,reps:'',cool:'',photo:true},
+    {title:'Spot the Haunted B&B',desc:'Identify the most famously haunted bed & breakfast.',pts:60,reps:'',cool:'',photo:true},
+    {title:'Ghost Trivia Challenge',desc:'Answer three ghost trivia questions correctly.',pts:100,reps:'1',cool:'',photo:false}
+  ],
+  custom: []
+};
+
+const PRESET_PREVIEWS = {
+  historic:[
+    {label:'Visit Castillo de San Marcos',pts:50},
+    {label:'Find the City Gate',pts:75},
+    {label:'St. George Street photo',pts:60}
+  ],
+  foodie:[
+    {label:'Snap your dish at first stop',pts:80},
+    {label:'Rate a restaurant',pts:50},
+    {label:'Try a local specialty',pts:100}
+  ],
+  ghost:[
+    {label:'Find the Huguenot Cemetery',pts:75},
+    {label:'Spot haunted B&B',pts:60},
+    {label:'Ghost trivia challenge',pts:100}
+  ],
+  custom:[{label:'No tasks yet — add your own in the next step.',pts:null}]
+};
+
+// ============================================================
 // STATE / STORAGE
 // ============================================================
-const ADMIN_PW_KEY='ttt_admin_pw';
-const TOURS_KEY='ttt_admin_tours';
-const STATE_KEY='ttt_state';
+const ADMIN_PW_KEY   = 'ttt_admin_pw';
+const TOURS_KEY      = 'ttt_admin_tours';
+const STATE_KEY      = 'ttt_state';
+const GAME_KEY       = 'ttt_current_game';
 
 function getStoredPw(){return localStorage.getItem(ADMIN_PW_KEY)||'admin123'}
 function getTours(){
@@ -354,6 +1050,12 @@ function getPlayerState(){
   return {players:[]};
 }
 function savePlayerState(st){localStorage.setItem(STATE_KEY,JSON.stringify(st))}
+function getCurrentGame(){
+  const raw=localStorage.getItem(GAME_KEY);
+  if(raw) try{return JSON.parse(raw)}catch(e){}
+  return null;
+}
+function saveCurrentGame(g){localStorage.setItem(GAME_KEY,JSON.stringify(g))}
 
 // ============================================================
 // AUTH
@@ -368,32 +1070,72 @@ function login(){
     document.getElementById('pw-err').textContent='Incorrect password. Please try again.';
   }
 }
-
 function logout(){
   document.getElementById('login-wrap').style.display='flex';
   document.getElementById('app').style.display='none';
   document.getElementById('pw').value='';
   document.getElementById('pw-err').textContent='';
 }
-
 document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
 
 // ============================================================
 // PAGES
 // ============================================================
+const ALL_PAGES=['dashboard','tours','players','create','game-manager','qr','settings'];
 function showPage(p){
-  ['tours','players','settings'].forEach(pg=>{
-    document.getElementById('page-'+pg).style.display=pg===p?'block':'none';
-    document.getElementById('sbi-'+pg).classList.toggle('active',pg===p);
+  ALL_PAGES.forEach(pg=>{
+    const el=document.getElementById('page-'+pg);
+    if(el) el.style.display=pg===p?'block':'none';
+    const sbi=document.getElementById('sbi-'+pg);
+    if(sbi) sbi.classList.toggle('active',pg===p);
   });
   if(p==='players') renderPlayers();
+  if(p==='tours'){renderStats();renderTourList();}
+  if(p==='dashboard') renderDashboard();
+  if(p==='game-manager') renderGameManager(false);
+  if(p==='qr') renderQRPage();
 }
 
 function initApp(){
+  renderDashboard();
   renderStats();
   renderTourList();
   populatePlayerFilter();
-  showPage('tours');
+  // pre-select preset preview
+  selectPreset('historic');
+  showPage('dashboard');
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function renderDashboard(){
+  const tours=getTours();
+  const st=getPlayerState();
+  const players=st.players||[];
+  const active=tours.filter(t=>t.status==='active').length;
+  const completed=players.filter(p=>p.completedStops&&p.completedStops.length>=(tours.find(t=>t.id===p.tourId)||{stops:[]}).stops.length).length;
+  const g=getCurrentGame();
+
+  document.getElementById('stats-row-dash').innerHTML=`
+    <div class="stat-card"><div class="num">${tours.length}</div><div class="lbl">Total Tours</div></div>
+    <div class="stat-card"><div class="num">${active}</div><div class="lbl">Active Tours</div></div>
+    <div class="stat-card"><div class="num">${players.length}</div><div class="lbl">Total Players</div></div>
+    <div class="stat-card"><div class="num">${g?1:0}</div><div class="lbl">Games Created</div></div>`;
+
+  const recentEl=document.getElementById('dash-recent-tours');
+  if(!tours.length){
+    recentEl.innerHTML='<div class="empty"><div class="e-icon">🗺</div><p>No tours yet.</p></div>';
+    return;
+  }
+  recentEl.innerHTML=tours.slice(0,3).map(t=>`
+    <div class="tour-row" style="padding:12px 20px">
+      <div class="tr-info">
+        <div class="tr-name">${t.name}</div>
+        <div class="tr-meta">${t.type} · ${t.stops.length} stops</div>
+      </div>
+      <span class="badge ${t.status==='active'?'badge-active':t.status==='completed'?'badge-completed':'badge-draft'}">${t.status}</span>
+    </div>`).join('');
 }
 
 // ============================================================
@@ -424,7 +1166,7 @@ function renderTourList(){
   }
   document.getElementById('tour-list').innerHTML=tours.map(t=>`
     <div class="tour-row">
-      <img class="tr-img" src="${t.image||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'56\' height=\'56\'><rect fill=\'%23F3F4F6\' width=\'56\' height=\'56\'/></svg>'}" alt="${t.name}" onerror="this.style.display='none'">
+      <img class="tr-img" src="${t.image||''}" alt="${t.name}" onerror="this.style.display='none'">
       <div class="tr-info">
         <div class="tr-name">${t.name} <span style="font-family:monospace;font-size:13px;background:#F3F4F6;padding:2px 8px;border-radius:4px;letter-spacing:2px;margin-left:8px">${t.code}</span></div>
         <div class="tr-meta">${t.type} · ${t.ageRange} · ${t.stops.length} stops</div>
@@ -448,11 +1190,12 @@ function startHuntAdmin(id){
       st.players=(st.players||[]).filter(p=>p.tourId!==id);
       savePlayerState(st);
       t.status='draft';
+      saveTours(tours);renderTourList();
     },true);
   } else {
     t.status='active';
+    saveTours(tours);renderTourList();
   }
-  saveTours(tours);renderTourList();
 }
 
 function confirmDelete(id){
@@ -497,13 +1240,10 @@ function addStop(){
   modalStops.push({id:n,name:`Stop ${n}`,neighborhood:'',teaser:'',clue:'',
     trivia:{q:'',a:['','','',''],c:0},funFact:'',photo:'',pts:100,qr:`TTT-STOP-${n}`,visible:true});
   renderStopEditors();
-  setTimeout(()=>{const editors=document.querySelectorAll('.stop-editor');editors[editors.length-1]&&toggleStop(editors.length-1)},50);
+  setTimeout(()=>{const eds=document.querySelectorAll('.stop-editor');eds[eds.length-1]&&toggleStop(eds.length-1)},50);
 }
 
-function rmStop(i){
-  modalStops.splice(i,1);
-  renderStopEditors();
-}
+function rmStop(i){modalStops.splice(i,1);renderStopEditors()}
 
 function mvStop(i,dir){
   const j=i+dir;
@@ -570,7 +1310,6 @@ function saveTour(){
   const code=document.getElementById('f-code').value.trim().toUpperCase();
   if(!name){toast('Tour name is required');return}
   if(!code||code.length<4){toast('Tour code must be at least 4 characters');return}
-
   const tours=getTours();
   const tour={
     id:editingId||('tour_'+Date.now()),
@@ -582,10 +1321,8 @@ function saveTour(){
     status:document.getElementById('f-status').value,
     stops:modalStops
   };
-
   if(editingId){const idx=tours.findIndex(t=>t.id===editingId);if(idx>=0) tours[idx]=tour;else tours.push(tour)}
   else tours.push(tour);
-
   saveTours(tours);
   closeModal('tour-modal');
   renderTourList();
@@ -605,10 +1342,9 @@ function populatePlayerFilter(){
 function renderPlayers(){
   const tours=getTours();
   const st=getPlayerState();
-  const players=(st.players||[]);
+  const players=st.players||[];
   const filt=document.getElementById('player-tour-filter').value;
   const list=filt?players.filter(p=>p.tourId===filt):players;
-
   const tbody=document.getElementById('player-tbody');
   if(!list.length){
     tbody.innerHTML='<tr><td colspan="5"><div class="empty"><div class="e-icon">👥</div><p>No players yet.</p></div></td></tr>';
@@ -624,10 +1360,7 @@ function renderPlayers(){
     return `<tr>
       <td><div style="display:flex;align-items:center;gap:10px"><span style="font-size:24px">${p.avatar||'🧑'}</span><div><div style="font-weight:600">${p.name}</div><div style="font-size:12px;color:var(--gray)">${p.mode||'individual'}</div></div></div></td>
       <td>${t?t.name:'—'}</td>
-      <td>
-        <div style="font-size:13px;margin-bottom:4px">Stop ${prog}/${total} (${pct}%)</div>
-        <div class="prog-mini"><div class="prog-mini-fill" style="width:${pct}%"></div></div>
-      </td>
+      <td><div style="font-size:13px;margin-bottom:4px">Stop ${prog}/${total} (${pct}%)</div><div class="prog-mini"><div class="prog-mini-fill" style="width:${pct}%"></div></div></td>
       <td><strong style="color:var(--orange)">${p.score||0}</strong></td>
       <td style="color:var(--gray);font-size:13px">${timeStr}</td>
     </tr>`;
@@ -646,7 +1379,7 @@ function savePw(){
 }
 
 function exportData(){
-  const data={tours:getTours(),playerState:getPlayerState(),exported:new Date().toISOString()};
+  const data={tours:getTours(),playerState:getPlayerState(),currentGame:getCurrentGame(),exported:new Date().toISOString()};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const a=document.createElement('a');
   a.href=URL.createObjectURL(blob);
@@ -660,6 +1393,458 @@ function resetPlayers(){
     renderStats();
     toast('All player data reset.');
   },true);
+}
+
+// ============================================================
+// WIZARD
+// ============================================================
+let wizCurrentStep=1;
+let wizSelectedPreset='historic';
+let wizTasks=[];
+let wizPhotoRequired=false;
+
+function wizGoStep(n){
+  // update step indicators
+  for(let i=1;i<=3;i++){
+    const num=document.getElementById('wn'+i);
+    const lbl=document.getElementById('wl'+i);
+    num.className='wiz-num '+(i<n?'done':i===n?'active':'');
+    lbl.className='wiz-label '+(i<n?'done':i===n?'active':'');
+    document.getElementById('wiz-step-'+i).className='wiz-step-content '+(i===n?'active':'');
+  }
+  const l1=document.getElementById('wline1');
+  const l2=document.getElementById('wline2');
+  if(l1) l1.className='wiz-line '+(n>1?'done':'');
+  if(l2) l2.className='wiz-line '+(n>2?'done':'');
+  wizCurrentStep=n;
+  if(n===3) populateWizTasks();
+}
+
+function wizValidateStep1(){
+  const name=document.getElementById('wiz-name').value.trim();
+  const email=document.getElementById('wiz-email').value.trim();
+  const terms=document.getElementById('wiz-terms').checked;
+  const count=document.getElementById('wiz-name-count');
+  count.textContent=document.getElementById('wiz-name').value.length;
+  const ok=name.length>0&&email.length>0&&terms;
+  document.getElementById('wiz-step1-btn').disabled=!ok;
+}
+
+function wizHandleLogo(input){
+  const file=input.files[0];
+  if(!file) return;
+  if(file.size>4*1024*1024){toast('Logo must be under 4MB');input.value='';return}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    document.getElementById('wiz-logo-preview').innerHTML=`<img src="${e.target.result}" style="max-width:120px;max-height:80px;border-radius:8px;border:2px solid var(--gl)">`;
+    // store in wizard state
+    wizLogoDataUrl=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+let wizLogoDataUrl='';
+
+function selectPreset(key){
+  wizSelectedPreset=key;
+  ['historic','foodie','ghost','custom'].forEach(k=>{
+    document.getElementById('preset-'+k).classList.toggle('selected',k===key);
+  });
+  const preview=PRESET_PREVIEWS[key]||[];
+  document.getElementById('preset-preview-list').innerHTML=preview.map(p=>`
+    <div class="preview-task">
+      <span>${p.label}</span>
+      ${p.pts!=null?`<span class="pts">${p.pts}pts</span>`:''}
+    </div>`).join('');
+}
+
+function populateWizTasks(){
+  if(wizTasks.length===0){
+    wizTasks=JSON.parse(JSON.stringify(PRESET_TASKS[wizSelectedPreset]||[]));
+  }
+  renderWizTaskTable();
+}
+
+function renderWizTaskTable(){
+  const tbody=document.getElementById('wiz-task-tbody');
+  const empty=document.getElementById('wiz-task-empty');
+  if(!wizTasks.length){
+    tbody.innerHTML='';
+    empty.style.display='block';
+    return;
+  }
+  empty.style.display='none';
+  tbody.innerHTML=wizTasks.map((t,i)=>`
+    <tr>
+      <td>
+        <div class="task-title">${esc(t.title)}</div>
+        <div class="task-desc">${esc(t.desc||'')}${t.photo?'<br><span style="color:var(--teal);font-size:11px;font-weight:700">📷 Photo required</span>':''}</div>
+      </td>
+      <td><strong style="color:var(--orange)">${t.pts}</strong></td>
+      <td>${t.reps||'∞'}</td>
+      <td><button class="btn btn-danger btn-xs" onclick="removeWizTask(${i})">✕</button></td>
+    </tr>`).join('');
+}
+
+function removeWizTask(i){
+  wizTasks.splice(i,1);
+  renderWizTaskTable();
+}
+
+function showTaskForm(){
+  document.getElementById('task-form-wrap').style.display='block';
+  document.getElementById('tf-title').value='';
+  document.getElementById('tf-desc').value='';
+  document.getElementById('tf-pts').value='10';
+  document.getElementById('tf-reps').value='';
+  document.getElementById('tf-cool').value='';
+  wizPhotoRequired=false;
+  document.getElementById('tf-photo-tog').className='toggle';
+  document.getElementById('tf-title').focus();
+}
+
+function cancelTaskForm(){
+  document.getElementById('task-form-wrap').style.display='none';
+}
+
+function togglePhotoReq(){
+  wizPhotoRequired=!wizPhotoRequired;
+  document.getElementById('tf-photo-tog').className='toggle'+(wizPhotoRequired?' on':'');
+}
+
+function saveTask(){
+  const title=document.getElementById('tf-title').value.trim();
+  if(!title){toast('Task title is required');return}
+  wizTasks.push({
+    title,
+    desc:document.getElementById('tf-desc').value.trim(),
+    pts:parseInt(document.getElementById('tf-pts').value)||10,
+    reps:document.getElementById('tf-reps').value.trim(),
+    cool:document.getElementById('tf-cool').value.trim(),
+    photo:wizPhotoRequired
+  });
+  cancelTaskForm();
+  renderWizTaskTable();
+  toast('Task added!');
+}
+
+function genGameCode(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  return Array.from({length:4},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+}
+
+function wizComplete(){
+  const name=document.getElementById('wiz-name').value.trim()||'My Game';
+  const rules=document.getElementById('wiz-rules').value.trim();
+  const tz=document.getElementById('wiz-tz').value;
+  const email=document.getElementById('wiz-email').value.trim();
+  const code=genGameCode();
+
+  const game={
+    id:'game_'+Date.now(),
+    name,rules,tz,email,
+    logo:wizLogoDataUrl,
+    code,
+    preset:wizSelectedPreset,
+    tasks:JSON.parse(JSON.stringify(wizTasks)),
+    state:'concept',
+    startDate:'',endDate:'',
+    createdAt:new Date().toISOString(),
+    firstVisit:true
+  };
+  saveCurrentGame(game);
+
+  // reset wizard for next use
+  wizTasks=[];
+  wizLogoDataUrl='';
+
+  toast('Game created! Redirecting to Game Manager...');
+  setTimeout(()=>showPage('game-manager'),600);
+}
+
+// ============================================================
+// GAME MANAGER
+// ============================================================
+function renderGameManager(skipSuccessBanner){
+  const g=getCurrentGame();
+  if(!g){
+    document.getElementById('page-game-manager').innerHTML=`
+      <div class="page-hdr"><h1>Game Manager</h1></div>
+      <div class="card card-body" style="text-align:center;padding:48px">
+        <div style="font-size:48px;margin-bottom:16px">🎯</div>
+        <h2 style="margin-bottom:12px">No game yet</h2>
+        <p style="color:var(--gray);margin-bottom:24px">Create your first game using the wizard.</p>
+        <button class="btn btn-primary" onclick="showPage('create')">➕ Create Game</button>
+      </div>`;
+    return;
+  }
+
+  // Breadcrumb name
+  const bcEl=document.getElementById('gm-breadcrumb-name');
+  if(bcEl) bcEl.textContent=g.name;
+
+  // Name display
+  const nameDisplay=document.getElementById('gm-name-display');
+  if(nameDisplay) nameDisplay.textContent=g.name;
+
+  // Card name
+  const cardName=document.getElementById('gm-card-name');
+  if(cardName) cardName.textContent=g.name;
+
+  // Rules
+  const rulesEl=document.getElementById('gm-rules');
+  if(rulesEl) rulesEl.value=g.rules||'';
+
+  // Logo
+  const logoEl=document.getElementById('gm-logo');
+  if(logoEl){
+    if(g.logo) logoEl.innerHTML=`<img src="${g.logo}" style="width:100%;height:100%;object-fit:cover">`;
+    else logoEl.textContent='🎮';
+  }
+
+  // Duration
+  updateGmDuration(g);
+
+  // State
+  updateGmStateBadge(g);
+  updateGmStateBanner(g);
+
+  // Code
+  const codeEl=document.getElementById('gm-code-display');
+  if(codeEl) codeEl.textContent=g.code;
+
+  // Progress (based on tasks completed – placeholder 0%)
+  const progPct=0;
+  const progEl=document.getElementById('gm-prog-fill');
+  if(progEl) progEl.style.width=progPct+'%';
+  const pctEl=document.getElementById('gm-prog-pct');
+  if(pctEl) pctEl.textContent=progPct+'%';
+
+  // Players
+  const st=getPlayerState();
+  const playerCount=(st.players||[]).length;
+  const playersEl=document.getElementById('gm-players-count');
+  if(playersEl) playersEl.textContent=`${playerCount} / unlimited`;
+
+  // Tasks
+  const taskCountEl=document.getElementById('gm-task-count');
+  if(taskCountEl) taskCountEl.textContent=`${(g.tasks||[]).length} task${(g.tasks||[]).length!==1?'s':''} configured`;
+
+  // Success banner
+  const banner=document.getElementById('gm-success-banner');
+  if(banner){
+    if(g.firstVisit&&!skipSuccessBanner){
+      banner.style.display='flex';
+      // Clear first visit flag
+      g.firstVisit=false;
+      saveCurrentGame(g);
+    } else {
+      banner.style.display='none';
+    }
+  }
+
+  // Date pickers
+  const startEl=document.getElementById('gm-start-dt');
+  const endEl=document.getElementById('gm-end-dt');
+  if(startEl&&g.startDate) startEl.value=g.startDate;
+  if(endEl&&g.endDate) endEl.value=g.endDate;
+}
+
+function updateGmDuration(g){
+  const el=document.getElementById('gm-duration-display');
+  if(!el) return;
+  if(g.startDate&&g.endDate){
+    const s=new Date(g.startDate).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    const e=new Date(g.endDate).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+    el.textContent=`${s} → ${e}`;
+  } else {
+    el.textContent='NOT PLANNED';
+  }
+}
+
+function updateGmStateBadge(g){
+  const el=document.getElementById('gm-state-badge');
+  if(!el) return;
+  const map={concept:{cls:'badge-concept',label:'CONCEPT'},running:{cls:'badge-running',label:'RUNNING'},finished:{cls:'badge-finished',label:'FINISHED'}};
+  const m=map[g.state]||map.concept;
+  el.className=`badge ${m.cls}`;
+  el.textContent=m.label;
+}
+
+function updateGmStateBanner(g){
+  const banner=document.getElementById('gm-state-banner');
+  const text=document.getElementById('gm-banner-text');
+  const btn=document.getElementById('gm-banner-btn');
+  if(!banner||!text||!btn) return;
+  if(g.state==='concept'){
+    banner.className='state-banner banner-concept';
+    text.innerHTML='<strong>⚠️ Set a Start and Finish date, then publish the game.</strong>';
+    btn.textContent='Publish Game';
+    btn.className='btn btn-primary btn-sm';
+  } else if(g.state==='running'){
+    banner.className='state-banner banner-running';
+    text.innerHTML='<strong style="color:var(--green)">🟢 Game is running!</strong> Players can join with code <strong>'+g.code+'</strong>';
+    btn.textContent='End Game';
+    btn.className='btn btn-danger btn-sm';
+  } else {
+    banner.className='state-banner';
+    banner.style.background='#F3F4F6';
+    banner.style.border='1px solid #D1D5DB';
+    text.innerHTML='<strong>🏁 Game has finished.</strong>';
+    btn.textContent='Restart Game';
+    btn.className='btn btn-ghost btn-sm';
+  }
+}
+
+function gmToggleState(){
+  const g=getCurrentGame();
+  if(!g) return;
+  if(g.state==='concept') g.state='running';
+  else if(g.state==='running') g.state='finished';
+  else g.state='concept';
+  saveCurrentGame(g);
+  updateGmStateBadge(g);
+  updateGmStateBanner(g);
+  toast(`Game state: ${g.state.toUpperCase()}`);
+}
+
+function gmToggleNameEdit(){
+  const display=document.getElementById('gm-name-display');
+  const input=document.getElementById('gm-name-input');
+  const g=getCurrentGame();
+  if(!g) return;
+  if(input.style.display==='none'){
+    input.value=g.name;
+    display.style.display='none';
+    input.style.display='inline-block';
+    input.focus();
+    input.select();
+  } else {
+    gmSaveName();
+  }
+}
+
+function gmSaveName(){
+  const input=document.getElementById('gm-name-input');
+  const display=document.getElementById('gm-name-display');
+  const g=getCurrentGame();
+  if(!g) return;
+  const newName=input.value.trim()||g.name;
+  g.name=newName;
+  saveCurrentGame(g);
+  display.textContent=newName;
+  display.style.display='block';
+  input.style.display='none';
+  const bc=document.getElementById('gm-breadcrumb-name');
+  if(bc) bc.textContent=newName;
+  const cn=document.getElementById('gm-card-name');
+  if(cn) cn.textContent=newName;
+}
+
+function gmSaveField(field,val){
+  const g=getCurrentGame();
+  if(!g) return;
+  g[field]=val;
+  saveCurrentGame(g);
+}
+
+function gmToggleDuration(){
+  const picker=document.getElementById('gm-duration-picker');
+  if(picker) picker.style.display=picker.style.display==='none'?'block':'none';
+}
+
+function gmSaveDuration(){
+  const g=getCurrentGame();
+  if(!g) return;
+  const s=document.getElementById('gm-start-dt').value;
+  const e=document.getElementById('gm-end-dt').value;
+  g.startDate=s;g.endDate=e;
+  saveCurrentGame(g);
+  updateGmDuration(g);
+}
+
+function gmDuplicate(){
+  const g=getCurrentGame();
+  if(!g) return;
+  const clone=JSON.parse(JSON.stringify(g));
+  clone.id='game_'+Date.now();
+  clone.name=g.name+' (Copy)';
+  clone.code=genGameCode();
+  clone.state='concept';
+  clone.firstVisit=true;
+  saveCurrentGame(clone);
+  renderGameManager(false);
+  toast('Game duplicated!');
+}
+
+function gmDelete(){
+  showConfirm('Delete Game','This will permanently delete the current game. This cannot be undone.',()=>{
+    localStorage.removeItem(GAME_KEY);
+    toast('Game deleted.');
+    showPage('dashboard');
+  },true);
+}
+
+function gmEditCode(){
+  const g=getCurrentGame();
+  if(!g) return;
+  const newCode=prompt('Enter new game code (4 characters):',g.code);
+  if(!newCode) return;
+  const clean=newCode.trim().toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4);
+  if(clean.length<4){toast('Code must be 4 alphanumeric characters');return}
+  g.code=clean;
+  saveCurrentGame(g);
+  const el=document.getElementById('gm-code-display');
+  if(el) el.textContent=clean;
+  toast('Game code updated!');
+}
+
+function gmUpdateLogo(input){
+  const file=input.files[0];
+  if(!file) return;
+  if(file.size>4*1024*1024){toast('Logo must be under 4MB');return}
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const g=getCurrentGame();
+    if(!g) return;
+    g.logo=e.target.result;
+    saveCurrentGame(g);
+    const logoEl=document.getElementById('gm-logo');
+    if(logoEl) logoEl.innerHTML=`<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+    toast('Logo updated!');
+  };
+  reader.readAsDataURL(file);
+}
+
+// ============================================================
+// QR PAGE
+// ============================================================
+let qrInstance=null;
+
+function renderQRPage(){
+  const g=getCurrentGame();
+  const code=g?g.code:'E1JR';
+  const name=g?g.name:'My Game';
+  const url=`https://ttt-scavenger-hunt.vercel.app/?code=${code}`;
+
+  document.getElementById('qr-game-name').textContent=name;
+  document.getElementById('qr-code-text').textContent=code;
+  document.getElementById('qr-code-inline').textContent=code;
+
+  const container=document.getElementById('qr-canvas');
+  container.innerHTML='';
+
+  if(typeof QRCode!=='undefined'){
+    new QRCode(container,{
+      text:url,
+      width:200,
+      height:200,
+      colorDark:'#1A2744',
+      colorLight:'#ffffff',
+      correctLevel:QRCode.CorrectLevel.M
+    });
+  } else {
+    container.innerHTML=`<div style="width:200px;height:200px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:12px;border-radius:8px">QR code loading...</div>`;
+  }
 }
 
 // ============================================================

@@ -318,20 +318,72 @@ p{line-height:1.6}
 .reg-row .reg-inp{flex:1}
 .reg-terms{font-size:12px;color:var(--gray);text-align:center;line-height:1.6;margin:18px 0 20px}
 .reg-terms a{color:var(--orange);text-decoration:none}
-/* User Profile screen */
-.prof-hero{background:var(--orange);padding:32px 20px 24px;color:#fff;display:flex;flex-direction:column;align-items:center;gap:8px}
-.prof-av-lg{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:38px;border:3px solid rgba(255,255,255,.5)}
-.prof-name{font-size:22px;font-weight:900}
-.prof-xp{font-size:14px;opacity:.85}
-.prof-stats{display:flex;gap:20px;margin-top:8px}
-.prof-stat{text-align:center}
-.prof-stat-n{font-size:22px;font-weight:900}
-.prof-stat-l{font-size:12px;opacity:.75}
-.prof-menu{background:#fff;flex:1}
-.prof-menu-item{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid #F3F4F6;cursor:pointer}
-.pm-icon{font-size:20px;width:28px;text-align:center}
+/* User Profile screen — redesigned */
+.prof-hdr{background:var(--orange);padding:16px 16px 20px;color:#fff}
+.prof-hdr-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.prof-av-circle{width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:26px;border:2.5px solid rgba(255,255,255,.5);flex-shrink:0}
+.prof-name-block{flex:1}
+.prof-name-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.prof-name{font-size:20px;font-weight:900;color:#fff}
+.prof-xp-inline{font-size:13px;color:rgba(255,255,255,.78);font-weight:600}
+.prof-gear-btn{background:none;border:none;color:rgba(255,255,255,.7);font-size:20px;cursor:pointer;padding:4px;flex-shrink:0}
+.prof-league-badge{font-size:12px;color:rgba(255,255,255,.85);margin-top:3px}
+.prof-xp-labels{display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.7);margin-bottom:5px}
+.prof-xp-bar{height:8px;background:rgba(255,255,255,.25);border-radius:4px;position:relative}
+.prof-xp-fill{height:100%;background:#0D9488;border-radius:4px;position:relative}
+.prof-xp-lock{position:absolute;right:-7px;top:-4px;width:16px;height:16px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px}
+/* Profile body */
+.prof-body{flex:1;overflow-y:auto;padding-bottom:80px;background:#F9FAFB}
+.prof-section{background:#fff;margin-top:10px;padding:16px}
+.prof-sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.prof-sec-title{font-size:15px;font-weight:800;color:var(--navy)}
+.prof-sec-meta{font-size:13px;color:var(--gray)}
+.prof-mission-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #F3F4F6;cursor:pointer}
+.prof-mission-item:last-child{border-bottom:none}
+.prof-mission-ring{width:40px;height:40px;flex-shrink:0}
+.prof-mission-body{flex:1}
+.prof-mission-title{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:1px}
+.prof-mission-sub{font-size:12px;color:var(--gray)}
+.prof-view-all{color:var(--orange);font-size:13.5px;font-weight:700;text-decoration:none;display:block;text-align:center;padding:10px 0 4px}
+.prof-photos-btn{border:1.5px solid #E5E7EB;background:#FDF0EB;color:var(--navy);padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.prof-photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:10px}
+.prof-photo-cell{aspect-ratio:1;background:#E5E7EB;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:22px;color:#9CA3AF}
+.prof-explore-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.prof-explore-row::-webkit-scrollbar{display:none}
+.prof-explore-card{flex-shrink:0;width:138px;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.1);cursor:pointer}
+.prof-explore-img{height:88px;width:100%;object-fit:cover}
+.prof-explore-body{padding:8px 10px;background:#fff}
+.prof-explore-title{font-size:12px;font-weight:700;color:var(--navy);line-height:1.3}
+.prof-menu-item{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid #F3F4F6;cursor:pointer;background:#fff}
+.pm-icon{font-size:18px;width:26px;text-align:center}
 .pm-label{flex:1;font-size:15px;font-weight:600;color:var(--navy)}
 .pm-chev{color:var(--gray);font-size:16px}
+/* Map view */
+.map-toggle-btn{background:none;border:1.5px solid #E5E7EB;border-radius:8px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--navy);font-family:inherit;display:flex;align-items:center;gap:5px}
+.map-toggle-btn.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+#s-map{padding-bottom:0}
+.map-search-bar{position:absolute;top:14px;left:14px;right:14px;z-index:1000;background:var(--orange);border-radius:50px;padding:11px 18px;display:flex;align-items:center;gap:8px;color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.map-search-input{flex:1;background:none;border:none;color:#fff;font-size:14px;font-family:inherit;outline:none}
+.map-search-input::placeholder{color:rgba(255,255,255,.75)}
+.map-radius-badge{position:absolute;top:70px;left:50%;transform:translateX(-50%);z-index:1000;background:var(--orange);color:#fff;padding:6px 14px;border-radius:50px;font-size:12.5px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+#map-container{flex:1;position:relative}
+#leaflet-map{width:100%;height:100%}
+/* Review quote section */
+.review-section{background:#fff;margin:16px 0;padding:18px 18px;border-radius:var(--r);box-shadow:var(--shadow);position:relative}
+.review-stars{color:#F59E0B;font-size:18px;margin-bottom:8px}
+.review-quote{font-size:13.5px;line-height:1.65;color:var(--navy);font-style:italic;margin-bottom:10px}
+.review-author{font-size:12px;color:var(--gray);font-weight:600}
+.review-badge{position:absolute;top:16px;right:16px}
+.review-badge img{height:44px}
+/* Footer */
+.home-footer{background:var(--navy);color:#fff;padding:24px 20px;margin-top:8px}
+.footer-brand{font-size:14px;font-weight:800;margin-bottom:4px}
+.footer-locs{font-size:12px;opacity:.65;margin-bottom:12px}
+.footer-social{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.footer-social a{color:rgba(255,255,255,.7);font-size:13px;text-decoration:none;font-weight:600}
+.footer-social a:hover{color:#fff}
+.footer-contact{font-size:12px;opacity:.65;line-height:1.8;margin-bottom:8px}
+.footer-legal{font-size:11px;opacity:.45;line-height:1.6}
 /* Home bottom nav */
 #home-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #E5E7EB;display:flex;z-index:900;padding-bottom:env(safe-area-inset-bottom,0)}
 .hn{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 0 8px;border:none;background:none;cursor:pointer;font-family:inherit;gap:2px}
@@ -501,9 +553,12 @@ p{line-height:1.6}
 <!-- ===== HOME ===== -->
 <div id="s-home" class="screen active" style="padding-bottom:80px">
   <div class="home-header">
-    <div>
-      <div class="logo-name">The Tasting Tours</div>
-      <div class="logo-tagline">Eat. Drink. Experience!</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/published/thetastingtours-sa-png.png" alt="TTT" style="height:36px;width:auto" onerror="this.style.display='none'">
+      <div>
+        <div class="logo-name">The Tasting Tours™</div>
+        <div class="logo-tagline" style="font-size:10px;text-transform:uppercase;letter-spacing:.5px">Where Historic Sites Meet Incredible Bites</div>
+      </div>
     </div>
     <button onclick="go('s-code')" style="background:var(--orange);border:none;color:#fff;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Enter Code</button>
   </div>
@@ -511,35 +566,43 @@ p{line-height:1.6}
   <div class="hero-carousel">
     <div class="hero-slides" id="hero-slides">
       <div class="hero-slide">
-        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg" alt="Join a Tour">
+        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/published/chatgpt-image-jun-11-2026-09-51-35-am.png" alt="The Tasting Tours">
         <div class="hero-overlay">
-          <div class="hero-headline">Redeem a Code or Join a Tour</div>
-          <div class="hero-sub">Enter your code to begin your culinary adventure!</div>
-          <button class="hero-btn" onclick="go('s-code')">Join / Redeem</button>
+          <div class="hero-headline">Rated Best Food Tour in St. Augustine</div>
+          <div class="hero-sub">By Travel + Leisure Magazine · Eat. Drink. Experience!™</div>
+          <button class="hero-btn" onclick="window.open('https://fareharbor.com/embeds/book/thetastingtours/?full-items=yes&flow=950382','_blank')">Book Now</button>
         </div>
       </div>
       <div class="hero-slide">
-        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg" alt="St. Augustine's #1 Food Tour">
+        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545.jpg" alt="Taste of St. Augustine">
         <div class="hero-overlay">
-          <div class="hero-headline">St. Augustine's #1 Food Tour</div>
-          <div class="hero-sub">Award-winning tasting adventures since 2011</div>
-          <button class="hero-btn" onclick="filterTours('all',document.querySelector('.pill'))">Explore Tours</button>
+          <div class="hero-headline">Taste of St. Augustine Tour</div>
+          <div class="hero-sub">Family-friendly · Ages 3+ · Award-winning since 2011</div>
+          <button class="hero-btn" onclick="window.open('https://fareharbor.com/embeds/book/thetastingtours/?full-items=yes&flow=950382','_blank')">Book Tour</button>
         </div>
       </div>
       <div class="hero-slide">
-        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg" alt="Historic District">
+        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9548.jpg" alt="Corks &amp; Forks Tour">
         <div class="hero-overlay">
-          <div class="hero-headline">Historic District • St. Augustine, FL</div>
-          <div class="hero-sub">3,250+ five-star reviews on TripAdvisor &amp; Google</div>
-          <button class="hero-btn" onclick="window.open('https://maps.google.com/?q=St+Augustine+Historic+District+FL','_blank')">View Map</button>
+          <div class="hero-headline">Corks &amp; Forks Strolling Tour</div>
+          <div class="hero-sub">Progressive dining · Wine &amp; cocktails · 21+ · St. Augustine</div>
+          <button class="hero-btn" onclick="window.open('https://fareharbor.com/embeds/book/thetastingtours/?full-items=yes&flow=950382','_blank')">Reserve Spot</button>
         </div>
       </div>
       <div class="hero-slide">
-        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg" alt="Gift Cards Available">
+        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/grinch-2000-668-330-80-int-s-c1_orig.jpg" alt="Nights of Lights">
         <div class="hero-overlay">
-          <div class="hero-headline">Gift Cards Available!</div>
-          <div class="hero-sub">Give the gift of an unforgettable food experience</div>
-          <button class="hero-btn" onclick="window.open('https://www.thetastingtours.com','_blank')">Buy Tickets</button>
+          <div class="hero-headline">✨ Nights of Lights Rides</div>
+          <div class="hero-sub">Nov 21 – Jan 18 · 32nd Annual · Grinch, Santa &amp; Carriage Rides</div>
+          <button class="hero-btn" onclick="window.open('https://www.thetastingtours.com/calendar-nol.html','_blank')">Get Tickets</button>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/bach1.jpg" alt="Bachelorette Tours" onerror="this.src='https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541.jpg'">
+        <div class="hero-overlay">
+          <div class="hero-headline">💍 Bachelorette &amp; Bridal Celebrations</div>
+          <div class="hero-sub">Private tours · Custom packages · Call 904-325-3971</div>
+          <button class="hero-btn" onclick="window.open('https://www.thetastingtours.com/bachelorette-celebrations.html','_blank')">Plan Your Party</button>
         </div>
       </div>
     </div>
@@ -548,10 +611,23 @@ p{line-height:1.6}
       <div class="c-dot"></div>
       <div class="c-dot"></div>
       <div class="c-dot"></div>
+      <div class="c-dot"></div>
     </div>
   </div>
 
-  <div class="section-header"><span class="section-title">Experiences</span><a href="#" class="see-all">View all</a></div>
+  <!-- Review Quote -->
+  <div style="padding:0 16px">
+    <div class="review-section">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <p class="review-quote">"Wonderful St. Augustine Corks and Forks Strolling Culinary Tour!! Our guide, Gary, was super personable & animated, with great restaurant choices and historical commentary. He started by telling us that we would all feel like family by the time the tour was over — and he was right."</p>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span class="review-author">— TripAdvisor Reviewer · 3,250+ 5-star reviews</span>
+        <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ta-2025_orig.png" alt="TripAdvisor" style="height:38px;width:auto" onerror="this.style.display='none'">
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header"><span class="section-title">Experiences</span><div style="display:flex;align-items:center;gap:8px"><button class="map-toggle-btn active" id="map-list-btn" onclick="toggleMapView(false)">☰ List</button><button class="map-toggle-btn" id="map-map-btn" onclick="toggleMapView(true)">🗺 Map</button></div></div>
   <div class="cat-scroll" id="cats">
     <button class="pill active" onclick="filterTours('all',this)">All</button>
     <button class="pill" onclick="filterTours('Scavenger Hunt',this)">Scavenger Hunts</button>
@@ -567,6 +643,26 @@ p{line-height:1.6}
   </div>
   <div class="tours-grid" id="tours-grid"></div>
   <div class="home-cta"><button class="btn btn-primary" onclick="go('s-code')">+ Play — Enter Code</button></div>
+
+  <!-- Real footer -->
+  <footer class="home-footer">
+    <div class="footer-brand">The Tasting Tours™</div>
+    <div class="footer-locs">St. Augustine · Jacksonville · Amelia Island</div>
+    <div class="footer-social">
+      <a href="https://www.facebook.com/thetastingtours" target="_blank">📘 Facebook</a>
+      <a href="https://instagram.com/thetastingtours" target="_blank">📸 Instagram</a>
+      <a href="https://twitter.com/TheTastingTours" target="_blank">🐦 Twitter</a>
+      <a href="https://www.youtube.com/@thetastingtoursstaug" target="_blank">▶️ YouTube</a>
+      <a href="https://www.tripadvisor.com/Attraction_Review-g34599-d2103351-Reviews-The_Tasting_Tours-St_Augustine_Florida.html" target="_blank">🌿 TripAdvisor</a>
+    </div>
+    <div class="footer-contact">
+      📞 <a href="tel:9043253911" style="color:rgba(255,255,255,.65);text-decoration:none">904-325-3911</a> · Mon–Fri 10am–5pm · Sat 10am–1pm EST<br>
+      Corporate/Groups: <a href="tel:9043253971" style="color:rgba(255,255,255,.65);text-decoration:none">904-325-3971</a><br>
+      ✉️ <a href="mailto:info@thetastingtours.com" style="color:rgba(255,255,255,.65);text-decoration:none">info@thetastingtours.com</a> ·
+      <a href="https://www.thetastingtours.com" target="_blank" style="color:rgba(255,255,255,.65);text-decoration:none">thetastingtours.com</a>
+    </div>
+    <div class="footer-legal">© 2026 The Tasting Tours™ · All Rights Reserved<br>SELLER OF TRAVEL #ST38795 · <a href="https://www.thetastingtours.com/faqs-st-augustine.html" target="_blank" style="color:rgba(255,255,255,.4);text-decoration:none">FAQ</a> · <a href="https://www.thetastingtours.com/our-reviews.html" target="_blank" style="color:rgba(255,255,255,.4);text-decoration:none">Reviews</a> · <a href="https://www.thetastingtours.com/parking---st-augustine.html" target="_blank" style="color:rgba(255,255,255,.4);text-decoration:none">Parking</a></div>
+  </footer>
 </div>
 
 <!-- ===== CODE ENTRY ===== -->
@@ -584,7 +680,7 @@ p{line-height:1.6}
       <input class="code-char" maxlength="1" type="text" autocomplete="off" inputmode="text">
     </div>
     <div class="code-err" id="code-err"></div>
-    <p class="code-hint">Demo codes: TASTE1 · CORKS1 · WINED1 · ISLND1</p>
+    <p class="code-hint">Demo codes: TASTE1 · CORKS1 · BRNCH1 · WINED1 · ISLND1 · FESTA1</p>
     <div style="margin-top:32px">
       <button class="btn btn-primary" id="code-next" disabled onclick="validateCode()">Next →</button>
       <button class="btn btn-secondary" style="margin-top:12px" onclick="go('s-home')">← Back</button>
@@ -967,22 +1063,113 @@ p{line-height:1.6}
 </div>
 
 <!-- ===== USER PROFILE ===== -->
-<div id="s-userprofile" class="screen" style="padding-bottom:80px">
-  <div class="prof-hero">
-    <div class="prof-av-lg">🧑</div>
-    <div class="prof-name">Roamer</div>
-    <div class="prof-xp">0 XP Total</div>
-    <div class="prof-stats">
-      <div class="prof-stat"><div class="prof-stat-n">0</div><div class="prof-stat-l">Missions</div></div>
-      <div class="prof-stat"><div class="prof-stat-n">0</div><div class="prof-stat-l">Adventures</div></div>
-      <div class="prof-stat"><div class="prof-stat-n">0</div><div class="prof-stat-l">Photos</div></div>
+<div id="s-userprofile" class="screen" style="padding-bottom:0">
+  <!-- Orange header -->
+  <div class="prof-hdr">
+    <div class="prof-hdr-top">
+      <div class="prof-av-circle">🧑</div>
+      <div class="prof-name-block">
+        <div class="prof-name-row">
+          <span class="prof-name">Michael Damian</span>
+          <span class="prof-xp-inline">1,200 XP</span>
+        </div>
+        <div class="prof-league-badge">🏆 Bronze League</div>
+      </div>
+      <button class="prof-gear-btn" onclick="showToast('Settings coming soon!')">⚙️</button>
+    </div>
+    <div class="prof-xp-labels"><span>Bronze → Silver</span><span>Silver League</span></div>
+    <div class="prof-xp-bar">
+      <div class="prof-xp-fill" style="width:35%"><div class="prof-xp-lock">🔒</div></div>
     </div>
   </div>
-  <div class="prof-menu">
-    <div class="prof-menu-item" onclick="go('s-register')"><span class="pm-icon">👤</span><span class="pm-label">Edit Profile</span><span class="pm-chev">›</span></div>
-    <div class="prof-menu-item" onclick="showToast('Notification preferences coming soon!')"><span class="pm-icon">🔔</span><span class="pm-label">Notification Preferences</span><span class="pm-chev">›</span></div>
-    <div class="prof-menu-item" onclick="showToast('Help & Support coming soon!')"><span class="pm-icon">❓</span><span class="pm-label">Help & Support</span><span class="pm-chev">›</span></div>
-    <div class="prof-menu-item" onclick="showToast('You have been logged out.')"><span class="pm-icon">🚪</span><span class="pm-label">Log Out</span><span class="pm-chev">›</span></div>
+  <!-- Scrollable body -->
+  <div class="prof-body">
+    <!-- Featured Missions -->
+    <div class="prof-section">
+      <div class="prof-sec-hdr">
+        <div class="prof-sec-title">Featured Missions</div>
+        <div class="prof-sec-meta">0 of 14</div>
+      </div>
+      <div class="prof-mission-item" onclick="openMission('foodie')">
+        <div class="prof-mission-ring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#F3F4F6" stroke-width="3"/><text x="20" y="25" text-anchor="middle" font-size="9" font-weight="700" fill="var(--gray)">0/5</text></svg></div>
+        <div class="prof-mission-body"><div class="prof-mission-title">Flavor Explorer</div><div class="prof-mission-sub">Try 5 different cuisines</div></div><span style="color:var(--gray)">›</span>
+      </div>
+      <div class="prof-mission-item" onclick="openMission('dish')">
+        <div class="prof-mission-ring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#F3F4F6" stroke-width="3"/><text x="20" y="25" text-anchor="middle" font-size="9" font-weight="700" fill="var(--gray)">0/5</text></svg></div>
+        <div class="prof-mission-body"><div class="prof-mission-title">Photo Foodie</div><div class="prof-mission-sub">Photograph your meal at 3 stops</div></div><span style="color:var(--gray)">›</span>
+      </div>
+      <div class="prof-mission-item" onclick="openMission('marker')">
+        <div class="prof-mission-ring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#F3F4F6" stroke-width="3"/><text x="20" y="25" text-anchor="middle" font-size="9" font-weight="700" fill="var(--gray)">0/3</text></svg></div>
+        <div class="prof-mission-body"><div class="prof-mission-title">History Buff</div><div class="prof-mission-sub">Answer all history trivia correctly</div></div><span style="color:var(--gray)">›</span>
+      </div>
+      <div class="prof-mission-item" onclick="openMission('gem')">
+        <div class="prof-mission-ring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#F3F4F6" stroke-width="3"/><text x="20" y="25" text-anchor="middle" font-size="9" font-weight="700" fill="var(--gray)">0/3</text></svg></div>
+        <div class="prof-mission-body"><div class="prof-mission-title">Night Owl</div><div class="prof-mission-sub">Complete a ghost tour</div></div><span style="color:var(--gray)">›</span>
+      </div>
+      <div class="prof-mission-item" onclick="openMission('support')">
+        <div class="prof-mission-ring"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="#F3F4F6" stroke-width="3"/><text x="20" y="25" text-anchor="middle" font-size="9" font-weight="700" fill="var(--gray)">0/1</text></svg></div>
+        <div class="prof-mission-body"><div class="prof-mission-title">Loyal Local</div><div class="prof-mission-sub">Complete 3 tours in St. Augustine</div></div><span style="color:var(--gray)">›</span>
+      </div>
+      <a href="#" class="prof-view-all" onclick="navHome('missions');return false">View All Missions ›</a>
+    </div>
+    <!-- Your Photos -->
+    <div class="prof-section">
+      <div class="prof-sec-hdr">
+        <div class="prof-sec-title">Your Photos</div>
+        <button class="prof-photos-btn">⊞ All Photos</button>
+      </div>
+      <div class="prof-photos-grid">
+        <div class="prof-photo-cell">📷</div>
+        <div class="prof-photo-cell">📷</div>
+        <div class="prof-photo-cell">📷</div>
+        <div class="prof-photo-cell">📷</div>
+        <div class="prof-photo-cell">📷</div>
+        <div class="prof-photo-cell">📷</div>
+      </div>
+    </div>
+    <!-- Explore More Tours -->
+    <div class="prof-section">
+      <div class="prof-sec-hdr"><div class="prof-sec-title">Explore More Tours</div></div>
+      <div class="prof-explore-row">
+        <div class="prof-explore-card" onclick="filterTours('Scavenger Hunt',document.querySelectorAll('.pill')[1]);navHome('home')">
+          <img class="prof-explore-img" src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545.jpg" alt="Scavenger Hunts" loading="lazy">
+          <div class="prof-explore-body"><div class="prof-explore-title">Scavenger Hunts</div></div>
+        </div>
+        <div class="prof-explore-card" onclick="filterTours('Ghost Tour',document.querySelectorAll('.pill')[4]);navHome('home')">
+          <img class="prof-explore-img" src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541.jpg" alt="Ghost Tours" loading="lazy">
+          <div class="prof-explore-body"><div class="prof-explore-title">Ghost Tours</div></div>
+        </div>
+        <div class="prof-explore-card" onclick="filterTours('Nights of Lights',document.querySelectorAll('.pill')[9]);navHome('home')">
+          <img class="prof-explore-img" src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/grinch-2000-668-330-80-int-s-c1_orig.jpg" alt="Nights of Lights" loading="lazy">
+          <div class="prof-explore-body"><div class="prof-explore-title">Nights of Lights</div></div>
+        </div>
+        <div class="prof-explore-card" onclick="filterTours('Bachelorette',document.querySelectorAll('.pill')[7]);navHome('home')">
+          <img class="prof-explore-img" src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/bach1.jpg" alt="Bachelorette" loading="lazy">
+          <div class="prof-explore-body"><div class="prof-explore-title">Bachelorette</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Settings -->
+    <div style="margin-top:10px">
+      <div class="prof-menu-item" onclick="go('s-register')"><span class="pm-icon">👤</span><span class="pm-label">Edit Profile</span><span class="pm-chev">›</span></div>
+      <div class="prof-menu-item" onclick="showToast('Notification preferences coming soon!')"><span class="pm-icon">🔔</span><span class="pm-label">Notification Preferences</span><span class="pm-chev">›</span></div>
+      <div class="prof-menu-item" onclick="window.open('https://www.thetastingtours.com/faqs-st-augustine.html','_blank')"><span class="pm-icon">❓</span><span class="pm-label">Help & FAQs</span><span class="pm-chev">›</span></div>
+      <div class="prof-menu-item" onclick="showToast('You have been logged out.')"><span class="pm-icon">🚪</span><span class="pm-label">Log Out</span><span class="pm-chev">›</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MAP VIEW ===== -->
+<div id="s-map" class="screen" style="padding-bottom:0">
+  <div id="map-container" style="flex:1;position:relative">
+    <div class="map-search-bar">
+      <button style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;padding:0 4px 0 0" onclick="toggleMapView(false)">‹</button>
+      <span style="font-size:16px">🔍</span>
+      <input class="map-search-input" id="map-search-inp" placeholder="Discover scavenger hunts" oninput="filterMapPins()">
+      <button style="background:none;border:none;color:#fff;font-size:16px;cursor:pointer" onclick="document.getElementById('map-search-inp').value='';filterMapPins()">✕</button>
+    </div>
+    <div class="map-radius-badge">⇔ 25 mi</div>
+    <div id="leaflet-map"></div>
   </div>
 </div>
 
@@ -1013,6 +1200,8 @@ p{line-height:1.6}
   <button class="ni" id="ni-details" onclick="navTo('details')"><span class="ni-ic">ℹ</span><span class="ni-lbl">Details</span></button>
 </nav>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <script>
 // ============================================================
@@ -1695,7 +1884,50 @@ const TOURS = [
     ]
   },
   {
-    id:'tour3',code:'WINED1',name:'Wine & Dine Rolling Tour',type:'Scavenger Hunt',
+    id:'tour3',code:'BRNCH1',name:'Brunch Pairing Tour',type:'Bar Crawl',
+    ageRange:'21+',status:'active',
+    description:"A leisurely late-morning adventure pairing bottomless brunch bites with craft cocktails, mimosas, and Bloody Marys through St. Augustine's most beloved dining spots. The perfect weekend morning experience.",
+    image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9548_orig.jpg',
+    stops:[
+      {id:1,name:'Maple Street Biscuit Company',neighborhood:'Historic District',
+       teaser:'Southern comfort brunch meets creative libations on Cordova Street',
+       clue:"Start your morning on Cordova Street where Southern warmth meets creative biscuit craft. The name of a Northern tree hides the secret to their legendary weekend brunch.",
+       trivia:{q:'What classic brunch cocktail is made with champagne and orange juice?',a:['Bellini','Spritz','Mimosa','Buck\'s Fizz'],c:2},
+       funFact:"The Mimosa was reportedly invented in 1925 at the Ritz Hotel in Paris by barman Frank Meier. The name comes from the yellow mimosa plant — perfectly matching the drink's sunny color!",
+       photo:'Photograph your biscuit stack or drink from directly above — the flat lay challenge!',
+       pts:100,qr:'TTT-STOP-1-BRNCH1'},
+      {id:2,name:'Hyppo Café',neighborhood:'St. George Street',
+       teaser:'Artisan cold brews and açaí bowls on the famous pedestrian walkway',
+       clue:"Stroll the beloved pedestrian street and find the café named for a very large African animal — but they serve cold, refreshing things, not the animal itself. Look for the colorful bowls.",
+       trivia:{q:"What is the traditional base of a Brazilian açaí bowl?",a:['Frozen mango','Frozen açaí berry puree','Greek yogurt','Smoothie blend'],c:1},
+       funFact:"Açaí berries from the Amazon contain twice the antioxidants of blueberries. Brazilian surfers discovered in the 1970s that blended açaí with granola sustained their energy through long beach sessions!",
+       photo:'Create the most colorful flat-lay photo of your açaí bowl',
+       pts:100,qr:'TTT-STOP-2-BRNCH1'},
+      {id:3,name:'Ice Plant Bar',neighborhood:'Uptown',
+       teaser:'Craft Bloody Marys and vintage cocktails in a spectacular 1927 ice factory',
+       clue:"Head uptown to find a cocktail bar housed in a piece of St. Augustine industrial history — a 1920s ice factory transformed into one of Florida's most acclaimed craft cocktail bars.",
+       trivia:{q:'What is the essential ingredient that gives a Bloody Mary its signature color and flavor?',a:['Beet juice','Tomato juice','Red pepper sauce','Pomegranate juice'],c:1},
+       funFact:"The Bloody Mary was invented around 1921 at the New York Bar in Paris (later Harry\'s Bar). The name may reference Queen Mary I of England — or simply the red color resembling blood. Debate continues!",
+       photo:'Photograph the spectacular interior of the 1927 ice factory — look up at the ceiling!',
+       pts:100,qr:'TTT-STOP-3-BRNCH1'},
+      {id:4,name:'The Floridian',neighborhood:'Spanish Street',
+       teaser:'Farm-to-table brunch plates with Florida-sourced ingredients',
+       clue:"Return to the Spanish colonial heart of the city where a beloved farm-to-table institution celebrates Florida's natural bounty on Spanish Street. Their brunch menu changes with the seasons.",
+       trivia:{q:"What is eggs Benedict traditionally served on?",a:['Sourdough toast','Croissant','English muffin','Biscuit'],c:2},
+       funFact:"Eggs Benedict was created around 1894 — debated between Delmonico's Restaurant in NYC (for regular customer LeGrand Benedict) and the Waldorf Hotel (for Wall Street broker Lemuel Benedict). Both claim the invention!",
+       photo:'Snap a photo of the seasonal special — something you\'ve never tried before!',
+       pts:100,qr:'TTT-STOP-4-BRNCH1'},
+      {id:5,name:'Preserved Restaurant & Bar',neighborhood:'Lincolnville',
+       teaser:'Natural wines and charcuterie to close out your perfect brunch crawl',
+       clue:"Your final pairing awaits in the historic Lincolnville neighborhood south of the plaza. Find the restaurant that celebrates preservation — of flavors, traditions, and the best natural wines on Bridge Street.",
+       trivia:{q:"What does 'natural wine' typically mean?",a:['Wine with no grapes','Wine made with minimal intervention, no added sulfites or chemicals','Wine under $10','Wine made in 30 days'],c:1},
+       funFact:"Natural wine production mirrors the approach of pre-industrial winemaking — no added yeasts, enzymes, or sulfites. Critics call it unpredictable; fans call it alive. The debate is one of wine's hottest arguments!",
+       photo:'Toast to finishing your brunch tour — capture the group cheers moment!',
+       pts:100,qr:'TTT-STOP-5-BRNCH1'}
+    ]
+  },
+  {
+    id:'tour5',code:'WINED1',name:'Wine & Dine Rolling Tour',type:'Scavenger Hunt',
     ageRange:'21+',status:'active',
     description:"An elevated chauffeured experience in an open-air electric vehicle exploring unique neighborhoods and hidden gems. Sit back, enjoy the breeze, and let us take you to St. Augustine's finest culinary addresses.",
     image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg',
@@ -1779,6 +2011,49 @@ const TOURS = [
        photo:'Strike your best island pose with your final margarita — you\'ve earned it!',
        pts:110,qr:'TTT-STOP-5-ISLND1'}
     ]
+  },
+  {
+    id:'tour6',code:'FESTA1',name:'Fiesta De Mayo Tour',type:'Bar Crawl',
+    ageRange:'Seasonal 21+',status:'active',
+    description:"A vibrant Latin-inspired crawl through St. Augustine celebrating bold flavors, festive cocktails, and the rich cultural heritage of Latin America. Margaritas, tacos, and live rhythms await!",
+    image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9548_orig.jpg',
+    stops:[
+      {id:1,name:'Casa Maya Authentic Mexican',neighborhood:'Aviles Street',
+       teaser:'House-made moles and premium agave spirits on America\'s oldest street',
+       clue:"Begin your fiesta on the oldest paved street in the United States — Aviles Street. Find the Mexican gem where house-made moles and a wall of tequilas tell the story of authentic Yucatán flavors.",
+       trivia:{q:'What does "Cinco de Mayo" actually commemorate?',a:['Mexican Independence Day','The Battle of Puebla in 1862','The founding of Mexico City','The Day of the Dead'],c:1},
+       funFact:"Cinco de Mayo is barely celebrated in Mexico — it mostly marks the Battle of Puebla where outnumbered Mexican forces defeated the French Empire. The holiday became popular in the US as a celebration of Mexican-American culture!",
+       photo:'Strike a festive pose in front of the colorful Casa Maya entrance!',
+       pts:120,qr:'TTT-STOP-1-FESTA1'},
+      {id:2,name:'Odd Birds Bar & Kitchen',neighborhood:'St. George Street',
+       teaser:'Creative Latin-fusion cocktails and unexpected flavor combos',
+       clue:"Continue to the pedestrian zone where an unconventional bar loves surprising its guests with unexpected ingredient combinations. Ask the bartender for their most creative Latin-inspired cocktail of the season.",
+       trivia:{q:'What fruit is the main ingredient in a classic Margarita?',a:['Lemon','Lime','Orange','Grapefruit'],c:1},
+       funFact:"The Margarita is the most popular cocktail in the United States. Its origins are fiercely disputed — at least 5 different people claim to have invented it between 1938 and 1948. The name may simply come from 'Margarita' (Margaret in Spanish)!",
+       photo:'Photograph your colorful cocktail with the historic St. George Street as backdrop',
+       pts:120,qr:'TTT-STOP-2-FESTA1'},
+      {id:3,name:'Prohibition Kitchen',neighborhood:'St. George Street',
+       teaser:'Latin night fever and craft cocktails in the lively pedestrian zone',
+       clue:"Stay on St. George Street and find the speakeasy-inspired gastropub that transforms into a Latin party destination during festival season. The Roaring Twenties meet the rhythms of salsa and cumbia.",
+       trivia:{q:'What is the national spirit of Brazil, used in the classic Caipirinha cocktail?',a:['Rum','Tequila','Cachaça','Pisco'],c:2},
+       funFact:"Cachaça is made from fresh sugarcane juice — unlike rum, which uses molasses. Brazil produces over 70% of the world's cachaça, making it the country's most popular spirit. The Caipirinha is Brazil's national cocktail!",
+       photo:'Show off your best salsa dance move in the lively atmosphere!',
+       pts:120,qr:'TTT-STOP-3-FESTA1'},
+      {id:4,name:'A1A Ale Works',neighborhood:'Bayfront',
+       teaser:'Latin-inspired craft brews with a spectacular waterfront view',
+       clue:"Head toward the shimmering Matanzas Bay waterfront where this craft brewery has created a special Fiesta lineup. Order the Jalapeño Cerveza or the Latin lager and toast to the bay view.",
+       trivia:{q:'What style of beer is most commonly paired with spicy Latin food?',a:['Stout','Lager / Light Beer','IPA','Porter'],c:1},
+       funFact:"The light, crisp lager pairs perfectly with spicy food because carbonation and cold temperature physically cool the burning sensation. Mexican beers like Modelo and Corona became international icons by mastering this exact pairing!",
+       photo:'Capture the beautiful sunset over Matanzas Bay with your Latin brew in frame',
+       pts:120,qr:'TTT-STOP-4-FESTA1'},
+      {id:5,name:'The Rabbit & The Fox',neighborhood:'Historic District',
+       teaser:'An elevated finale: Latin small plates and agave-forward cocktails near the old city gates',
+       clue:"Your fiesta finale awaits near the ancient city gates where two animals share a sign. This sophisticated dining spot has crafted a special Fiesta De Mayo menu of Latin small plates and rare agave spirits.",
+       trivia:{q:'What type of agave plant is used to make traditional Mezcal but NOT Tequila?',a:['Blue Weber only','Any agave variety (30+ types)','Only wild agave','Only cultivated agave'],c:1},
+       funFact:"Over 30 agave varieties can legally be used for mezcal, compared to tequila's single Blue Weber agave requirement. The diverse agaves produce dramatically different flavor profiles — from floral to smoky to tropical!",
+       photo:'Group photo to celebrate completing the Fiesta De Mayo tour — ¡Salud!',
+       pts:120,qr:'TTT-STOP-5-FESTA1'}
+    ]
   }
 ];
 
@@ -1796,7 +2071,7 @@ function saveState(){localStorage.setItem('ttt_state',JSON.stringify(ST))}
 // ============================================================
 // SCREEN NAV
 // ============================================================
-const HOME_NAV_SCREENS=['s-home','s-missions','s-userprofile','s-join','s-detail','s-theme','s-team','s-tickets','s-mission-detail','s-register'];
+const HOME_NAV_SCREENS=['s-home','s-map','s-missions','s-userprofile','s-join','s-detail','s-theme','s-team','s-tickets','s-mission-detail','s-register'];
 function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1838,6 +2113,74 @@ function initHome(){
   document.querySelectorAll('.hn').forEach(b=>b.classList.remove('active'));
   const hnHome=document.getElementById('hn-home');
   if(hnHome) hnHome.classList.add('active');
+}
+
+// ============================================================
+// MAP VIEW (Leaflet.js)
+// ============================================================
+let _leafletMap=null, _mapPins=[], _mapInited=false;
+
+const MAP_TOURS=[
+  {lat:29.8947,lng:-81.3145,title:'St. Augustine: The Ancient City Adventure Walk',type:'Scavenger Hunt',dist:'0.5 mi route',idx:1},
+  {lat:29.8960,lng:-81.3130,title:'Corks & Forks: St. Augustine Bar Crawl',type:'Bar Crawl',dist:'0.9 mi route',idx:null},
+  {lat:29.8932,lng:-81.3155,title:'St. Augustine Art Walk: Historic District',type:'Art Walk',dist:'1.1 mi route',idx:null},
+  {lat:29.8918,lng:-81.3170,title:'Ghoul Times in St. Augustine',type:'Ghost Tour',dist:'1.0 mi route',idx:null},
+  {lat:29.8975,lng:-81.3110,title:'Anastasia State Park Scavenger Hunt',type:'Scavenger Hunt',dist:'2.5 mi route',idx:null},
+  {lat:29.8940,lng:-81.3200,title:'Audio Tour: Historic District Walk',type:'Audio Tour',dist:'1.5 mi route',idx:null}
+];
+
+function toggleMapView(showMap){
+  const listBtn=document.getElementById('map-list-btn');
+  const mapBtn=document.getElementById('map-map-btn');
+  if(showMap){
+    listBtn.classList.remove('active');
+    mapBtn.classList.add('active');
+    go('s-map');
+    setTimeout(initLeafletMap,50);
+  } else {
+    listBtn.classList.add('active');
+    mapBtn.classList.remove('active');
+    go('s-home');
+    document.getElementById('hn-home').classList.add('active');
+  }
+}
+
+function initLeafletMap(){
+  const el=document.getElementById('leaflet-map');
+  if(!el) return;
+  // Set explicit height
+  el.style.height=(window.innerHeight-80)+'px';
+  if(_leafletMap){_leafletMap.invalidateSize();return;}
+  _leafletMap=L.map('leaflet-map',{zoomControl:false}).setView([29.8947,-81.3145],14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(_leafletMap);
+  L.control.zoom({position:'bottomright'}).addTo(_leafletMap);
+  // Draw 25mi radius circle
+  L.circle([29.8947,-81.3145],{radius:40234,color:'#F5814A',fillColor:'#F5814A',fillOpacity:.06,weight:2,opacity:.5}).addTo(_leafletMap);
+  // User location dot
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(p=>{
+      L.circleMarker([p.coords.latitude,p.coords.longitude],{radius:8,color:'#2563EB',fillColor:'#3B82F6',fillOpacity:1,weight:2}).addTo(_leafletMap).bindPopup('📍 You are here');
+    },()=>{});
+  }
+  // Tour pins
+  const orangeIcon=L.divIcon({className:'',html:'<div style="background:#F5814A;color:#fff;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25)">📍</div>',iconSize:[32,32],iconAnchor:[16,32]});
+  _mapPins=MAP_TOURS.map(t=>{
+    const marker=L.marker([t.lat,t.lng],{icon:orangeIcon}).addTo(_leafletMap);
+    marker.bindPopup(`<div style="min-width:180px;font-family:-apple-system,sans-serif"><b style="font-size:13px;color:#1A2744">${t.title}</b><br><span style="font-size:11px;color:#6B7280">${t.type} · ${t.dist}</span><br><button onclick="showToast('Opening tour...')" style="margin-top:8px;background:#F5814A;color:#fff;border:none;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer">View Details</button></div>`);
+    return {marker,data:t};
+  });
+}
+
+function filterMapPins(){
+  if(!_leafletMap) return;
+  const q=document.getElementById('map-search-inp').value.toLowerCase();
+  _mapPins.forEach(({marker,data})=>{
+    if(!q||data.title.toLowerCase().includes(q)||data.type.toLowerCase().includes(q)){
+      if(!_leafletMap.hasLayer(marker)) marker.addTo(_leafletMap);
+    } else {
+      _leafletMap.removeLayer(marker);
+    }
+  });
 }
 
 function startCarousel(){
