@@ -30,6 +30,53 @@ p{line-height:1.6}
 .btn-outline{background:transparent;color:var(--orange);border:2px solid var(--orange)}
 .btn-sm{padding:10px 20px;font-size:15px;width:auto;display:inline-block}
 
+/* SPLASH */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:#E8751A;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+#splash.fade-out{
+  animation:splashOut .55s cubic-bezier(.4,0,.2,1) forwards;
+}
+@keyframes splashOut{
+  0%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.04)}
+}
+
+/* pin drop */
+#sp-pin{
+  opacity:0;transform:translateY(-40px) scale(.7);
+  animation:pinDrop .5s cubic-bezier(.34,1.56,.64,1) .15s forwards;
+}
+@keyframes pinDrop{
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* thin rule lines */
+.sp-rule{
+  width:120px;height:1.5px;background:rgba(255,255,255,.55);
+  opacity:0;transform:scaleX(0);
+  animation:ruleIn .35s ease .6s forwards;
+}
+@keyframes ruleIn{
+  to{opacity:1;transform:scaleX(1)}
+}
+
+/* stacked wordmark */
+.sp-word{
+  display:block;
+  opacity:0;transform:translateY(14px) scale(.92);
+  animation:wordUp .38s cubic-bezier(.22,1,.36,1) forwards;
+}
+.sp-word:nth-child(1){animation-delay:.72s}
+.sp-word:nth-child(2){animation-delay:.85s}
+.sp-word:nth-child(3){animation-delay:.98s}
+@keyframes wordUp{
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
 /* HOME */
 .home-header{padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between}
 .logo-name{font-size:18px;font-weight:800;color:var(--navy)}
@@ -202,6 +249,30 @@ p{line-height:1.6}
 </style>
 </head>
 <body>
+
+<!-- ===== SPLASH ===== -->
+<div id="splash">
+  <!-- Location pin SVG -->
+  <div id="sp-pin">
+    <svg width="56" height="68" viewBox="0 0 56 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M28 0C12.536 0 0 12.536 0 28C0 42 28 68 28 68C28 68 56 42 56 28C56 12.536 43.464 0 28 0Z" fill="white"/>
+      <circle cx="28" cy="27" r="11" fill="#E8751A"/>
+    </svg>
+  </div>
+
+  <!-- Top rule -->
+  <div class="sp-rule" style="margin:22px 0 14px"></div>
+
+  <!-- Stacked wordmark -->
+  <div style="text-align:center;line-height:1;overflow:hidden">
+    <span class="sp-word" style="font-size:42px;font-weight:900;color:#fff;letter-spacing:6px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">EAT.</span><br>
+    <span class="sp-word" style="font-size:42px;font-weight:900;color:#fff;letter-spacing:6px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">DRINK.</span><br>
+    <span class="sp-word" style="font-size:42px;font-weight:900;color:#fff;letter-spacing:6px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">EXPERIENCE.</span>
+  </div>
+
+  <!-- Bottom rule -->
+  <div class="sp-rule" style="margin:14px 0 0"></div>
+</div>
 
 <!-- ===== HOME ===== -->
 <div id="s-home" class="screen active">
@@ -1015,9 +1086,21 @@ function openDet(){
 }
 
 // ============================================================
-// BOOT
+// BOOT — splash then home
 // ============================================================
-initHome();
+(function(){
+  // Total: ~2s before crossfade begins
+  // pin drops at 150ms, last word lands at ~1360ms, hold 500ms, then fade
+  var HOLD = 2000;
+  var splash = document.getElementById('splash');
+  setTimeout(function(){
+    splash.classList.add('fade-out');
+    splash.addEventListener('animationend', function(){
+      splash.style.display = 'none';
+    }, {once: true});
+  }, HOLD);
+  initHome();
+})();
 </script>
 </body>
 </html>
