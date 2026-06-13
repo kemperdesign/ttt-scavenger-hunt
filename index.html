@@ -117,6 +117,27 @@ p{line-height:1.6}
 .tc-btn{background:var(--orange);color:#fff;border:none;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
 .home-cta{padding:20px;background:#fff;border-top:1px solid #F3F4F6;position:sticky;bottom:0;z-index:10}
 
+/* LR-STYLE ACTIVITY CARDS */
+.lr-card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:transform .18s}
+.lr-card:active{transform:scale(.985)}
+.lr-img{height:196px;overflow:hidden;position:relative}
+.lr-img img{width:100%;height:100%;object-fit:cover;display:block}
+.lr-chips{position:absolute;top:11px;left:11px;display:flex;gap:5px;flex-wrap:wrap}
+.lr-chip{padding:4px 9px;border-radius:50px;font-size:10.5px;font-weight:700;letter-spacing:.25px;white-space:nowrap;line-height:1.3}
+.lr-chip.c-top{background:#E8751A;color:#fff}
+.lr-chip.c-near{background:#059669;color:#fff}
+.lr-chip.c-dist{background:rgba(15,23,42,.78);color:#fff}
+.lr-body{padding:13px 15px 15px}
+.lr-title{font-size:15.5px;font-weight:800;color:var(--navy);line-height:1.3;margin-bottom:7px}
+.lr-meta{font-size:12.5px;color:var(--gray);display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:3px}
+.lr-stars{color:#F59E0B}
+.lr-dot{opacity:.4;font-size:10px}
+.lr-route{font-size:12.5px;color:var(--gray);margin-bottom:7px;display:flex;align-items:center;gap:4px}
+.lr-stops{font-size:12px;color:var(--gray);line-height:1.55;margin-bottom:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lr-stops-dot{opacity:.35;margin:0 3px}
+.lr-tags{display:flex;gap:7px;flex-wrap:wrap;padding-top:11px;border-top:1px solid #F3F4F6}
+.lr-tag{background:#F3F4F6;color:var(--navy-light);padding:4px 10px;border-radius:50px;font-size:11px;font-weight:600}
+
 /* CODE */
 .code-wrap{padding:40px 24px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center}
 .code-icon{font-size:64px;margin-bottom:24px}
@@ -519,6 +540,74 @@ p{line-height:1.6}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
 <script>
 // ============================================================
+// SAMPLE ACTIVITY CARDS (Let's Roam style — Scavenger Hunt filter)
+// ============================================================
+const SAMPLE_HUNTS = [
+  {
+    title:"St. Augustine: The Ancient City Adventure Walk",
+    image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+    dist:"4 miles away",distChip:"4 mi away",nearby:"Near you",
+    rating:"4.9",teams:"197",route:"0.5 mi route",
+    stops:["St. Augustine Pirate & Treasure Museum","Potter's Wax Museum","Old City Gates"],
+    tags:["Saint Augustine","Scavenger Hunt"],action:"TASTE1"
+  },
+  {
+    title:"Spring Fling Thing! The Scenic Green Cove Springs Hunt",
+    image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+    dist:"24.5 miles away",distChip:"24 mi away",nearby:"In your area",
+    rating:"5",teams:"62",route:"0.8 mi route",
+    stops:["Green Cove Springs Public Pier","Green Cove Springs Marker","Patriotic Memorial Mural"],
+    tags:["Green Cove Springs","Scavenger Hunt"],action:null
+  },
+  {
+    title:"Palatka's Peculiar Treasure Pursuit",
+    image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+    dist:"23.4 miles away",distChip:"23 mi away",nearby:"In your area",
+    rating:"5",teams:"87",route:"1.5 mi route",
+    stops:["Putnam Historic Museum","Veterans Memorial Fountains","Larimer Memorial Library"],
+    tags:["Palatka","Scavenger Hunt"],action:null
+  },
+  {
+    title:"St. Augustine Old Town Legends!",
+    image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
+    dist:"3.7 miles away",distChip:"3.7 mi away",nearby:"Near you",
+    rating:"5",teams:"1,262",route:"1.6 mi route",
+    stops:["Plaza de la Constitución","St. Augustine Shipwreck Museum","Lightner Museum"],
+    tags:["Saint Augustine","Scavenger Hunt"],action:"TASTE1"
+  }
+];
+
+function renderLRCard(h){
+  const action=h.action?`pickTour('${h.action}')`:"go('s-code')";
+  const stopsHtml=h.stops.map((s,i)=>i<h.stops.length-1
+    ?`${s}<span class="lr-stops-dot">·</span>`
+    :s).join('');
+  return `<div class="lr-card" onclick="${action}">
+    <div class="lr-img">
+      <img src="${h.image}" alt="${h.title}" loading="lazy">
+      <div class="lr-chips">
+        <span class="lr-chip c-top">Top Rated</span>
+        <span class="lr-chip c-near">${h.nearby}</span>
+        <span class="lr-chip c-dist">${h.distChip}</span>
+      </div>
+    </div>
+    <div class="lr-body">
+      <div class="lr-title">${h.title}</div>
+      <div class="lr-meta">
+        <span>${h.dist}</span>
+        <span class="lr-dot">●</span>
+        <span class="lr-stars">⭐ ${h.rating}</span>
+        <span class="lr-dot">●</span>
+        <span>Rated by ${h.teams} teams</span>
+      </div>
+      <div class="lr-route">📍 ${h.route}</div>
+      <div class="lr-stops">${stopsHtml}</div>
+      <div class="lr-tags">${h.tags.map(t=>`<span class="lr-tag">${t}</span>`).join('')}</div>
+    </div>
+  </div>`;
+}
+
+// ============================================================
 // TOUR DATA
 // ============================================================
 const TOURS = [
@@ -822,6 +911,10 @@ function filterTours(type,btn){
 
 function renderCards(f){
   const g=document.getElementById('tours-grid');
+  if(f==='Scavenger Hunt'){
+    g.innerHTML=SAMPLE_HUNTS.map(renderLRCard).join('');
+    return;
+  }
   const list=f==='all'?TOURS:TOURS.filter(t=>t.type===f);
   if(!list.length){g.innerHTML='<div style="text-align:center;padding:40px;color:var(--gray)">No tours in this category yet — check back soon!</div>';return}
   g.innerHTML=list.map(t=>`
