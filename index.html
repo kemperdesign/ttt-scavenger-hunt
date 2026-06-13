@@ -144,6 +144,23 @@ p{line-height:1.6}
 .lr-sec-divider{display:flex;align-items:center;gap:10px;padding:20px 0 12px}
 .lr-sec-line{flex:1;height:1px;background:#E5E7EB}
 .lr-sec-label{font-size:12.5px;font-weight:700;color:var(--gray);white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
+/* Coming Soon */
+.cs-banner{border-radius:var(--r);overflow:hidden;height:218px;position:relative;margin-bottom:16px;box-shadow:var(--shadow)}
+.cs-banner img{width:100%;height:100%;object-fit:cover}
+.cs-ov{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,18,45,.48),rgba(10,18,45,.88));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;color:#fff;gap:5px}
+.cs-tag{background:var(--orange);color:#fff;padding:4px 12px;border-radius:50px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.cs-title{font-size:21px;font-weight:900}
+.cs-sub{font-size:13px;opacity:.85;line-height:1.5}
+.cs-locs{font-size:13px;opacity:.8;line-height:2}
+.cs-btn{background:#fff;color:var(--navy);border:none;padding:10px 24px;border-radius:50px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.cs-ph{position:relative;border-radius:var(--r);overflow:hidden}
+.cs-ph+.cs-ph{margin-top:16px}
+.cs-ph-inner{filter:blur(3px) brightness(.65);pointer-events:none;user-select:none}
+.cs-ph-badge{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+.cs-ph-pill{background:rgba(18,28,58,.78);color:#fff;padding:10px 22px;border-radius:50px;font-size:13.5px;font-weight:700;backdrop-filter:blur(6px);letter-spacing:.3px}
+/* Toast */
+#idx-toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 22px;border-radius:50px;font-size:14px;font-weight:600;z-index:9998;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.25);}
+#idx-toast.show{opacity:1}
 
 /* CODE */
 .code-wrap{padding:40px 24px;text-align:center;flex:1;display:flex;flex-direction:column;justify-content:center}
@@ -366,6 +383,7 @@ p{line-height:1.6}
     <button class="pill" onclick="filterTours('Art Walk',this)">Art Walks</button>
     <button class="pill" onclick="filterTours('Ghost Tour',this)">Ghost Tours</button>
     <button class="pill" onclick="filterTours('Audio Tour',this)">Audio Tours</button>
+    <button class="pill" onclick="filterTours('Boat Tour',this)">⚓ Boat Tours</button>
     <button class="pill" onclick="filterTours('In-Home',this)">In-Home</button>
   </div>
   <div class="tours-grid" id="tours-grid"></div>
@@ -581,7 +599,37 @@ const SAMPLE_HUNTS = [
    dist:"23.4 miles away",distChip:"23 mi away",nearby:"In your area",
    rating:"5",teams:"87",route:"1.5 mi route",
    stops:["Putnam Historic Museum","Veterans Memorial Fountains","Larimer Memorial Library"],
-   tags:["Palatka","Scavenger Hunt"],action:null,outside:true}
+   tags:["Palatka","Scavenger Hunt"],action:null,outside:true},
+  {title:"Amelia Island Historical Scavenger Hunt",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"35 miles away",distChip:"35 mi away",nearby:"In your area",
+   rating:"4.9",teams:"143",route:"1.2 mi route",subroute:"Friends night",
+   stops:["Fort Clinch State Park","Fernandina Beach Historic District","Centre Street Waterfront"],
+   tags:["Amelia Island","Scavenger Hunt"],action:null,outside:true},
+  {title:"Jax Riverwalk Adventure Hunt",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
+   dist:"60 miles away",distChip:"60 mi away",nearby:"Destination",
+   rating:"4.9",teams:"312",route:"1.8 mi route",subroute:"Date night",
+   stops:["Jacksonville Landing","Friendship Fountain","The Cummer Museum Gardens"],
+   tags:["Jacksonville","Scavenger Hunt"],action:null,outside:true},
+  {title:"Gator Country Scavenger Hunt",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+   dist:"75 miles away",distChip:"75 mi away",nearby:"Destination",
+   rating:"4.8",teams:"198",route:"1.5 mi route",subroute:"Friends night",
+   stops:["University of Florida Plaza","Reppers Bar & Grill","Bo Diddley Community Plaza"],
+   tags:["Gainesville","Scavenger Hunt"],action:null,outside:true},
+  {title:"New Smyrna Beach Treasure Hunt",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+   dist:"85 miles away",distChip:"85 mi away",nearby:"Destination",
+   rating:"4.8",teams:"116",route:"1.0 mi route",subroute:"Friends night",
+   stops:["Flagler Avenue Shops","NSB Art Fiesta Mural","Smyrna Dunes Park"],
+   tags:["New Smyrna Beach","Scavenger Hunt"],action:null,outside:true},
+  {title:"Savannah Squares Historic Hunt",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"115 miles away",distChip:"115 mi away",nearby:"Destination",
+   rating:"5",teams:"541",route:"2.0 mi route",subroute:"Date night",
+   stops:["Forsyth Park Fountain","Chippewa Square","Factor's Walk Riverfront"],
+   tags:["Savannah","Scavenger Hunt"],action:null,outside:true}
 ];
 
 const SAMPLE_BARS = [
@@ -610,7 +658,31 @@ const SAMPLE_BARS = [
    dist:"62.4 miles away",distChip:"62 mi away",nearby:"Destination",
    rating:"5",teams:"66",route:"0.5 mi route",subroute:"Friends night",
    stops:["Arcade Bar","Silver Q Billiards & Sports Bar","Mai Kai Kava Bar"],
-   tags:["Gainesville","Bar Crawl"],action:null,outside:true}
+   tags:["Gainesville","Bar Crawl"],action:null,outside:true},
+  {title:"Fernandina Beach Bar Crawl",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
+   dist:"35 miles away",distChip:"35 mi away",nearby:"In your area",
+   rating:"4.9",teams:"97",route:"0.4 mi route",subroute:"Friends night",
+   stops:["Palace Saloon","Amelia Island Brewing Co.","The Ritz Bar & Lounge"],
+   tags:["Amelia Island","Bar Crawl"],action:null,outside:true},
+  {title:"Jacksonville Craft Beer Crawl",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+   dist:"60 miles away",distChip:"60 mi away",nearby:"Destination",
+   rating:"4.9",teams:"278",route:"1.0 mi route",subroute:"Friends night",
+   stops:["Intuition Ale Works","Bold City Brewery","Southern Swells Brewing Co."],
+   tags:["Jacksonville","Bar Crawl"],action:null,outside:true},
+  {title:"NSB Flagler Ave Bar Crawl",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"85 miles away",distChip:"85 mi away",nearby:"Destination",
+   rating:"4.8",teams:"132",route:"0.5 mi route",subroute:"Friends night",
+   stops:["Norwood's Treehouse Restaurant","Flagler Tavern","Dogfish Head Alehouse"],
+   tags:["New Smyrna Beach","Bar Crawl"],action:null,outside:true},
+  {title:"Savannah River Street Bar Crawl",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+   dist:"115 miles away",distChip:"115 mi away",nearby:"Destination",
+   rating:"5",teams:"489",route:"0.8 mi route",subroute:"Date night",
+   stops:["Moon River Brewing Co.","The Distillery Restaurant","Congress Street Social Club"],
+   tags:["Savannah","Bar Crawl"],action:null,outside:true}
 ];
 
 const SAMPLE_ARTS = [
@@ -631,7 +703,132 @@ const SAMPLE_ARTS = [
    dist:"0.9 miles away",distChip:"0.9 mi away",nearby:"Near you",
    rating:"5",teams:"211",route:"0.6 mi route",subroute:"Creative outing",
    stops:["Flagler College Rotunda","Villa Zorayda Museum","Casa Monica Hotel Architecture"],
-   tags:["Saint Augustine","Art Walk"],action:null,outside:false}
+   tags:["Saint Augustine","Art Walk"],action:null,outside:false},
+  {title:"Amelia Island Arts & Culture Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
+   dist:"35 miles away",distChip:"35 mi away",nearby:"In your area",
+   rating:"4.9",teams:"74",route:"0.9 mi route",subroute:"Creative outing",
+   stops:["Amelia Island Museum of History","Island Art Association Gallery","Centre Street Boutiques"],
+   tags:["Amelia Island","Art Walk"],action:null,outside:true},
+  {title:"Springfield Historic Art Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"60 miles away",distChip:"60 mi away",nearby:"Destination",
+   rating:"4.9",teams:"163",route:"1.3 mi route",subroute:"Creative outing",
+   stops:["1904 Music Hall Murals","Ode Gallery","Cummer Museum of Art & Gardens"],
+   tags:["Jacksonville","Art Walk"],action:null,outside:true},
+  {title:"Savannah Art & Architecture Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+   dist:"115 miles away",distChip:"115 mi away",nearby:"Destination",
+   rating:"5",teams:"397",route:"1.8 mi route",subroute:"Creative outing",
+   stops:["SCAD Museum of Art","Telfair Museums","City Market Art Galleries"],
+   tags:["Savannah","Art Walk"],action:null,outside:true}
+];
+
+const SAMPLE_GHOSTS = [
+  // --- Near you ---
+  {title:"Ghoul Times in St. Augustine",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
+   dist:"3.6 miles away",distChip:"3.6 mi away",nearby:"Near you",
+   rating:"5",teams:"624",route:"1.0 mi route",subroute:"Date night",
+   stops:["Old Jail","St. Augustine Lighthouse","Castillo de San Marcos Night Walk"],
+   tags:["Saint Augustine","Ghost Tour"],action:null,outside:false},
+  {title:"St. Augustine Haunted History Hunt",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+   dist:"0.7 miles away",distChip:"0.7 mi away",nearby:"Near you",
+   rating:"4.9",teams:"438",route:"0.8 mi route",subroute:"Date night",
+   stops:["Huguenot Cemetery","St. Francis Inn (Most Haunted)","Flagler College Ponce Hall"],
+   tags:["Saint Augustine","Ghost Tour"],action:null,outside:false},
+  {title:"Spirits of the Ancient City: Night Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+   dist:"1.1 miles away",distChip:"1.1 mi away",nearby:"Near you",
+   rating:"5",teams:"311",route:"0.9 mi route",subroute:"Date night",
+   stops:["St. Augustine City Gate","Tolomato Cemetery","The Potter's Wax Museum"],
+   tags:["Saint Augustine","Ghost Tour"],action:null,outside:false},
+  {title:"Colonial Hauntings: St. Augustine After Dark",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"2.3 miles away",distChip:"2.3 mi away",nearby:"Near you",
+   topRated:false,
+   rating:"4.8",teams:"177",route:"1.2 mi route",subroute:"Date night",
+   stops:["Castillo de San Marcos","Artillery Lane","Bridge of Lions Haunted Walk"],
+   tags:["Saint Augustine","Ghost Tour"],action:null,outside:false},
+  // --- Outside Your Range ---
+  {title:"Fernandina Beach Haunted History",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+   dist:"35 miles away",distChip:"35 mi away",nearby:"In your area",
+   rating:"4.9",teams:"88",route:"0.7 mi route",subroute:"Date night",
+   stops:["Palace Saloon (Florida's Oldest Bar)","Old Nassau County Jail","St. Peter's Episcopal Church"],
+   tags:["Amelia Island","Ghost Tour"],action:null,outside:true},
+  {title:"Jacksonville's Haunted Southbank",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"60 miles away",distChip:"60 mi away",nearby:"Destination",
+   rating:"4.8",teams:"204",route:"1.1 mi route",subroute:"Date night",
+   stops:["Riverwalk at Sunset","The Florida Theatre","Jacksonville's Old City Cemetery"],
+   tags:["Jacksonville","Ghost Tour"],action:null,outside:true},
+  {title:"Green Cove Springs Haunted Courthouse Hunt",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+   dist:"25 miles away",distChip:"25 mi away",nearby:"In your area",
+   rating:"4.8",teams:"53",route:"0.6 mi route",subroute:"Date night",
+   stops:["Clay County Courthouse","Spring Park Pool","Palmetto Hotel Ruins"],
+   tags:["Green Cove Springs","Ghost Tour"],action:null,outside:true},
+  {title:"Savannah Ghost & Graveyard Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
+   dist:"115 miles away",distChip:"115 mi away",nearby:"Destination",
+   rating:"5",teams:"1,262",route:"1.4 mi route",subroute:"Date night",
+   stops:["Colonial Park Cemetery","The Marshall House","Bonaventure Cemetery"],
+   tags:["Savannah","Ghost Tour"],action:null,outside:true}
+];
+
+const SAMPLE_AUDIOS = [
+  // --- Near you ---
+  {title:"Audio Tour: St. Augustine Historic District Self-Guided Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+   dist:"0.5 miles away",distChip:"0.5 mi away",nearby:"Near you",
+   rating:"5",teams:"519",route:"1.5 mi route",subroute:"Self guided",
+   stops:["Castillo de San Marcos","St. George Street","Plaza de la Constitución"],
+   tags:["Saint Augustine","Audio Tour"],action:null,outside:false},
+  {title:"Audio Tour: Flagler Era Architecture Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
+   dist:"0.8 miles away",distChip:"0.8 mi away",nearby:"Near you",
+   rating:"4.9",teams:"287",route:"1.0 mi route",subroute:"Self guided",
+   stops:["Flagler College (Ponce de León Hotel)","Alcazar Hotel (Lightner Museum)","Memorial Presbyterian Church"],
+   tags:["Saint Augustine","Audio Tour"],action:null,outside:false},
+  {title:"Audio Tour: Lincolnville African American Heritage Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+   dist:"1.5 miles away",distChip:"1.5 mi away",nearby:"Near you",
+   rating:"5",teams:"198",route:"0.9 mi route",subroute:"Self guided",
+   stops:["Lincolnville Museum & Cultural Center","St. Benedict the Moor Church","Frank B. Butler Park"],
+   tags:["Saint Augustine","Audio Tour"],action:null,outside:false},
+  {title:"Audio Tour: St. Augustine Beach Coastal History",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"4.2 miles away",distChip:"4.2 mi away",nearby:"In your area",
+   rating:"4.8",teams:"144",route:"1.2 mi route",subroute:"Self guided",
+   stops:["St. Augustine Beach Pier","Anastasia State Park Entrance","Beach Amphitheatre"],
+   tags:["Saint Augustine Beach","Audio Tour"],action:null,outside:false},
+  // --- Outside Your Range ---
+  {title:"Audio Tour: Fernandina Beach Self-Guided Historic Walk",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9541_orig.jpg",
+   dist:"35 miles away",distChip:"35 mi away",nearby:"In your area",
+   rating:"4.9",teams:"112",route:"1.0 mi route",subroute:"Self guided",
+   stops:["Fort Clinch State Park","Centre Street Historic District","Old Nassau County Courthouse"],
+   tags:["Amelia Island","Audio Tour"],action:null,outside:true},
+  {title:"Audio Tour: Jacksonville Riverside & Avondale",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg",
+   dist:"60 miles away",distChip:"60 mi away",nearby:"Destination",
+   rating:"4.9",teams:"231",route:"1.6 mi route",subroute:"Self guided",
+   stops:["Five Points District","Willowbranch Park","Memorial Park Riverfront"],
+   tags:["Jacksonville","Audio Tour"],action:null,outside:true},
+  {title:"Audio Tour: University of Florida Campus History",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg",
+   dist:"75 miles away",distChip:"75 mi away",nearby:"Destination",
+   rating:"4.8",teams:"176",route:"1.8 mi route",subroute:"Self guided",
+   stops:["Century Tower","Florida Museum of Natural History","University Auditorium"],
+   tags:["Gainesville","Audio Tour"],action:null,outside:true},
+  {title:"Audio Tour: Savannah Garden District",
+   image:"https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg",
+   dist:"115 miles away",distChip:"115 mi away",nearby:"Destination",
+   rating:"5",teams:"408",route:"2.0 mi route",subroute:"Self guided",
+   stops:["Forsyth Park","Monterey Square","Jones Street (Most Beautiful in America)"],
+   tags:["Savannah","Audio Tour"],action:null,outside:true}
 ];
 
 function renderLRCard(h){
@@ -647,7 +844,7 @@ function renderLRCard(h){
     <div class="lr-img">
       <img src="${h.image}" alt="${h.title}" loading="lazy">
       <div class="lr-chips">
-        <span class="lr-chip c-top">Top Rated</span>
+        ${h.topRated!==false?'<span class="lr-chip c-top">Top Rated</span>':''}
         <span class="lr-chip ${nearCls}">${h.nearby}</span>
         <span class="lr-chip c-dist">${h.distChip}</span>
       </div>
@@ -671,6 +868,30 @@ function renderLRCard(h){
       <div class="lr-tags">${h.tags.map(t=>`<span class="lr-tag">${t}</span>`).join('')}</div>
     </div>
   </div>`;
+}
+
+function showToast(msg){
+  let t=document.getElementById('idx-toast');
+  if(!t){t=document.createElement('div');t.id='idx-toast';document.body.appendChild(t);}
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function renderComingSoon(){
+  const ph1=renderLRCard({title:'St. Augustine Sunset Boat Tour',image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/dsc9545_orig.jpg',dist:'2.1 miles away',distChip:'2.1 mi away',nearby:'Near you',rating:'5.0',teams:'—',route:'2.0 mi route',subroute:'Date night',stops:['St. Augustine Marina','Matanzas Bay','Bridge of Lions'],tags:['Saint Augustine','Boat Tour'],action:null,outside:false});
+  const ph2=renderLRCard({title:'Palatka River Cruise Adventure',image:'https://www.thetastingtours.com/uploads/6/8/3/4/6834687/final-0861_orig.jpg',dist:'45 miles away',distChip:'45 mi away',nearby:'Destination',rating:'5.0',teams:'—',route:'5.0 mi route',subroute:'Date night',stops:['Palatka Marina','St. Johns River','Dunns Creek State Park'],tags:['Palatka','Boat Tour'],action:null,outside:false});
+  return `<div class="cs-banner">
+    <img src="https://www.thetastingtours.com/uploads/6/8/3/4/6834687/ttt-no-city-2-jpg2_orig.jpg" alt="Boat Tours Coming Soon">
+    <div class="cs-ov">
+      <div class="cs-tag">⚓ Boat Tours</div>
+      <div class="cs-title">Boat Tours — Coming Soon!</div>
+      <div class="cs-sub">We're setting sail! Boat tour experiences are coming to:</div>
+      <div class="cs-locs">📍 St. Augustine &nbsp; 📍 Palatka</div>
+      <button class="cs-btn" onclick='event.stopPropagation();showToast("You will be first to know! 🚢")'>Notify Me</button>
+    </div>
+  </div>
+  <div class="cs-ph"><div class="cs-ph-inner">${ph1}</div><div class="cs-ph-badge"><span class="cs-ph-pill">🚢 Coming Soon</span></div></div>
+  <div class="cs-ph"><div class="cs-ph-inner">${ph2}</div><div class="cs-ph-badge"><span class="cs-ph-pill">🚢 Coming Soon</span></div></div>`;
 }
 
 function renderSectionedCards(data){
@@ -993,7 +1214,10 @@ function renderCards(f){
   const g=document.getElementById('tours-grid');
   if(f==='Scavenger Hunt'){g.innerHTML=renderSectionedCards(SAMPLE_HUNTS);return;}
   if(f==='Bar Crawl'){g.innerHTML=renderSectionedCards(SAMPLE_BARS);return;}
-  if(f==='Art Walk'){g.innerHTML=SAMPLE_ARTS.map(renderLRCard).join('');return;}
+  if(f==='Art Walk'){g.innerHTML=renderSectionedCards(SAMPLE_ARTS);return;}
+  if(f==='Ghost Tour'){g.innerHTML=renderSectionedCards(SAMPLE_GHOSTS);return;}
+  if(f==='Audio Tour'){g.innerHTML=renderSectionedCards(SAMPLE_AUDIOS);return;}
+  if(f==='Boat Tour'){g.innerHTML=renderComingSoon();return;}
   const list=f==='all'?TOURS:TOURS.filter(t=>t.type===f);
   if(!list.length){g.innerHTML='<div style="text-align:center;padding:40px;color:var(--gray)">No tours in this category yet — check back soon!</div>';return}
   g.innerHTML=list.map(t=>`
